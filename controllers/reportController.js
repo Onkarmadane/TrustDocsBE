@@ -1,27 +1,7 @@
 const Report = require("../models/Report");
 const puppeteer = require("puppeteer");
-const fs = require('fs');
 const { generateReportHTML } = require("../utils/pdfTemplate");
 const { getPaginationQuery } = require("../utils/getPaginationFilter");
-
-// Helper to find existing browser path for Puppeteer
-const getExecutablePath = () => {
-    if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
-    
-    const commonPaths = [
-        '/usr/bin/google-chrome-stable',
-        '/usr/bin/google-chrome',
-        '/usr/bin/chromium',
-        '/usr/bin/chromium-browser',
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-    ];
-
-    for (const path of commonPaths) {
-        if (fs.existsSync(path)) return path;
-    }
-    return null; // Fallback to bundled chromium
-};
 
 
 
@@ -232,11 +212,9 @@ exports.generatePdf = async (req, res) => {
             ]
         };
 
-        // On deployment (Linux), let Puppeteer find its own Chromium or use specified path
-        // On local (Windows), it will use bundled Chromium or specified path
-        const exePath = getExecutablePath();
-        if (exePath) {
-            launchOptions.executablePath = exePath;
+        // On Render, ensure PUPPETEER_CACHE_DIR is set in env
+        if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+            launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
         }
 
         const browser = await puppeteer.launch(launchOptions);
