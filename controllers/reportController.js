@@ -196,11 +196,28 @@ exports.generatePdf = async (req, res) => {
         const htmlContent = generateReportHTML(report);
 
         // Launch Puppeteer
-        const browser = await puppeteer.launch({
-            headless: "new",
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+        // Launch Puppeteer with optimized options for deployment
+        const launchOptions = {
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process',
+                '--disable-gpu'
+            ]
+        };
+
+        // On deployment (Linux), let Puppeteer find its own Chromium or use specified path
+        // On local (Windows), it will use bundled Chromium or specified path
+        if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+            launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+        }
+
+        const browser = await puppeteer.launch(launchOptions);
 
         const page = await browser.newPage();
         
