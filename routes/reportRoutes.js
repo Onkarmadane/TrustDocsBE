@@ -8,6 +8,7 @@ const {
     getSingleReport,
     updateReport,
     deleteReport,
+    generatePdf,
 } = require("../controllers/reportController");
 
 
@@ -17,6 +18,8 @@ router.post("/", createReport);
 router.get("/", getReports);
 
 router.get("/:id", getSingleReport);
+
+router.get("/:id/pdf", generatePdf);
 
 router.put("/:id", updateReport);
 

@@ -1,4 +1,7 @@
 const Report = require("../models/Report");
+const puppeteer = require("puppeteer");
+const { generateReportHTML } = require("../utils/pdfTemplate");
+const { getPaginationQuery } = require("../utils/getPaginationFilter");
 
 
 // CREATE REPORT
@@ -32,20 +35,36 @@ exports.createReport = async (req, res) => {
 // GET ALL REPORTS
 exports.getReports = async (req, res) => {
     try {
+        const { status, search, page, per_page } = req.query;
+        let query = {};
 
-        const reports = await Report.find()
-            .sort({ createdAt: -1 });
+        if (status && status !== 'all') {
+            query.status = status;
+        }
+
+        if (search) {
+            query.$or = [
+                { trustName: { $regex: search, $options: 'i' } },
+                { reportType: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const total = await Report.countDocuments(query);
+        const pagination = getPaginationQuery(page, per_page, 10, 100, total);
+
+        const reports = await Report.find(query)
+            .sort({ createdAt: -1 })
+            .skip(pagination.skip)
+            .limit(pagination.per_page);
 
         return res.status(200).json({
             success: true,
-            count: reports.length,
+            pagination,
             data: reports,
         });
 
     } catch (error) {
-
         console.log("GET REPORTS ERROR => ", error);
-
         return res.status(500).json({
             success: false,
             message: "Internal server error",
@@ -155,6 +174,65 @@ exports.deleteReport = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal server error",
+        });
+    }
+};
+
+
+
+// GENERATE PDF
+exports.generatePdf = async (req, res) => {
+    try {
+        const report = await Report.findById(req.params.id);
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found",
+            });
+        }
+
+        // Generate the HTML for the PDF
+        const htmlContent = generateReportHTML(report);
+
+        // Launch Puppeteer
+        const browser = await puppeteer.launch({
+            headless: "new",
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+
+        const page = await browser.newPage();
+        
+        // Ensure console logs inside the page are visible for debugging (optional)
+        page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+
+        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+        const pdfBuffer = await page.pdf({
+            format: 'A4',
+            printBackground: true,
+            margin: { top: '15mm', right: '15mm', bottom: '15mm', left: '15mm' }
+        });
+
+        await browser.close();
+
+        // Send the PDF back to the client
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="Report_${report.trustName || 'Trust'}.pdf"`,
+            'Content-Length': pdfBuffer.length
+        });
+
+        return res.send(pdfBuffer);
+
+    } catch (error) {
+        console.log("GENERATE PDF ERROR => ", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to generate PDF",
+            error: error.message
         });
     }
 };

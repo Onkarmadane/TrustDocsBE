@@ -10,6 +10,7 @@ app.get("/", (req, res) => {
     res.send("API Running");
 });
 
+app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/reports", require("./routes/reportRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 
