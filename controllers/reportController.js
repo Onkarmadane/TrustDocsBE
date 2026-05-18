@@ -214,7 +214,12 @@ exports.generatePdf = async (req, res) => {
 
         // On Render, ensure PUPPETEER_CACHE_DIR is set in env
         if (process.env.PUPPETEER_EXECUTABLE_PATH) {
-            launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+            if (require('fs').existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
+                launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+            } else {
+                console.log(`Configured path ${process.env.PUPPETEER_EXECUTABLE_PATH} does not exist. Ignoring.`);
+                delete process.env.PUPPETEER_EXECUTABLE_PATH;
+            }
         }
 
         const browser = await puppeteer.launch(launchOptions);

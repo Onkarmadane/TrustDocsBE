@@ -19,6 +19,8 @@ const reportSchema = new mongoose.Schema(
 
         date: Date,
 
+        place: String,
+
         currentStep: {
             type: Number,
             default: 1,
@@ -115,6 +117,60 @@ const reportSchema = new mongoose.Schema(
             totalFundsLiabilities: Number,
 
             totalPropertyAssets: Number,
+        },
+
+        receiptPayment: {
+            receipts: [
+                {
+                    key: String,
+                    label: String,
+                    amount: Number,
+                    total: Number,
+                },
+            ],
+            payments: [
+                {
+                    key: String,
+                    label: String,
+                    amount: Number,
+                    total: Number,
+                },
+            ],
+            totalReceipts: Number,
+            totalPayments: Number,
+        },
+
+        schedule9D: {
+            trustNameMarathi: String,
+            registrationNoMarathi: String,
+            financialYearMarathi: String,
+            trustPan: String,
+            incomeTaxRegistration: String,
+            previousITReturns: [
+                {
+                    srNo: String,
+                    receiptNo: String,
+                    year: String,
+                }
+            ],
+            trusteesPan: [
+                {
+                    srNo: String,
+                    name: String,
+                    pan: String,
+                }
+            ]
+        },
+
+        delayExemption: {
+            applicantName: String,
+            applicantAge: String,
+            applicantAddress: String,
+            designation: String,
+            trustRegistrationDate: String,
+            financialYearMarathi: String,
+            place: String,
+            date: String,
         },
     },
     {
