@@ -1,25 +1,58 @@
 const mongoose = require("mongoose");
 
+const addressSchema = new mongoose.Schema(
+    {
+        buildingName:         { type: String },
+        buildingNameMarathi:  { type: String },
+        streetName:           { type: String },
+        streetNameMarathi:    { type: String },
+        landmark:             { type: String },
+        landmarkMarathi:      { type: String },
+        pin:                  { type: String },
+        district:             { type: String },   // stores district _id or name
+        districtName:         { type: String },   // human-readable label
+        taluka:               { type: String },
+        talukaName:           { type: String },
+        village:              { type: String },
+        villageName:          { type: String },
+    },
+    { _id: false }
+);
+
 const reportSchema = new mongoose.Schema(
     {
-        reportType: {
-            type: String,
-            required: true,
+        reportType: { type: String, required: true },
+
+        trustDetails: {
+            trustNumber:      { type: String },
+            trustName:        { type: String },
+            address:          { type: addressSchema },
         },
 
-        trustName: {
-            type: String,
+        auditorDetails: {
+            auditorName:        { type: String },
+            nameOfFirm:         { type: String },
+            status:             { type: String },
+            district:           { type: String },
+            districtName:       { type: String },
+            membershipNumber:   { type: String },
+            registrationNumber: { type: String },
         },
 
-        registrationNo: String,
+        accountingYear: { type: String },
 
-        financialYear: String,
+        auditorAddress: {
+            address:       { type: addressSchema },
+            mobileNumber:  { type: String },
+            emailId:       { type: String },
+        },
 
-        address: String,
-
-        date: Date,
-
-        place: String,
+        trustName:      { type: String },
+        registrationNo: { type: String },
+        financialYear:  { type: String },
+        address:        { type: String },
+        date:           { type: Date },
+        place:          { type: String },
 
         currentStep: {
             type: Number,
@@ -68,6 +101,11 @@ const reportSchema = new mongoose.Schema(
             ],
 
             grossAnnualIncome: {
+                type: Number,
+                default: 0,
+            },
+
+            contribution: {
                 type: Number,
                 default: 0,
             },
