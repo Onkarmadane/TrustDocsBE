@@ -1,4 +1,9 @@
+const generateNondaniReportHTML = require('./nondaniTemplate');
+
 exports.generateReportHTML = (report) => {
+    if (report.reportType === 'nondani') {
+        return generateNondaniReportHTML(report);
+    }
     const formatAddress = (address) => {
         if (!address) return null;
         const parts = [
