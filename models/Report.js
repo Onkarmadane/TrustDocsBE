@@ -179,9 +179,6 @@ const reportSchema = new mongoose.Schema(
         },
 
         schedule9D: {
-            trustNameMarathi: String,
-            registrationNoMarathi: String,
-            financialYearMarathi: String,
             trustPan: String,
             incomeTaxRegistration: String,
             previousITReturns: [

@@ -57,9 +57,7 @@ exports.generateReportHTML = (report) => {
     const schIX_grossAnnualIncome = report.scheduleIX?.grossAnnualIncome || 0;
     const schIX_contribution = report.scheduleIX?.contribution || 0;
 
-    const sch9d_trustNameMarathi = report.schedule9D?.trustNameMarathi || trustName;
-    const sch9d_registrationNoMarathi = report.schedule9D?.registrationNoMarathi || registrationNo;
-    const sch9d_financialYearMarathi = report.schedule9D?.financialYearMarathi || yearEnding;
+
     const sch9d_trustPan = report.schedule9D?.trustPan || '';
     const sch9d_incomeTaxRegistration = report.schedule9D?.incomeTaxRegistration || '';
     const sch9d_previousITReturns = report.schedule9D?.previousITReturns || [];
@@ -677,72 +675,51 @@ exports.generateReportHTML = (report) => {
 
         <!-- PAGE 7: SCHEDULE 9-D -->
         <div class="page size-meta">
-            <div class="text-center font-bold mb-4 pb-2" style="border-bottom: 1px solid #000; line-height: 1.5;">
-                <p class="size-meta" style="margin: 2px 0;">महाराष्ट्र शासन राजपत्र असाधारण भाग चार - ब, मे 15 , 2019/वैशाख 25, शके 1941</p>
-                <p class="size-meta" style="margin: 2px 0;">मुख्य नियमांना जोडण्यात आलेल्या अनुसूची 9-क नंतर पुढील अनुसूची समाविष्ट करण्यात येईल.</p>
-                <p class="size-subheading" style="margin: 4px 0; font-weight: bold;">अनुसूची नऊ - ड</p>
-                <p class="size-small" style="margin: 2px 0;">(नियम 19 ( 2 अ) पहा )</p>
-                <p class="size-meta" style="margin: 2px 0;">महाराष्ट्र सार्वजनिक विश्वस्तव्यवस्था अधिनियम, 1950 या अधिनियमाच्या कलम 34 च्या पोट- कलम</p>
-                <p class="size-meta" style="margin: 2px 0;">(1) खाली लेखापरीक्षा अहवालासोबत लेखापरीक्षकाने सादर करावयाचे माहिती.</p>
+            <div class="text-center font-bold mb-6 pb-2" style="line-height: 1.5;">
+                <p class="size-heading uppercase" style="margin: 4px 0; font-weight: bold;">"SCHEDULE IX-D"</p>
+                <p class="size-meta font-normal" style="margin: 2px 0;">[See rule 19 (2A)]</p>
+                <p class="size-meta font-normal" style="margin: 8px 0 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
+                <p class="size-meta font-normal" style="margin: 2px 0;">sub-section (1) of section 34 of</p>
+                <p class="size-meta font-normal" style="margin: 2px 0;">the Maharashtra Public Trusts Act.</p>
             </div>
 
             <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
-                <tbody>
-                    <tr>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold; width: 20px; text-align: center;">1)</td>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold; width: 30%;">संस्थेचे नाव</td>
-                        <td style="border: 1px solid #000; padding: 4px;">${sch9d_trustNameMarathi}</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold; text-align: center;">2)</td>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold;">नोंदणी क्रमांक</td>
-                        <td style="border: 1px solid #000; padding: 4px;">${sch9d_registrationNoMarathi}</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold; text-align: center;">3)</td>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold;">आर्थिक वर्ष</td>
-                        <td style="border: 1px solid #000; padding: 4px; font-weight: bold; text-align: center;">सन ${sch9d_financialYearMarathi}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 10px;">
                 <thead>
-                    <tr style="font-weight: bold; background-color: #f0f0f0;">
-                        <td style="border: 1px solid #000; padding: 4px; width: 30px; text-align: center;">अ क्रं</td>
-                        <td style="border: 1px solid #000; padding: 4px; width: 35%; text-align: center;">तपशील</td>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">वर्णन</td>
+                    <tr>
+                        <th style="border: 1px solid #000; padding: 6px; width: 8%; text-align: center; font-weight: normal;">Sr.<br>No.</th>
+                        <th style="border: 1px solid #000; padding: 6px; width: 45%; text-align: center; font-weight: normal;">Particulars</th>
+                        <th style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: normal;">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">1</td>
-                        <td style="border: 1px solid #000; padding: 4px;">विश्वस्त व्यवस्थेच्या स्थायी खाते क्रमांक</td>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">${sch9d_trustPan}</td>
+                        <td style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; vertical-align: top;">1.</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">PAN No. of Trust.</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">${sch9d_trustPan}</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">2</td>
-                        <td style="border: 1px solid #000; padding: 4px;">आयकर अधिनियम, 196(1961 चा 43) याच्या कलम 12 A A खाली नोंदणीच्या दिनांका सह नोंदणी क्रमांक</td>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">${sch9d_incomeTaxRegistration}</td>
+                        <td style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; vertical-align: top;">2.</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">Registration No. with date of registration under section 12AA of Income Tax Act, 1961 (43 of 1961).</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">${sch9d_incomeTaxRegistration}</td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">3</td>
-                        <td style="border: 1px solid #000; padding: 4px;">आधीच्या तीन वर्षाचे आयकर विवरण दाखल करण्याच्या दिनांक सह पोच पावती क्रमांक.</td>
-                        <td style="padding: 0; vertical-align: top;">
-                            <table style="width: 100%; border-collapse: collapse; margin: 0; border: none;">
+                        <td style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; vertical-align: top;">3.</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">Acknowledgement No. with date of filing of the Return of Income for earlier three years.</td>
+                        <td style="border: 1px solid #000; padding: 0; vertical-align: top;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none;">
                                 <thead>
                                     <tr>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 4px; width: 30px;">अ क्र</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 4px;">पोच पावती क्रमांक</th>
-                                        <th style="border-bottom: 1px solid #000; padding: 4px; width: 60px;">वर्ष</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; font-weight: normal; width: 15%; text-align: center;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; font-weight: normal; text-align: center;">Acknowledgement No.</th>
+                                        <th style="border-bottom: 1px solid #000; padding: 6px; font-weight: normal; width: 25%; text-align: center;">Year</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${sch9d_previousITReturns.map((item, index) => `
+                                    ${(sch9d_previousITReturns && sch9d_previousITReturns.length > 0 ? sch9d_previousITReturns : [{ receiptNo: '', year: '' }, { receiptNo: '', year: '' }, { receiptNo: '', year: '' }]).map((item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; padding: 4px; text-align: center; ${index !== sch9d_previousITReturns.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${index + 1}</td>
-                                            <td style="border-right: 1px solid #000; padding: 4px; text-align: center; ${index !== sch9d_previousITReturns.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.receiptNo || '-'}</td>
-                                            <td style="padding: 4px; text-align: center; ${index !== sch9d_previousITReturns.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.year || '-'}</td>
+                                            <td style="border-right: 1px solid #000; padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${['(i)', '(ii)', '(iii)', '(iv)', '(v)'][index] || `(${index + 1})`}</td>
+                                            <td style="border-right: 1px solid #000; padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.receiptNo || ''}</td>
+                                            <td style="padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.year || ''}</td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
@@ -750,23 +727,23 @@ exports.generateReportHTML = (report) => {
                         </td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center;">4</td>
-                        <td style="border: 1px solid #000; padding: 4px;">सर्व विश्वस्तांचे स्थायी खाते क्रमांक</td>
-                        <td style="padding: 0; vertical-align: top;">
-                            <table style="width: 100%; border-collapse: collapse; margin: 0; border: none;">
+                        <td style="border: 1px solid #000; padding: 6px; text-align: center; font-weight: bold; vertical-align: top;">4.</td>
+                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">PAN No. of all Trustees.</td>
+                        <td style="border: 1px solid #000; padding: 0; vertical-align: top;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none;">
                                 <thead>
                                     <tr>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 4px; width: 30px;">अ क्र</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 4px;">विश्वस्तांचे नांव</th>
-                                        <th style="border-bottom: 1px solid #000; padding: 4px; width: 100px;">स्थायी खाते क्रमांक</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; font-weight: normal; width: 15%; text-align: center;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; font-weight: normal; text-align: center;">Name of Trustee</th>
+                                        <th style="border-bottom: 1px solid #000; padding: 6px; font-weight: normal; width: 30%; text-align: center;">PAN No.</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${sch9d_trusteesPan.map((item, index) => `
+                                    ${(sch9d_trusteesPan && sch9d_trusteesPan.length > 0 ? sch9d_trusteesPan : [{ name: '', pan: '' }, { name: '', pan: '' }, { name: '', pan: '' }]).map((item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; padding: 4px; text-align: center; ${index !== sch9d_trusteesPan.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${index + 1}</td>
-                                            <td style="border-right: 1px solid #000; padding: 4px; text-align: center; ${index !== sch9d_trusteesPan.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.name || '-'}</td>
-                                            <td style="padding: 4px; text-align: center; ${index !== sch9d_trusteesPan.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.pan || '-'}</td>
+                                            <td style="border-right: 1px solid #000; padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">(${index + 1})</td>
+                                            <td style="border-right: 1px solid #000; padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.name || ''}</td>
+                                            <td style="padding: 6px; text-align: center; ${index !== arr.length - 1 ? 'border-bottom: 1px solid #000;' : ''}">${item.pan || ''}</td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
@@ -786,7 +763,7 @@ exports.generateReportHTML = (report) => {
             </p>
 
             <p class="mb-2">
-                1) मी ${delay_applicantName} ${sch9d_trustNameMarathi} ${delay_applicantAddress} या सार्वजनिक न्यास नोंदणी क्रमांक ${sch9d_registrationNoMarathi} या न्यासाचा ${delay_designation} आहे.
+                1) मी ${delay_applicantName} ${trustName} ${delay_applicantAddress} या सार्वजनिक न्यास नोंदणी क्रमांक ${registrationNo} या न्यासाचा ${delay_designation} आहे.
             </p>
             <p style="padding-left: 20px;" class="mb-2">
                 सदर न्यास हा दिनांक ${delay_trustRegistrationDate} रोजी नोंदविण्यात आलेला आहे.

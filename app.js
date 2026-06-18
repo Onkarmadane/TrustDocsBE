@@ -14,5 +14,6 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/reports", require("./routes/reportRoutes"));
 app.use("/api/nondani-reports", require("./routes/nondaniReportRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 
 module.exports = app;

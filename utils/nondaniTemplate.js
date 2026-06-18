@@ -59,28 +59,28 @@ module.exports = (report) => {
     `).join('');
 
     const renderCommitteeTable = () => `
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; font-family: 'Tiro Devanagari Marathi', serif;">
             <thead>
-                <tr>
-                    <th style="border: 1px solid #000; padding: 6px;">अ.क्र.</th>
-                    <th style="border: 1px solid #000; padding: 6px;">सभासदाचे संपूर्ण नांव</th>
-                    <th style="border: 1px solid #000; padding: 6px;">पत्ता</th>
-                    <th style="border: 1px solid #000; padding: 6px;">पद</th>
-                    <th style="border: 1px solid #000; padding: 6px;">वय</th>
-                    <th style="border: 1px solid #000; padding: 6px;">व्यवसाय</th>
-                    <th style="border: 1px solid #000; padding: 6px;">राष्ट्रीयत्व</th>
+                <tr style="border-bottom: 1px solid #000;">
+                    <th style="padding: 6px 4px; text-align: left; font-weight: bold;">अ.क्र. सभासदाचे संपूर्ण नांव</th>
+                    <th style="padding: 6px 4px; text-align: left; font-weight: bold; width: 30%;">पत्ता</th>
+                    <th style="padding: 6px 4px; text-align: left; font-weight: bold;">पद</th>
+                    <th style="padding: 6px 4px; text-align: center; font-weight: bold;">वय</th>
+                    <th style="padding: 6px 4px; text-align: left; font-weight: bold;">व्यवसाय</th>
+                    <th style="padding: 6px 4px; text-align: left; font-weight: bold;">राष्ट्रीयत्व</th>
                 </tr>
             </thead>
             <tbody>
                 ${committeeMembers.map((m, i) => `
                 <tr>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">${i + 1}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${m.name || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${m.address || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${m.designation || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">${m.age || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${m.occupation || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">${m.nationality || 'भारतीय'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">
+                        <span style="font-weight: bold; display: inline-block; width: 15px;">${i + 1}.</span> ${m.name || '_____'}
+                    </td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.address || '_____'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.designation || '_____'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top; text-align: center;">${m.age || '_____'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.occupation || '_____'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.nationality || 'भारतीय'}</td>
                 </tr>
                 `).join('')}
             </tbody>
@@ -148,148 +148,194 @@ module.exports = (report) => {
     </head>
     <body>
         <!-- PAGE 1: Application -->
-        <div class="header-box">
-            परिशिष्ट " अ "<br>
-            <span style="font-size: 13px; font-weight: normal;">(Society Application)</span>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <div style="border: 1px solid #000; padding: 3px 15px; display: inline-block; font-weight: bold; font-size: 16px; line-height: 1;">
+                परिशिष्ट " अ "
+            </div>
+            <div style="font-size: 11px; margin-top: 2px;">(Society Application)</div>
         </div>
 
-        <div class="flex-between mb-20">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; font-size: 13px; line-height: 1.4;">
             <div>
                 प्रति,<br>
-                मा. सहाय्यक संस्था निबंधक,<br>
+                <b>मा. सहाय्यक संस्था निबंधक,</b><br>
                 जालना विभाग जालना.
             </div>
-            <div>
-                दि. ${date}
+            <div style="font-weight: bold; margin-top: 15px;">
+                दि. &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; /2026
             </div>
         </div>
 
-        <table style="width: 100%; border: none; margin-bottom: 30px;">
+        <table style="width: 100%; border: none; margin-bottom: 10px; border-collapse: collapse; font-size: 13.5px; line-height: 1.4;">
             <tr>
-                <td style="width: 120px; font-weight: bold; vertical-align: top;">विषय :-</td>
-                <td style="font-weight: bold; text-decoration: underline;">संस्था नोंदणी अधिनियम 1860 अन्वये नोंदणी बाबत....</td>
+                <td style="width: 90px; font-weight: bold; vertical-align: top; padding: 2px 0;">विषय</td>
+                <td style="width: 20px; font-weight: bold; vertical-align: top; padding: 2px 0; text-align: center;">:-</td>
+                <td style="font-weight: bold; text-decoration: underline; vertical-align: top; padding: 2px 0;">संस्था नोंदणी अधिनियम 1860 अन्वये नोंदणी बाबत....</td>
             </tr>
             <tr>
-                <td style="width: 120px; font-weight: bold; vertical-align: top; padding-top: 10px;">संस्थेचे नांव :-</td>
-                <td style="padding-top: 10px; font-weight: bold; font-size: 16px;">
-                    " ${trustName} "<br>
-                    <span style="font-size: 14px; font-weight: normal;">${address}</span>
+                <td style="width: 90px; font-weight: bold; vertical-align: top; padding: 8px 0 2px 0;">संस्थेचे नांव</td>
+                <td style="width: 20px; font-weight: bold; vertical-align: top; padding: 8px 0 2px 0; text-align: center;">:-</td>
+                <td style="font-weight: bold; font-size: 15px; vertical-align: top; padding: 8px 0 2px 0; line-height: 1.3;">
+                    “ ${trustName} ”<br>
+                    <div style="font-size: 13px; font-weight: normal; margin-top: 3px; padding-left: 5px;">${address}</div>
                 </td>
             </tr>
         </table>
 
-        <div class="mb-20">
+        <div style="margin-bottom: 10px; font-size: 13.5px; line-height: 1.4;">
             महोदय,<br>
-            <p class="indent">
-                निवेदन सादर करण्यात येते की, वरिल विषयात नमुद केलेल्या संस्थेची नोंदणी अधिनियम 1860 अन्वये
-                नोंदणी करावयाची आहे. सबब आपणाकडे खालील प्रमाणे कागदपत्रे सादर करण्यात आलेली आहेत.
+            <p style="text-indent: 30px; margin: 3px 0 0 0; text-align: justify;">
+                निवेदन सादर करण्यात येते की, वरील विषयात नमूद केलेल्या संस्थेची नोंदणी अधिनियम 1860 अन्वये नोंदणी करावयाची आहे. सबब आपणाकडे खालील प्रमाणे कागदपत्रे सादर करण्यात आलेली आहेत.
             </p>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-            <thead>
-                <tr>
-                    <th style="border: 1px solid #000; padding: 8px; width: 50px;">अ.क्र.</th>
-                    <th style="border: 1px solid #000; padding: 8px;">कागदपत्राचे नाव</th>
-                    <th style="border: 1px solid #000; padding: 8px; width: 100px;">सादर केले</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${checklistHtml || `
-                    <tr><td style="border: 1px solid #000; padding: 8px; text-align: center;">1</td><td style="border: 1px solid #000; padding: 8px;">विधान पत्र (ज्ञापन) मेमोरंडम ऑफ असोसिएशन</td><td style="border: 1px solid #000; padding: 8px; text-align: center;">होय</td></tr>
-                    <tr><td style="border: 1px solid #000; padding: 8px; text-align: center;">2</td><td style="border: 1px solid #000; padding: 8px;">नियम व नियमावलीची सत्यप्रत</td><td style="border: 1px solid #000; padding: 8px; text-align: center;">होय</td></tr>
-                    <tr><td style="border: 1px solid #000; padding: 8px; text-align: center;">3</td><td style="border: 1px solid #000; padding: 8px;">संमतीपत्र व अधिकारपत्र</td><td style="border: 1px solid #000; padding: 8px; text-align: center;">होय</td></tr>
-                `}
-            </tbody>
+        <table style="width: 100%; border: none; margin-bottom: 12px; font-size: 12.5px; line-height: 1.35; border-collapse: collapse; font-family: 'Tiro Devanagari Marathi', serif;">
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">1)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">विधान पत्र (ज्ञापन) मेमोरंडम ऑफ असोसिएशन.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">2)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">नियम व नियमावलीची सत्यप्रत.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">3)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">संस्था नोंदणी बाबत कार्यकारी मंडळाच्या सर्व सभासदांच्या सह्यांचे संमतीपत्र.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">4)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">संस्था नोंदणी बाबत कार्यकारी मंडळाच्या सर्व सभासदांच्या सह्यांचे अधिकारपत्र.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">5)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">कार्यकारिणीची निवड व उद्देश व नियमावली मंजुरी बाबत ठरावाची सत्यप्रत.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">6)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">संस्थेच्या पत्त्या बाबत व जागेबाबत अध्यक्ष व सचिव यांचे प्रतिज्ञापत्र 100/- रूपयाच्या स्टॅम्प पेपरवर ५ रु. कोर्ट फी राहील.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">8)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">भाडेकरारनामा 100/- रूपयाच्या स्टॅम्प पेपरवर तसेच जागा मालकाचे नाहरकत, जागेचा पुरावा, सर्व सभासदांचे आधार कार्ड व फोटो.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">9)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">चुकीचे वाङ्मय, देशविघातक व गैर मार्गाने निधी जमा करणार नाही करीता अध्यक्ष व सचिव यांचे प्रतिज्ञापत्र, धर्मादाय संशयास्पद पैशाची माहिती अवगत करणे बाबत हमीपत्र.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">10)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">परिशिष्ट 1-2-6.</td>
+            </tr>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">11)</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">सूचना, ठराव, सभासद नोंदवही इ. ची सत्यप्रत.</td>
+            </tr>
         </table>
 
-        <div class="mb-20">
-            <p class="indent">
-                पुढे असेही निवेदन करण्यात येते की, वरील संस्थेचे सर्व उद्देश सन 1860 च्या संस्था नोंदणी या अधिनियमाच्या
-                कलम 20 अन्वये असून, वरील संस्थेच्या नावांची या नामसदृष्य असलेली अन्य संस्था माझ्या माहिती प्रमाणे
-                अस्तित्वात नाही. नोंदणी शुल्क रू. 50/- (अक्षरी पन्नास रूपये फक्त ) भरण्यासाठी तयार आहे.
+        <div style="margin-bottom: 10px; font-size: 13.5px; line-height: 1.4;">
+            <p style="text-indent: 30px; margin: 0 0 5px 0; text-align: justify;">
+                पुढे असेही निवेदन करण्यात येते की, वरील संस्थेचे सर्व उद्देश सन 1860 च्या संस्था नोंदणी अधिनियमाच्या कलम 20 अन्वये असून, वरील संस्थेच्या नावांची या नामसदृष्य असलेली अन्य संस्था माझ्या माहिती प्रमाणे अस्तित्वात नाही. नोंदणी शुल्क रू. ५०/- (अक्षरी पन्नास रूपये फक्त ) भरण्यासाठी तयार आहे.
             </p>
-            <p style="text-align: center; font-weight: bold; margin-top: 20px;">
+            <p style="text-align: center; font-weight: bold; margin-top: 8px; font-size: 13.5px;">
                 तरी वरील संस्था नोंदणी अधिनियम 1860 अन्वये त्वरीत नोंदवावी अशी विनंती आहे.
             </p>
         </div>
 
-        <div class="flex-between" style="margin-top: 50px;">
-            <div>
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 13.5px; align-items: flex-start; line-height: 1.4;">
+            <div style="font-weight: bold; margin-top: 5px;">
                 सहपत्रे :- वरील प्रमाणे
             </div>
-            <div style="text-align: center;">
+            <div style="text-align: center; width: 300px;">
                 आपला विश्वासु,<br><br><br>
-                <b>${presidentName}</b><br>
-                अध्यक्ष<br>
-                " ${trustName} "<br>
-                ${address}
+                <span style="font-weight: bold; font-size: 14.5px;">${presidentName}</span><br>
+                “ ${trustName} ”<br>
+                <span style="font-size: 12.5px; font-weight: normal;">${address}</span>
             </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 25px; padding: 0 30px; font-weight: bold; font-size: 13.5px;">
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सदस्य</div>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 2: Memorandum -->
-        <div class="title-lg">परिशिष्ट " ब "<br><span style="font-size: 15px; font-weight: normal; text-decoration: underline;">या संस्थेचे ज्ञापन</span></div>
-        <div class="title-md" style="text-decoration: underline;">मेमोरंडम ऑफ असोसिएशन<br>(Memorandum of Association)</div>
+        <div style="text-align: center; margin-bottom: 12px; line-height: 1.3; font-family: 'Tiro Devanagari Marathi', serif;">
+            <span style="font-weight: bold; font-size: 16px;">परिशिष्ट " ब "</span><br>
+            <span style="font-size: 14px; text-decoration: underline; font-weight: bold;">या संस्थेचे ज्ञापन</span><br><br>
+            <span style="font-weight: bold; font-size: 15px;">मेमोरंडम ऑफ असोसिएशन</span><br>
+            <span style="font-size: 13px; font-weight: bold;">(Memorandum of Association)</span>
+        </div>
 
-        <table style="width: 100%; border: none; margin-bottom: 20px;">
+        <table style="width: 100%; border: none; margin-bottom: 8px; border-collapse: collapse; font-size: 13.5px; line-height: 1.4;">
             <tr>
-                <td style="width: 30px; font-weight: bold; vertical-align: top;">1)</td>
-                <td style="width: 180px; font-weight: bold; vertical-align: top;">संस्थेचे नांव :-</td>
-                <td style="font-weight: bold; font-size: 16px;">" ${trustName} "</td>
+                <td style="width: 25px; font-weight: bold; vertical-align: top; padding: 2px 0;">1)</td>
+                <td style="width: 170px; font-weight: bold; vertical-align: top; padding: 2px 0;">संस्थेचे नांव :-</td>
+                <td style="font-weight: bold; font-size: 15px; vertical-align: top; padding: 2px 0;">“ ${trustName} ”</td>
             </tr>
             <tr>
-                <td style="width: 30px; font-weight: bold; vertical-align: top; padding-top: 15px;">2)</td>
-                <td style="width: 180px; font-weight: bold; vertical-align: top; padding-top: 15px;">संस्थेच्या कार्यालयाचा पत्ता :</td>
-                <td style="padding-top: 15px;">${address}</td>
+                <td style="width: 25px; font-weight: bold; vertical-align: top; padding: 4px 0;">2)</td>
+                <td style="width: 170px; font-weight: bold; vertical-align: top; padding: 4px 0;">संस्थेच्या कार्यालयाचा पत्ता :</td>
+                <td style="vertical-align: top; padding: 4px 0;">${address}</td>
             </tr>
             <tr>
-                <td style="width: 30px; font-weight: bold; vertical-align: top; padding-top: 15px;">3)</td>
-                <td style="width: 180px; font-weight: bold; vertical-align: top; padding-top: 15px;">संस्थेचे उद्देश :</td>
-                <td style="padding-top: 15px; text-decoration: underline; font-weight: bold;">या संस्थेचे उद्देश खालील प्रमाणे आहेत.</td>
+                <td style="width: 25px; font-weight: bold; vertical-align: top; padding: 4px 0;">3)</td>
+                <td style="width: 170px; font-weight: bold; vertical-align: top; padding: 4px 0;">संस्थेचे उद्देश :</td>
+                <td style="font-weight: bold; text-decoration: underline; vertical-align: top; padding: 4px 0;">या संस्थेचे उद्देश खालील प्रमाणे आहेत</td>
             </tr>
         </table>
 
-        <div style="margin-left: 50px;">
+        <table style="width: 100%; border: none; margin-bottom: 12px; font-size: 12.5px; line-height: 1.35; border-collapse: collapse; font-family: 'Tiro Devanagari Marathi', serif; padding-left: 20px;">
             ${objectives.map((obj, i) => `
-                <div style="margin-bottom: 8px;"><b>${i + 1})</b> ${obj || '_____'}</div>
+            <tr>
+                <td style="width: 25px; vertical-align: top; padding: 2px 0; font-weight: bold;">${i + 1})</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: justify;">${obj || '_____'}</td>
+            </tr>
             `).join('')}
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 25px; padding: 0 40px; font-weight: bold; font-size: 13.5px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 3: Executive Committee -->
-        <div style="margin-bottom: 20px;">
-            <b>4) " ${trustName} "</b> ${address}. या संस्थेचे 
-            नियम व नियमावली प्रमाणे या कार्यकारी मंडळावर सदरहु संस्थेच्या कार्यकारी मंडळाचा संस्थेचा कार्यभार सोपविण्यात 
-            आला आहे. त्या पहिल्या कार्यकारी मंडळाचा संपुर्ण पत्ता, हुद्दा, वय, व्यवसाय, राष्ट्रीयत्व खालील प्रमाणे आहे.
+        <div style="text-align: center; margin-bottom: 15px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            (..2..)
+        </div>
+
+        <div style="margin-bottom: 15px; font-size: 13.5px; line-height: 1.45; text-align: justify; font-family: 'Tiro Devanagari Marathi', serif;">
+            <b>4) “ ${trustName} ”</b> ${address}. या संस्थेचे नियम व नियमावली प्रमाणे या कार्यकारी मंडळावर सदरहु संस्थेच्या कार्यकारी मंडळाचा संस्थेचा कार्यभार सोपविण्यात आला आहे. त्या पहिल्या कार्यकारी मंडळाचा संपुर्ण पत्ता, हुद्दा, वय, व्यवसाय, राष्ट्रीयत्व खालील प्रमाणे आहे.
         </div>
         ${renderCommitteeTable()}
-        <div class="flex-between mt-20" style="padding: 0 50px;">
-            <div>अध्यक्ष: ${presidentName}</div>
-            <div>उपाध्यक्ष: ${vicePresidentName}</div>
-            <div>सचिव: ${secretaryName}</div>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 30px; padding: 0 40px; font-weight: bold; font-size: 13.5px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 4: Signatures -->
-        <div style="margin-bottom: 20px;">
-            <b>5.</b> आम्ही खालील सह्या करणार <b>" ${trustName} "</b> ${address}. 
-            चे पदाधिकारी सदस्य जाहीर करतो की, संस्था अधिनियम 1860 अन्वये अभिप्रेत
-            केलेली संस्था अस्तित्वात आणण्याची आमची ईच्छा असून वरील उद्देशाने आम्ही एकत्र येऊन 
-            <b>" ${trustName} "</b> ${address}. ही संस्था आज दिनांक <b>${date}</b> रोजी स्थापन केली असून 
-            संस्था नोंदणी अधिनियम 1860 अन्वये नोंदणी करण्यासाठी आम्ही या विधानपत्रावर सह्या केल्या आहेत.
+        <div style="margin-bottom: 12px; font-size: 13.5px; line-height: 1.4; font-family: 'Tiro Devanagari Marathi', serif; text-align: justify;">
+            <b>5.</b> आम्ही खालील सह्या करणार <b>" ${trustName} "</b> ${address}. चे पदाधिकारी सदस्य जाहीर करतो की, संस्था अधिनियम 1860 अन्वये अभिप्रेत केलेली संस्था अस्तित्वात आणण्याची आमची ईच्छा असून वरील उद्देशाने आम्ही एकत्र येऊन <b>" ${trustName} "</b> ${address}. ही संस्था आज दिनांक <b>${date}</b> रोजी स्थापन केली असून संस्था नोंदणी अधिनियम 1860 अन्वये नोंदणी करण्यासाठी आम्ही या विधानपत्रावर सह्या केल्या आहेत.
         </div>
         ${renderCommitteeSignatures()}
         
-        <div class="mt-20">
-            स्थळ : ${place}<br>
-            दिनांक : ${date}
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div>
+                स्थळ : ${place}<br>
+                दिनांक : ${date}
+            </div>
         </div>
 
-        <div style="margin-top: 30px; margin-left: 50%;">
+        <div style="margin-top: 25px; margin-left: 50%; font-size: 12.5px; font-family: 'Tiro Devanagari Marathi', serif; line-height: 1.3;">
             वरील सह्या करणाऱ्या सर्व सभासदांना मी ओळखतो.<br>
             व त्यांनी माझ्या समक्ष या विधानपत्रावर सह्या केल्या आहेत.<br><br><br>
             <b>विशेष कार्यकारी दंडाधिकारी / वकील / सनदी लेखापाल / नोटरी संपूर्ण नांव, पत्ता व शिक्का.</b>
@@ -298,82 +344,381 @@ module.exports = (report) => {
         <div class="page-break"></div>
 
         <!-- PAGE 5: Rules & Regulations -->
-        <div class="title-lg">परिशिष्ट " क "</div>
-        <div class="title-md">" ${trustName} "<br><span style="font-size: 14px; font-weight: normal;">${address}</span></div>
-        <div class="title-sm text-center">या संस्थेचे नियम व नियमावली (Rules & Regulation/Constitution)</div>
+        <div style="text-align: center; margin-bottom: 12px; line-height: 1.3; font-family: 'Tiro Devanagari Marathi', serif;">
+            <span style="font-weight: bold; font-size: 16px;">परिशिष्ट " क "</span><br>
+            <span style="font-weight: bold; font-size: 14px;">“ ${trustName} ”</span><br>
+            <span style="font-size: 12.5px;">${address}</span><br><br>
+            <span style="font-size: 13.5px; text-decoration: underline; font-weight: bold;">या संस्थेचे नियम व नियमावली (Rules & Regulation/Constitution)</span>
+        </div>
 
-        <div class="mb-20 mt-20">
-            <b>1) नियमावलीतील संदर्भिय शब्दाची व्याख्या :-</b><br>
-            अ) संस्था : संस्था म्हणजे " ${trustName} " ${address}. ही संस्था नोंदणी कायदा 1860 अन्वये नोंद होणारी संस्था.<br>
-            ब) अध्यक्ष : अध्यक्ष म्हणजे " ${trustName} " ${address}. या संस्थेचा अध्यक्ष.<br>
-            क) उपाध्यक्ष : उपाध्यक्ष म्हणजे " ${trustName} " ${address}. या संस्थेचा उपाध्यक्ष.<br>
-            ड) सचिव : सचिव म्हणजे " ${trustName} " ${address}. या संस्थेचा सचिव<br>
-            इ) सहसचिव : सहसचिव म्हणजे " ${trustName} " ${address}. या संस्थेचा सहसचिव.<br>
-            फ) सभासद : सभासद म्हणजे " ${trustName} " ${address}. या संस्थेची वर्गणी भरून झालेला आजीव सभासद, वार्षिक सभासद व कार्यकारी मंडळावर निवडून आलेले सभासद.
+        <table style="width: 100%; border: none; border-collapse: collapse; font-size: 11.5px; line-height: 1.35; font-family: 'Tiro Devanagari Marathi', serif; color: #000; text-align: justify;">
+            <colgroup>
+                <col style="width: 20px;">
+                <col style="width: 25px;">
+                <col style="width: 75px;">
+                <col style="width: 15px;">
+                <col style="width: auto;">
+            </colgroup>
+            
+            <!-- Rule 1 Heading -->
+            <tr>
+                <td colspan="5" style="padding: 4px 0;">
+                    <b style="font-size: 12.5px;"><u>1)</u> &nbsp;&nbsp;<u>नियमावलीतील संदर्भिय शब्दाची व्याख्या</u> :-</b>
+                </td>
+            </tr>
+            <!-- 1a -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">अ)</td>
+                <td style="vertical-align: top; padding: 2px 0;">संस्था</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    संस्था म्हणजे " ${trustName} " ${address}. ही संस्था नोंदणी कायदा 1860 अन्वये नोंद होणारी संस्था.
+                </td>
+            </tr>
+            <!-- 1b -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">ब)</td>
+                <td style="vertical-align: top; padding: 2px 0;">अध्यक्ष</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    अध्यक्ष म्हणजे " ${trustName} " ${address}. या संस्थेचा अध्यक्ष.
+                </td>
+            </tr>
+            <!-- 1c -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">क)</td>
+                <td style="vertical-align: top; padding: 2px 0;">उपाध्यक्ष</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    उपाध्यक्ष म्हणजे " ${trustName} " ${address}. या संस्थेचा उपाध्यक्ष.
+                </td>
+            </tr>
+            <!-- 1d -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">ड)</td>
+                <td style="vertical-align: top; padding: 2px 0;">सचिव</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    सचिव म्हणजे " ${trustName} " ${address}. या संस्थेचा सचिव.
+                </td>
+            </tr>
+            <!-- 1e -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">इ)</td>
+                <td style="vertical-align: top; padding: 2px 0;">सहसचिव</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    सहसचिव म्हणजे " ${trustName} " ${address}. या संस्थेचा सहसचिव.
+                </td>
+            </tr>
+            <!-- 1f -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">प)</td>
+                <td style="vertical-align: top; padding: 2px 0;">कोषाध्यक्ष</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    कोषाध्यक्ष - ${trustName} - ${address}. या संस्थेचा कोषाध्यक्ष.
+                </td>
+            </tr>
+            <!-- 1g -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">फ)</td>
+                <td style="vertical-align: top; padding: 2px 0;">सभासद</td>
+                <td style="vertical-align: top; padding: 2px 0; text-align: center;">:</td>
+                <td style="vertical-align: top; padding: 2px 0;">
+                    सभासद म्हणजे ${trustName}, ${address}. या संस्थेची वर्गणी भरून झालेला आजीव सभासद, वार्षिक सभासद व कार्यकारी मंडळावर निवडून आलेले सभासद.
+                </td>
+            </tr>
+            
+            <!-- Spacer -->
+            <tr><td colspan="5" style="height: 6px;"></td></tr>
+            
+            <!-- Rule 2 -->
+            <tr>
+                <td colspan="3" style="vertical-align: top; padding: 4px 0;"><b><u>2)</u> &nbsp;&nbsp;<u>कार्यक्षेत्र</u></b></td>
+                <td style="vertical-align: top; padding: 4px 0; text-align: center;"><b>:</b></td>
+                <td style="vertical-align: top; padding: 4px 0;">या संस्थेचे कार्यक्षेत्र संपूर्ण महाराष्ट्र राज्य राहील.</td>
+            </tr>
+            
+            <!-- Rule 3 -->
+            <tr>
+                <td colspan="3" style="vertical-align: top; padding: 4px 0;"><b><u>3)</u> &nbsp;&nbsp;<u>हिशोबाचे वर्ष</u></b></td>
+                <td style="vertical-align: top; padding: 4px 0; text-align: center;"><b>:</b></td>
+                <td style="vertical-align: top; padding: 4px 0;">या संस्थेचे हिशोबाचे वर्ष 1 एप्रिल ते 31 मार्च असे राहील.</td>
+            </tr>
+            
+            <!-- Spacer -->
+            <tr><td colspan="5" style="height: 6px;"></td></tr>
+            
+            <!-- Rule 4 Heading -->
+            <tr>
+                <td colspan="5" style="padding: 4px 0;">
+                    <b style="font-size: 12.5px;"><u>4)</u> &nbsp;&nbsp;<u>सभासदत्व व त्याची नोंदणी पध्दती</u> :-</b>
+                </td>
+            </tr>
+            <!-- 4a -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">अ)</td>
+                <td colspan="3" style="vertical-align: top; padding: 2px 0;">
+                    कोणत्याही भारतीय सज्ञान व्यक्तीस/महिलेस संस्थेचे सभासद होता येईल.
+                </td>
+            </tr>
+            <!-- 4b -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">ब)</td>
+                <td colspan="3" style="vertical-align: top; padding: 2px 0;">
+                    सभासद होण्यासाठी त्याने/तीने संस्थेला लेखी अर्ज करावा.
+                </td>
+            </tr>
+            <!-- 4c -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">क)</td>
+                <td colspan="3" style="vertical-align: top; padding: 2px 0;">
+                    कार्यकारी मंडळाचा या बाबतचा निर्णय अंतिम राहिल.
+                </td>
+            </tr>
+            
+            <!-- Spacer -->
+            <tr><td colspan="5" style="height: 6px;"></td></tr>
+            
+            <!-- Rule 5 Heading -->
+            <tr>
+                <td colspan="5" style="padding: 4px 0;">
+                    <b style="font-size: 12.5px;"><u>5)</u> &nbsp;&nbsp;<u>सभासदांचे प्रकार</u> :-</b>
+                </td>
+            </tr>
+            <!-- 5a -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">अ)</td>
+                <td colspan="3" style="vertical-align: top; padding: 2px 0;">
+                    <b>आजीव सभासद :-</b> आजिव सभासद होण्यासाठी प्रत्येकाने सभासद वर्गणी रूपये 101/- फी संस्थेस अदा केली पाहिजे. ते संस्थेचे तहहयात सभासद असतील. त्यांना पुन्हा सभासदत्व फी भरावी लागणार नाही.
+                </td>
+            </tr>
+            <!-- 5b -->
+            <tr>
+                <td></td>
+                <td style="vertical-align: top; padding: 2px 0;">ब)</td>
+                <td colspan="3" style="vertical-align: top; padding: 2px 0;">
+                    <b>वार्षिक सभासद :-</b> वार्षिक सभासद होण्यासाठी सभासदाने वा व्यक्तीने दरवर्षी 51/- रूपये सभासद वर्गणी अदा करावयास हवी. तसेच पहिल्यांदा 5/- रूपये म्हणून प्रवेश फी अदा करावी.
+                </td>
+            </tr>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 30px; padding: 0 40px; font-weight: bold; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div style="text-align: center; width: 100px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px;">सचिव</div>
         </div>
-        <div class="mb-20">
-            <b>2) कार्यक्षेत्र :</b> या संस्थेचे कार्यक्षेत्र संपूर्ण महाराष्ट्र राज्य राहील.<br>
-            <b>3) हिशोबाचे वर्ष :</b> या संस्थेचे हिशोबाचे वर्ष 1 एप्रिल ते 31 मार्च असे राहील.<br>
-            <b>4) सभासदत्व व त्याची नोंदणी पध्दती :-</b><br>
-            अ) कोणत्याही भारतीय सज्ञान व्यक्तीस/महिलेस संस्थेचे सभासद होता येईल.<br>
-            ब) सभासद होण्यासाठी त्याने/तीने संस्थेला लेखी अर्ज करावा.<br>
-            क) कार्यकारी मंडळाचा या बाबतचा निर्णय अंतिम राहिल.<br>
-        </div>
-        <div class="mb-20">
-            <b>5) सभासदांचे प्रकार :-</b><br>
-            अ) आजीव सभासद :- आजिव सभासद होण्यासाठी प्रत्येकाने सभासद वर्गणी रूपये 101/- फी संस्थेस अदा केली पाहिजे.<br>
-            ब) वार्षिक सभासद :- वार्षिक सभासद होण्यासाठी सभासदाने वा व्यक्तीने दरवर्षी 51/- रूपये सभासद वर्गणी अदा करावयास हवी.
-        </div>
+
+       
 
         <div class="page-break"></div>
 
         <!-- PAGE 6: Rules Contd -->
-        <div class="mb-20">
-            <b>6) सभासदत्व रद्द होणे :-</b> कोणताही सभासद कायदेशीर गुन्हेगार ठरला असेल, सभासद वर्गणी दिली नसेल, राजीनामा दिल्यास तो राजीनामा कार्यकारी मंडळाने मंजुर केल्यास, मयत झाल्यास, देश सोडून गेला असेल, संस्थेला हानी किंवा नुकसान पोहचवित असेल किंवा योग्य कारणावरून कार्यकारी मंडळाने बहुमताने ठराव मंजूर करून काढून टाकल्यास सभासदत्व रद्द झाले असे समजले जाईल.
+        <div style="text-align: center; margin-bottom: 8px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            (..2..)
         </div>
-        <div class="mb-20">
-            <b>7) सर्वसाधारण सभा तिचे अधिकार व कर्तव्ये :-</b><br>
-            सर्वसाधारण सभा म्हणजे संस्थेच्या सभासदांची सभा संस्थेच्या आर्थिक वर्ष संपल्यानंतर दोन महीन्याच्या आत वार्षिक सर्वसाधारण सभा घेतली जाईल, सर्वसाधारण सभेचे कार्ये व अधिकार खालील प्रमाणे आहे.<br>
-            अ) मागील सर्वसाधारण सभेचा वृत्तांत निर्णय वाचून कायम करणे.<br>
-            ब) वार्षिक जमाखर्च मंजूर करणे, वार्षिक अहवाल मंजूर करणे, कार्यकारिणीच्या आर्थिक धोरणात्मक स्वरूपाच्या ठरावांना मान्यता देणे.<br>
-            ड) आयत्यावेळी येणाऱ्या विषयावर अध्यक्षांच्या संमतीने निर्णय घेणे.
+
+        <div style="font-size: 11.5px; line-height: 1.25; font-family: 'Tiro Devanagari Marathi', serif; text-align: justify; color: #000;">
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">6) &nbsp;&nbsp;<u>सभासदत्व रद्द होणे</u> :-</b><br>
+                <p style="text-indent: 30px; margin: 3px 0 0 0; text-align: justify; line-height: 1.3;">
+                    कोणताही सभासद कायदेशीर गुन्हेगार ठरला असेल, सभासद वर्गणी दिली नसेल, राजीनामा दिल्यास तो राजीनामा कार्यकारी मंडळाने मंजुर केल्यास, मयत झाल्यास, देश सोडून गेला असेल, संस्थेला हानी किंवा नुकसान पोहचवित असेल किंवा योग्य कारणावरून कार्यकारी मंडळाने बहुमताने ठराव मंजूर करून काढून टाकल्यास सभासदत्व रद्द झाले असे समजले जाईल.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">7) &nbsp;&nbsp;<u>सर्वसाधारण सभा तिचे अधिकार व कर्तव्ये</u> :-</b><br>
+                <p style="margin: 3px 0 0 0; text-align: justify; padding-left: 15px; line-height: 1.3;">
+                    सर्वसाधारण सभा म्हणजे संस्थेच्या सभासदांची सभा संस्थेच्या आर्थिक वर्ष संपल्यानंतर दोन महीन्याच्या आत वार्षिक सर्वसाधारण सभा घेतली जाईल, सर्वसाधारण सभेचे कार्ये व अधिकार खालील प्रमाणे आहे.<br>
+                    अ) मागील सर्वसाधारण सभेचा वृत्तांत निर्णय वाचून कायम करणे.<br>
+                    ब) वार्षिक जमाखर्च मंजूर करणे, वार्षिक अहवाल मंजूर करणे, कार्यकारिणीच्या आर्थिक धोरणात्मक स्वरूपाच्या ठरावांना मान्यता देणे.<br>
+                    ड) आयत्यावेळी येणाऱ्या विषयावर अध्यक्षांच्या संमतीने निर्णय घेणे.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">8) &nbsp;&nbsp;<u>सर्वसाधारण सभेची सुचना व गणसंख्या</u> :-</b><br>
+                <p style="text-indent: 30px; margin: 3px 0 0 0; text-align: justify; line-height: 1.3;">
+                    सचिव हे सर्वसाधारण सभेची सूचना ही प्रत्येक सभासदास सभेच्या तारखेच्या 15 दिवस अगोदर पोस्टाने किंवा समक्ष सही घेऊन देतील. त्या सुचनेवर सभेचे ठिकाण, विषय वेळ व दिनांक लिहिलेली असेल. या सभेत 3/5 सभासदांची गणसंख्या असेल.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">9) &nbsp;&nbsp;<u>विशेष सर्वसाधारण सभा तिचे कार्य</u> :-</b><br>
+                <p style="text-indent: 30px; margin: 3px 0 0 0; text-align: justify; line-height: 1.3;">
+                    काही महत्त्वाच्या व तातडीच्या कामासाठी सर्वसाधारण सभा घेतली जाईल, त्यास विशेष सर्वसाधारण सभा संबोधले जाईल. या सभेस 3/5 सभासदांची गणसंख्या राहिल. या सभेस 15 दिवसांच्या नोटीस पोस्टाने वा समक्ष सही घेऊन दिली जाईल.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">10) &nbsp;&nbsp;<u>कार्यकारी मंडळ व पदाधिकारी यांची रचना</u> :-</b><br>
+                <p style="margin: 3px 0 0 0; text-align: justify; padding-left: 15px; line-height: 1.3;">
+                    अ) संस्थेचे कार्यकारी मंडळ कमीत कमी 7 सदस्यांचे व जास्तीत जास्त 13 सदस्यांचे राहील.<br>
+                    ब) कार्यकारी मंडळावर संस्थेच्या सर्व सभासदास निवडून जाता येईल.<br>
+                    क) संस्थेच्या कार्यकारी मंडळात खालीलप्रमाणे पदाधिकारी असतील. एक-अध्यक्ष, एक-उपाध्यक्ष, एक- सचिव, एक - सहसचिव, एक- कोषाध्यक्ष व इतर सभासद असतील.
+                </p>
+            </div>
         </div>
-        <div class="mb-20">
-            <b>8) सर्वसाधारण सभेची सुचना व गणसंख्या :-</b><br>
-            सचिव हे सर्वसाधारण सभेची सूचना ही प्रत्येक सभासदास सभेच्या तारखेच्या 15 दिवस अगोदर पोस्टाने किंवा समक्ष सही घेऊन देतील. त्या सुचनेवर सभेचे ठिकाण, विषय वेळ व दिनांक लिहिलेली असेल. या सभेत 3/5 सभासदांची गणसंख्या असेल.
-        </div>
-        <div class="mb-20">
-            <b>9) विशेष सर्वसाधारण सभा तिचे कार्य :-</b><br>
-            काही महत्त्वाच्या व तातडीच्या कामासाठी सर्वसाधारण सभा घेतली जाईल, त्यास विशेष सर्वसाधारण सभा संबोधले जाईल. या सभेस 3/5 सभासदांची गणसंख्या राहिल. या सभेस 15 दिवसांच्या नोटीस पोस्टाने वा समक्ष सही घेऊन दिली जाईल.
-        </div>
-        <div class="mb-20">
-            <b>10) कार्यकारी मंडळ व पदाधिकारी यांची रचना :-</b><br>
-            अ) संस्थेचे कार्यकारी मंडळ कमीत कमी 7 सदस्यांचे व जास्तीत जास्त 13 सदस्यांचे राहील.<br>
-            ब) कार्यकारी मंडळावर संस्थेच्या सर्व सभासदास निवडून जाता येईल.<br>
-            क) संस्थेच्या कार्यकारी मंडळात खालीलप्रमाणे पदाधिकारी असतील. एक-अध्यक्ष, एक-उपाध्यक्ष, एक- सचिव, एक - सहसचिव, एक- कोषाध्यक्ष व इतर सभासद असतील.
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; padding: 0 40px; font-weight: bold; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 7: Rules 11-12 -->
-        <div class="mb-20">
-            <b>11) कार्यकारी मंडळाच्या बैठका व गणसंख्या :-</b><br>
-            अ) कार्यकारी मंडळाच्या बैठका दर तीन महिन्यांनी एकदा घेतल्या जातील.<br>
-            ब) कार्यकारी मंडळाची बैठक घेण्यासाठी एकूण सदस्यांच्या 1/2 इतकी गणसंख्या असणे आवश्यक आहे.<br>
-            क) बैठकीची सूचना सचिवाने सात दिवस अगोदर सर्व सदस्यांना द्यावी.<br>
-            ड) अध्यक्ष अनुपस्थित असल्यास उपाध्यक्ष बैठकीचे अध्यक्षपद भूषवितील.<br>
-            इ) निर्णय बहुमताने घेतले जातील. समसमान मते पडल्यास अध्यक्षांचे मत निर्णायक असेल.
+        <div style="text-align: center; margin-bottom: 8px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            (.. 3 ..)
         </div>
-        <div class="mb-20">
-            <b>12) कार्यकारी मंडळाचे अधिकार व कर्तव्ये :-</b><br>
-            अ) संस्थेच्या उद्देशाच्या पूर्ततेसाठी आवश्यक त्या सर्व उपाय योजना करणे.<br>
-            ब) संस्थेच्या निधीचे व्यवस्थापन करणे.<br>
-            क) संस्थेच्या वतीने करार, तह इत्यादी करणे.<br>
-            ड) संस्थेच्या मालमत्तेचे संरक्षण व संवर्धन करणे.<br>
-            इ) संस्थेच्या सर्व कर्मचाऱ्यांची नेमणूक, बडतर्फी व त्यांचे वेतन निश्चित करणे.<br>
-            फ) वार्षिक अहवाल व जमाखर्च पत्रक तयार करणे व सर्वसाधारण सभेपुढे मांडणे.<br>
-            ग) संस्थेच्या उद्देशाच्या पूर्ततेसाठी उपकमिट्या, उपसमित्या स्थापन करणे.<br>
-            ह) सदस्यांच्या प्रवेशास मंजुरी देणे किंवा नाकारणे.
+
+        <div style="font-size: 11.5px; line-height: 1.25; font-family: 'Tiro Devanagari Marathi', serif; text-align: justify; color: #000;">
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">11) &nbsp;&nbsp;<u>कार्यकारी मंडळाचा कार्यकाल व निवडणुकीची पद्धत</u> :-</b><br>
+                <p style="text-indent: 35px; margin: 3px 0 0 0; text-align: justify;">
+                    पहिले कार्यकारी मंडळ हे पाच वर्षांचे असेल, त्यानंतर सर्वसाधारण सभेत निवडून आलेल्या कार्यकारी मंडळाचा कार्यकाल हा पाच वर्षाचा असेल. कार्यकारी मंडळाच्या सभासदांची निवड दर पाच वर्षाने सर्वसाधारण सभेत गुप्त मतदान पद्धतीने करण्यात येईल.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <b style="font-size: 12.5px;">12) &nbsp;&nbsp;<u>कार्यकारी मंडळाचे पदाधिकारी व त्यांचे कामे</u> :-</b><br>
+                <p style="margin: 3px 0 3px 0; text-align: justify;">
+                    कार्यकारी मंडळात खालील प्रमाणे पदे असतील. एक-अध्यक्ष, एक-उपाध्यक्ष, एक- सचिव, एक - सहसचिव, एक- कोषाध्यक्ष व इतर सभासद कार्यकारी मंडळातील पदाधिकारी यांची व त्या अन्वये कार्यकारी मंडळाची कार्ये खालील प्रमाणे असतील.
+                </p>
+
+                <div style="margin-left: 15px; margin-bottom: 5px;">
+                    <b>अ) &nbsp;&nbsp;<u>अध्यक्षांची कार्ये व अधिकार</u> :-</b>
+                    <table style="width: 100%; border: none; border-collapse: collapse; margin-left: 15px; margin-top: 2px; margin-bottom: 2px; font-size: 11.5px; line-height: 1.25;">
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">अ)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेच्या सर्व सभा व्यवस्थित चालविणे, त्यांचे संचालन करणे, सभा बोलविणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">ब)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेच्या कारभारावर संपूर्ण नियंत्रण ठेवणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">क)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">सभेत समान मते पडल्यास निर्णायक जादा मत देणे.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-left: 15px; margin-bottom: 5px;">
+                    <b>ब) &nbsp;&nbsp;<u>उपाध्यक्षांची कार्ये</u> :-</b>
+                    <table style="width: 100%; border: none; border-collapse: collapse; margin-left: 15px; margin-top: 2px; margin-bottom: 2px; font-size: 11.5px; line-height: 1.25;">
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">अ)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">अध्यक्षांच्या कामात मदत करणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">ब)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">अध्यक्षांच्या गैरहजेरीत त्यांचे कामकाज पाहणे.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-left: 15px; margin-bottom: 5px;">
+                    <b>क) &nbsp;&nbsp;<u>सचिवाची कार्ये</u> :-</b>
+                    <table style="width: 100%; border: none; border-collapse: collapse; margin-left: 15px; margin-top: 2px; margin-bottom: 2px; font-size: 11.5px; line-height: 1.25;">
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">1)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेचा सर्व प्रकारचा पत्रव्यवहार पाहणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">2)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">नियमाप्रमाणे लागणारे आवश्यकतेनुसार सर्व प्रकारचे रजिस्टर ठेवणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">3)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">सभेचे सर्व ठराव अंमलात आणणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">4)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेचे हिशोब पडताळून पाहणे व तशा स्वाक्षऱ्या करणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">5)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेच्या सेवक वर्गाच्या अडीअडचणी समजावून घेऊन त्यासंबंधी कार्यकारी मंडळात ठराव मांडणे व त्याविषयी योग्य तो निर्णय घेणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">6)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">अध्यक्षांच्या परवानगीने व त्यांच्या सहीने सर्व सभांच्या कार्यक्रम पत्रिका पाठविणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">7)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">कार्यकारी मंडळाने ठरविल्यास त्यांचे वतीने संस्थेच्या दस्तऐवजावर सह्या करणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">8)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">अध्यक्ष व उपाध्यक्ष यांना त्यांचे कार्यात मदत करणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">9)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेचा आर्थिक हिशोब तयार करणे वा करून घेणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">10)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">त्यासंबंधी सर्व माहिती कार्यकारी मंडळास देणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">11)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">बँकेवरील व आर्थिक व्यवहारांवर नियंत्रण ठेवणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">12)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेच्या व्यवहाराचे लेखा परिक्षण करून त्याचा अहवाल सादर करणे.</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">13)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">सर्व आर्थिक बाबींवर नियंत्रण ठेवणे व त्याच्या नोंदी ठेवणे.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-left: 15px; margin-bottom: 5px;">
+                    <b>ड) &nbsp;&nbsp;<u>सहसचिवाचे कार्ये</u> :-</b>
+                    <p style="margin: 2px 0 0 20px; text-align: justify;">
+                        सचिवाच्या गैरहजेरीत सचिवाची कामे करणे, किंवा संस्थेच्या कार्यात सचिवाला योग्य ती मदत करणे.
+                    </p>
+                </div>
+
+                <div style="margin-left: 15px; margin-bottom: 5px;">
+                    <b>इ) &nbsp;&nbsp;<u>कोषाध्यक्षांचे कार्ये</u> :-</b>
+                    <table style="width: 100%; border: none; border-collapse: collapse; margin-left: 15px; margin-top: 2px; margin-bottom: 2px; font-size: 11.5px; line-height: 1.25;">
+                        <tr>
+                            <td style="width: 20px; vertical-align: top; padding: 1px 0;">1)</td>
+                            <td style="vertical-align: top; padding: 1px 0; text-align: justify;">संस्थेच्या आर्थिक परिस्थितीवर नियंत्रण ठेवणे, हिशोब ठेवणे, अगर लिहून घेणे, हिशोब पूर्ण झाल्यावर कार्यकारी मंडळापुढे ठेवणे, हिशोबाचे पुस्तकावरून आर्थिक पत्रके तयार करणे, रक्कमेची घेवाण करणे, ऑडीटर यांनी हिशोबातून काढलेल्या त्रुटींची पूर्तता करणे.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-left: 15px; margin-bottom: 8px;">
+                    <b>ई) &nbsp;&nbsp;<u>इतर सभासदांची कार्ये</u> :-</b>
+                    <p style="margin: 2px 0 0 20px; text-align: justify;">
+                        सर्व साधारण सभेस हजर राहणे, संस्थेच्या कार्यास मदत करणे, मतदानास हजर राहणे.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; padding: 0 40px; font-weight: bold; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
         </div>
 
         <div class="page-break"></div>
@@ -547,12 +892,12 @@ module.exports = (report) => {
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">2)</td>
                 <td style="font-weight: bold; padding-top: 15px;">संस्था नोंदणी क्रमांक :-</td>
-                <td style="padding-top: 15px;">_________________</td>
+                <td style="padding-top: 15px;">${registrationNo}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">3)</td>
                 <td style="font-weight: bold; padding-top: 15px;">संस्था नोंदणी अधिनियम :-</td>
-                <td style="padding-top: 15px;">_________________</td>
+                <td style="padding-top: 15px;">संस्था नोंदणी अधिनियम, १८६०</td>
             </tr>
         </table>
         ${renderCommitteeTable()}
@@ -579,7 +924,7 @@ module.exports = (report) => {
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">2)</td>
                 <td style="font-weight: bold; padding-top: 15px;">संस्था नोंदणी अधिनियम :-</td>
-                <td style="padding-top: 15px;">1860 नुसार नोंदणी क्र. _________</td>
+                <td style="padding-top: 15px;">1860 नुसार नोंदणी क्र. ${registrationNo}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">3)</td>
@@ -616,7 +961,7 @@ module.exports = (report) => {
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">2)</td>
                 <td style="font-weight: bold; padding-top: 15px;">संस्था नोंदणी अधिनियम :-</td>
-                <td style="padding-top: 15px;">1860 नुसार नोंदणी क्र. _________</td>
+                <td style="padding-top: 15px;">1860 नुसार नोंदणी क्र. ${registrationNo}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold; padding-top: 15px;">3)</td>
@@ -643,51 +988,58 @@ module.exports = (report) => {
         <div class="page-break"></div>
 
         <!-- PAGE 16: Schedule 2 (Employees List) -->
-        <div class="title-md text-center">परिशिष्ट - दोन (Schedule-2)<br><span style="text-decoration: underline;">(नियम - 8)</span><br><span style="text-decoration: underline;">संस्थेच्या नोकर वर्गाची माहिती देणारा तक्ता</span></div>
-        <div class="mb-20">
-            <b>संस्थेचे नाव :</b> " ${trustName} " ${address}
+        <div style="text-align: center; margin-bottom: 12px; line-height: 1.3; font-family: 'Tiro Devanagari Marathi', serif;">
+            <span style="font-weight: bold; font-size: 16px; text-decoration: underline;">परिशिष्ट - दोन</span><br>
+            <span style="font-weight: bold; font-size: 14px; text-decoration: underline;">(Schedule-2)</span><br>
+            <span style="font-weight: bold; font-size: 14px; text-decoration: underline;">(नियम - 8 )</span><br><br>
+            <span style="font-weight: bold; font-size: 13.5px; text-decoration: underline;">कार्यकारी मंडळाने नेमलेल्या कर्मचा-यांचे विवरण</span>
         </div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px;">
-            <thead>
-                <tr>
-                    <th style="border: 1px solid #000; padding: 6px;">अ.क्र.</th>
-                    <th style="border: 1px solid #000; padding: 6px;">कर्मचाऱ्याचे नाव व हुद्दा</th>
-                    <th style="border: 1px solid #000; padding: 6px;">वेतन</th>
-                    <th style="border: 1px solid #000; padding: 6px;">पूर्ण वेळ / अर्धवेळ</th>
-                    <th style="border: 1px solid #000; padding: 6px;">कायम / तात्पुरते</th>
-                    <th style="border: 1px solid #000; padding: 6px;">मासिक भत्ता व इतर सोयी</th>
-                    <th style="border: 1px solid #000; padding: 6px;">शेरा</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">1</td>
-                    <td style="border: 1px solid #000; padding: 15px;">ग्रंथपाल (Librarian)</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">मानधन</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">अर्धवेळ</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">तात्पुरते</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">निरंक</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">कार्यकारी मंडळाने नेमलेला</td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">2</td>
-                    <td style="border: 1px solid #000; padding: 15px;">शिपाई (Peon)</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">मानधन</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">अर्धवेळ</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">तात्पुरते</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">निरंक</td>
-                    <td style="border: 1px solid #000; padding: 15px; text-align: center;">कार्यकारी मंडळाने नेमलेला</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="mt-20 flex-between">
-            <div>स्थळ : ${place}<br>दिनांक : ${date}</div>
-            <div style="text-align: center;">
+
+        <div style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; margin-top: 15px; font-family: 'Tiro Devanagari Marathi', serif; color: #000;">
+            <!-- Header Row -->
+            <table style="width: 100%; border-collapse: collapse; border-bottom: 1.5px solid #000; font-size: 11px; line-height: 1.3;">
+                <thead>
+                    <tr>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 6%;">अ.क्र.</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 20%;">कर्मचा-यांचे नांव व हुद्दा</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 10%;">वेतन</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 14%;">पूर्ण वेळ/<br>अर्धवेळ/<br>कायम/<br>तात्पुरते</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 12%;">मासिक भत्ता<br>विशेष<br>वेतन</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 10%;">इतर<br>सोयी<br>घरभाडे</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 12%;">भ.नि.नि.<br>अंशदान</th>
+                        <th style="padding: 6px 2px; text-align: left; font-weight: bold; width: 16%;">केव्हाने<br>दिलेबाबत<br>इतर सोयी<br>सवलती</th>
+                    </tr>
+                </thead>
+            </table>
+            
+            <!-- Empty Body Area with Diagonal Line and Centered Box -->
+            <div style="position: relative; width: 100%; height: 350px;">
+                <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                    <line x1="0" y1="100%" x2="100%" y2="0" style="stroke: black; stroke-width: 1.5;" />
+                </svg>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; border: 1.5px solid #000; padding: 4px 15px; font-weight: bold; font-size: 14px;">
+                    निरंक
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif; line-height: 1.45; color: #000;">
+            <div>
+                स्थळ : ${place}<br>
+                दिनांक : &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; /2026
+            </div>
+            <div style="text-align: center; width: 280px;">
                 अध्यक्ष,<br><br><br>
                 <b>${presidentName}</b><br>
-                " ${trustName} "<br>
-                ${address}
+                “ ${trustName} ”<br>
+                <span style="font-size: 12px; font-weight: normal;">${address}</span>
             </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 35px; padding: 0 40px; font-weight: bold; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif; color: #000;">
+            <div style="text-align: center; width: 100px;">अध्यक्ष</div>
+            <div style="text-align: center; width: 100px;">उपाध्यक्ष</div>
+            <div style="text-align: center; width: 100px;">सचिव</div>
         </div>
 
         <div class="page-break"></div>
@@ -745,200 +1097,360 @@ module.exports = (report) => {
         <div class="page-break"></div>
 
         <!-- PAGE 19: Application for Public Trust Registration (अनुसूची - २) -->
-        <div class="title-lg text-center">सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज</div>
-        <div class="title-md text-center">अनुसूची - २ (नियम ६ पहा)</div>
-        <div class="mt-20 mb-20">
-            प्रति,<br>
-            मा. सहाय्यक धर्मादाय आयुक्त,<br>
-            जालना विभाग जालना.<br><br>
-            <b>विषय :- मुंबई सार्वजनिक विश्वस्त व्यवस्था अधिनियम १९५० चे कलम १८ अन्वये अर्ज...</b>
-        </div>
-        <div class="mb-20">
-            महोदय,<br>
-            <p class="indent">
-                मी <b>${presidentName}</b> राहणार <b>${address}</b> या द्वारे निर्देशित सार्वजनिक विश्वस्त व्यवस्थेचा विश्वस्त या नात्याने सदर सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठी मुंबई सार्वजनिक विश्वस्त व्यवस्था अधिनियम १९५० च्या कलम १८ अन्वये अर्ज सादर करीत आहे. मी यासोबत विहित फी रु. ३/- (अक्षरी तीन रुपये फक्त) तसेच आवश्यक ती कागदपत्रे व माहिती सादर करीत आहे.
-            </p>
-        </div>
-        <table style="width: 100%; border: none; margin-bottom: 20px;">
-            <tr>
-                <td style="width: 30px; font-weight: bold; vertical-align: top;">(१)</td>
-                <td style="width: 250px; font-weight: bold; vertical-align: top;">सार्वजनिक विश्वस्त व्यवस्थेचे नाव व पत्ता :-</td>
-                <td style="font-weight: bold; font-size: 15px;">"${trustName}"<br><span style="font-size: 13px; font-weight: normal;">${address}</span></td>
-            </tr>
-            <tr>
-                <td style="width: 30px; font-weight: bold; vertical-align: top; padding-top: 15px;">(२)</td>
-                <td style="width: 250px; font-weight: bold; vertical-align: top; padding-top: 15px;">विश्वस्त व व्यवस्थापक यांची नावे, पत्ता व पद :-</td>
-                <td style="padding-top: 15px;">या पहिल्या संचालक मंडळाचा तपशील खालीलप्रमाणे आहे.</td>
-            </tr>
-        </table>
-        ${renderCommitteeTable()}
-        <div class="mt-20 flex-between">
-            <div>स्थळ: ${place}</div>
-            <div>दिनांक: ${date}</div>
-        </div>
-        <div style="margin-top: 40px; text-align: right;">
-            अर्जदाराची सही<br><br><br>
-            <b>${presidentName}</b>
+        <!-- PAGE 19: Application for Public Trust Registration (अनुसूची - २) -->
+        <div style="font-family: 'Tiro Devanagari Marathi', serif; font-size: 14px; line-height: 1.4;">
+            <div class="title-lg text-center" style="margin-bottom: 2px;">सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज</div>
+            <div class="title-md text-center" style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">अनुसूची - २</div>
+            <div class="text-center" style="margin-bottom: 15px;">(नियम ६ पहा)</div>
+            
+            <div class="mb-15" style="line-height: 1.3;">
+                <b>मा. सहाय्यक धर्मादाय आयुक्त,</b><br>
+                जालना विभाग जालना.
+            </div>
+            
+            <div class="mb-15" style="line-height: 1.3;">
+                <b>" ${trustName} "</b> &nbsp;&nbsp;&nbsp;&nbsp; ${address}<br>
+                <b>या सार्वजनिक विश्वस्त व्यवस्थेसंबंधी.</b>
+            </div>
+            
+            <div class="mb-15" style="text-indent: 40px; text-align: justify; line-height: 1.4;">
+                मी <b>${presidentName}</b> या द्वारे उपरिनिर्दिष्ट सार्वजनिक विश्वस्तव्यवस्थेचा विश्वस्त सदरहू सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठी मुंबई सार्वजनिक विश्वस्त अधिनियम 1950 च्या कलम 18 अन्वये अर्ज सादर करीत आहे.
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 13.5px;">
+                <tr>
+                    <td style="width: 25px; font-weight: bold; vertical-align: top;">२</td>
+                    <td colspan="2" style="font-weight: bold; vertical-align: top;">मी पुढील आवश्यक तपशील सादर करीत आहे :-</td>
+                </tr>
+                <tr>
+                    <td style="width: 25px; vertical-align: top; padding-top: 5px;">(अ.१)</td>
+                    <td style="width: 320px; vertical-align: top; padding-top: 5px; padding-right: 10px;">
+                        सार्वजनिक विश्वस्त व्यवस्था ज्या नावाने ओळखली जावी ते नाव व पूर्ण पत्ता :-
+                    </td>
+                    <td style="vertical-align: top; padding-top: 5px; font-weight: bold; line-height: 1.3;">
+                        " ${trustName} "<br>
+                        <span style="font-weight: normal; font-size: 12.5px;">${address}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 25px; vertical-align: top; padding-top: 10px;">१.</td>
+                    <td colspan="2" style="vertical-align: top; padding-top: 10px;">
+                        विश्वस्त व व्यवस्थापक यांची नावे पत्ता व पद :-
+                    </td>
+                </tr>
+            </table>
+            
+            <!-- Committee Table with Dashed Lines -->
+            <table style="width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+                <thead>
+                    <tr style="border-top: 1px dashed #000; border-bottom: 1px dashed #000;">
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 6%;">अ.क्र.</th>
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 44%;">सभासदाचे संपूर्ण नांव</th>
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 35%;">पत्ता</th>
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 15%;">पद</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${committeeMembers.map((m, i) => `
+                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? '1px dashed #000' : 'none'};">
+                        <td style="padding: 6px 0; vertical-align: top;">${i + 1}.</td>
+                        <td style="padding: 6px 0; vertical-align: top; font-weight: bold;">${m.name || '_____'}</td>
+                        <td style="padding: 6px 0; vertical-align: top; font-size: 12px; line-height: 1.3;">${m.address || '_____'}</td>
+                        <td style="padding: 6px 0; vertical-align: top;">${m.designation || '_____'}</td>
+                    </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            
+            <!-- Item 2 describing election method at the bottom of the page -->
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; line-height: 1.4;">
+                <tr>
+                    <td style="width: 30px; font-weight: bold; vertical-align: top;">२)</td>
+                    <td style="width: 250px; vertical-align: top; padding-right: 15px;">
+                        विश्वस्तांच्या किंवा व्यवस्थापकांच्या जागी दुसरा विश्वस्त किंवा व्यवस्थापक घेण्याची रीत :-
+                    </td>
+                    <td style="vertical-align: top; text-align: justify;">
+                        कार्यकारी मंडळाचा कार्यकाल पाच वर्षांचा राहील निवडणूक दर पाच वर्षांनी सर्वसाधारण सभेत गुप्त मतदान पद्धतीने घेण्यात येईल
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 20: Application for Public Trust Registration (सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज - पान २) -->
-        <div class="title-md text-center">सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज (पान २)</div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px;">
-            <tr>
-                <td style="width: 50px; border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(३)</td>
-                <td style="width: 250px; border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">विश्वस्त व्यवस्थेचा हेतू (उद्देश) :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">या संस्थेचे उद्देश परिशिष्ट ( ब ) मेमोरंडम ऑफ असोसिएशन मधील उद्देशांनुसार राहतील.</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(४)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">
-                    (अ) सार्वजनिक विश्वस्त व्यवस्था निर्माण करणाऱ्या दस्तऐवजाचा तपशील (नक्कल जोडा) :-<br><br>
-                    (ब) सार्वजनिक विश्वस्त व्यवस्था उगम किंवा निर्मिती संबंधीचा दस्तऐवजाशिवाय इतर तपशील (नक्कल जोडा) :-
-                </td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">
-                    (अ) संस्थेचा मेमोरंडम ऑफ असोसिएशन ची सत्यप्रत.<br><br>
-                    (ब) - निरंक -
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(५)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">सार्वजनिक विश्वस्त व्यवस्थेसंबंधी योजना कोणतीही असल्यास तिचा तपशील (नक्कल जोडा) :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">संस्थेची नियम व नियमावली (बाय-लॉज) ची सत्यप्रत.</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(६)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">जंगम मालमत्ता अशा मालमत्तेच्या प्रत्येक वर्गाच्या अंदाजे किंमतीसह (फर्निचर, पुस्तके वगैरे) :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">
-                    १) संस्थेजवळ रोख रक्कम रुपये ७०७/- (सातशे सात रुपये फक्त) अध्यक्ष/सचिव यांच्याकडे जमा आहे.<br>
-                    २) फर्निचर व इतर साहित्य - नवीन असल्यामुळे सध्या काही नाही.
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(७)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">
-                    (अ) जिथे स्थावर मालमत्ता असेल ते गाव, भूमापन क्रमांक, क्षेत्र, आकार दर्शविणारी माहिती :-<br><br>
-                    (ब) प्रत्येक स्थावर मालमत्तेची अंदाजे किंमत :-
-                </td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">
-                    (अ) - निरंक - (सध्या संस्थेच्या नावावर कोणतीही स्थावर मालमत्ता नाही.)<br><br>
-                    (ब) - निरंक -
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(८)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">सार्वजनिक विश्वस्त व्यवस्थेच्या उत्पन्नाची साधने :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">देणग्या, लोकवर्गणी, सभासद वर्गणी, प्रवेश फी, शासकीय व निमशासकीय अनुदान इत्यादी.</td>
-            </tr>
-        </table>
-        <div class="mt-20 flex-between">
-            <div>स्थळ: ${place}</div>
-            <div style="text-align: center;">
-                <b>अर्जदाराची सही</b><br><br>
-                <b>${presidentName}</b>
-            </div>
+        <div style="font-family: 'Tiro Devanagari Marathi', serif; font-size: 13px; line-height: 1.4;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.4;">
+                <!-- Row 3 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(३)</td>
+                    <td style="width: 280px; font-weight: bold; padding: 6px 10px 6px 0;">विश्वस्त व्यवस्थेचा हेतू</td>
+                    <td style="width: 20px; text-align: center; padding: 6px 0;">:-</td>
+                    <td style="padding: 6px 0;">परिशिष्ट ( ब ) प्रमाणे</td>
+                </tr>
+                <!-- Row 4 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(४)</td>
+                    <td style="font-weight: bold; padding: 6px 10px 6px 0;">
+                        (अ) सार्वजनिक विश्वस्त व्यवस्था निर्माण करणाऱ्या दस्तऐवजाचा तपशील (नक्कल जोडा)<br><br>
+                        (ब) सार्वजनिक विश्वस्त व्यवस्था उगम किंवा निर्मिती संबंधीचा दस्तऐवजाशिवाय इतर तपशील (नक्कल जोडा)
+                    </td>
+                    <td style="text-align: center; padding: 6px 0;">
+                        :-<br><br><br>
+                        :-
+                    </td>
+                    <td style="padding: 6px 0;">
+                        मेमोरंडम ऑफ असो. ची प्रत.<br><br><br>
+                        -||-
+                    </td>
+                </tr>
+                <!-- Row 5 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(५)</td>
+                    <td style="font-weight: bold; padding: 6px 10px 6px 0;">
+                        सार्वजनिक विश्वस्त व्यवस्थेसंबंधी योजना कोणतीही असल्यास तिचा तपशील (नक्कल जोडा)
+                    </td>
+                    <td style="text-align: center; padding: 6px 0;">:-</td>
+                    <td style="padding: 6px 0;">संस्थेची नियम व नियमावलीची प्रत</td>
+                </tr>
+                <!-- Row 6 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(६)</td>
+                    <td style="font-weight: bold; padding: 6px 10px 6px 0; text-align: justify; line-height: 1.35; font-size: 12px;">
+                        जंगम मालमत्ता अशा मालमत्तेच्या प्रत्येक वर्गाच्या अंदाजे किंमतीसह. (टिप:- प्रत्येक वस्तूचे वर्णन ठरविण्याऐवजी अशा मालमत्ताकतींच्या वर्गांचे स्थूल वर्णन करून नोंदी भराव्यात, जसे फर्निचर, पुस्तके वगैरे, रोकड रक्कम विश्वस्तव्यवस्थेच्या, भांडवलाचा भाग असेल तरच फक्त रोकड रकमेसंबंधी नोंद करावी, रोकडच्या बाबतीत प्रत्येक तारण पत्र, कर्जरोखे (Securities) संचय (Stock) शेअर, ऋणपत्र (Debentures) यांचा त्यावर जो क्रमांक असेल तो धरून तपशील द्या )
+                    </td>
+                    <td style="text-align: center; padding: 6px 0;">:-</td>
+                    <td style="padding: 6px 0; line-height: 1.6;">
+                        1. &nbsp;&nbsp; अर्जदार जवळ रुपये 707/- जमा.<br><br>
+                        2.<br><br>
+                        3.
+                    </td>
+                </tr>
+                <!-- Row 7 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(७)</td>
+                    <td style="font-weight: bold; padding: 6px 10px 6px 0; line-height: 1.35; font-size: 12px;">
+                        (अ) जेथे स्थावर मालमत्ता असेल ते गाव किंवा नगर भूमापन महानगर पालिका किंवा भूमापन क्रमांक क्षेत्र आकार किंवा जुनी दर्शविणारी अथवा मालमत्तेची सविस्तर माहिती ज्या अधिका-याने ती धारण केली असेल त्या धारण अधिका-याचे वर्णन<br><br><br>
+                        (ब) प्रत्येक स्थावर मालमत्तेची अंदाजे किंमत
+                    </td>
+                    <td style="text-align: center; padding: 6px 0;">
+                        :-<br><br><br><br><br><br>
+                        :-
+                    </td>
+                    <td style="padding: 6px 0; line-height: 1.6;">
+                        संस्था नवीन असल्यामुळे सध्या काही नाही<br>
+                        1.<br>
+                        2.<br>
+                        3.<br><br>
+                        संस्था नवीन असल्यामुळे सध्या काही नाही<br>
+                        1.<br>
+                        2.<br>
+                        3.
+                    </td>
+                </tr>
+                <!-- Row 8 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 30px; font-weight: bold; padding: 6px 0;">(८)</td>
+                    <td style="font-weight: bold; padding: 6px 10px 6px 0;">सार्वजनिक विश्वस्त व्यवस्थेच्या उत्पन्नाची साधने</td>
+                    <td style="text-align: center; padding: 6px 0;">:-</td>
+                    <td style="padding: 6px 0; line-height: 1.35;">
+                        देणगी, वर्गणी, सभासद फीस, शासकीय व निमशासकीय अनुदान इत्यादी.
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 21: Application for Public Trust Registration (सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज - पान ३) -->
-        <div class="title-md text-center">सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज (पान ३)</div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px;">
-            <tr>
-                <td style="width: 50px; border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(९)</td>
-                <td style="width: 250px; border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">सरासरी एकूण वार्षिक उत्पन्न :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">नवीन स्थापना असल्यामुळे सध्या काही नाही. (अंदाजे रुपये १०००/- ते ५०००/- वार्षिक वर्गणीद्वारे)</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(१०)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">सरासरी एकूण वार्षिक खर्च :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">नवीन स्थापना असल्यामुळे सध्या काही नाही. (संस्थेच्या उद्देशांवर खर्च केला जाईल.)</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(११)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">
-                    सरासरी एकूण वार्षिक खर्चाची रक्कम :-<br>
-                    (अ) विश्वस्त व व्यवस्थापक यांच्या पगारावर होणारा खर्च :-<br>
-                    (ब) आस्थापना व नोकर वर्ग यावर होणारा खर्च :-<br>
-                    (क) धार्मिक हेतू प्रीत्यर्थ होणारा खर्च :-<br>
-                    (ड) या व्यतिरिक्त इतर किरकोळ खर्च :-
-                </td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">
-                    <br>
-                    (अ) - निरंक - (कोणतेही वेतन दिले जात नाही.)<br>
-                    (ब) - निरंक - (सध्या मानधनावर सेवक असतील.)<br>
-                    (क) - निरंक -<br>
-                    (ड) अंदाजे रुपये ५००/- (कार्यालयीन टपाल व स्टेशनरी खर्च)
-                </td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(१२)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">विश्वस्त व्यवस्थेच्या मालमत्तेवरील भाराचा तपशील (गहाण/कर्ज असल्यास) :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">- निरंक - (मालमत्तेवर कोणताही भार नाही.)</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(१३)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">मालकी हक्काच्या दस्तऐवजाचा तपशील व ते ताब्यात असणाऱ्या विश्वस्तांची नावे :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">सर्व मूळ दस्तऐवज संस्थेच्या कार्यालयात अध्यक्ष/सचिव यांच्या ताब्यात राहतील.</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; text-align: center; vertical-align: top;">(१४)</td>
-                <td style="border: 1px solid #000; padding: 8px; font-weight: bold; vertical-align: top;">शेरे कोणतेही असल्यास :-</td>
-                <td style="border: 1px solid #000; padding: 8px; vertical-align: top;">हिशोबाचे वर्ष १ एप्रिल ते ३१ मार्च असे राहील.</td>
-            </tr>
-        </table>
-        <div class="mb-20 mt-20">
-            ३. अर्ज फी रु. ३/- (अक्षरी तीन रुपये फक्त) सोबत दाखल केली आहे.<br>
-            ४. सार्वजनिक विश्वस्त व्यवस्थेसंबंधी पत्रव्यवहार करावयाचा पत्ता :-<br>
-            <b>" ${trustName} "</b> ${address}.
-        </div>
-        <div class="flex-between">
-            <div>स्थळ: ${place}</div>
-            <div style="text-align: center;">
-                <b>अर्जदाराची सही</b><br><br><br>
-                <b>${presidentName}</b>
+        <div style="font-family: 'Tiro Devanagari Marathi', serif; font-size: 13.5px; line-height: 1.5;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13.5px; line-height: 1.5; margin-bottom: 15px;">
+                <!-- Row 9 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(९)</td>
+                    <td style="width: 280px; font-weight: bold; padding: 4px 10px 4px 0;">सरासरी ढोबळ वार्षिक उत्पन्न</td>
+                    <td style="width: 30px; text-align: center; padding: 4px 0;">:-</td>
+                    <td style="padding: 4px 0;">संस्था नवीन असल्यामुळे सध्या काही नाही.</td>
+                </tr>
+                <!-- Row 10 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(१०)</td>
+                    <td style="font-weight: bold; padding: 4px 10px 4px 0;">सरासरी वार्षिक खर्च</td>
+                    <td style="text-align: center; padding: 4px 0;">:-</td>
+                    <td style="padding: 4px 0;">-||-</td>
+                </tr>
+                <!-- Row 11 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(११)</td>
+                    <td style="font-weight: bold; padding: 4px 10px 4px 0;">
+                        सरासरी वार्षिक खर्चाची रक्कम<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;अ) &nbsp;&nbsp;&nbsp;&nbsp; विश्वस्त व व्यवस्थापक यांच्या<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;पगारावर होणारा खर्च<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ब) &nbsp;&nbsp;&nbsp;&nbsp; आस्थापना व नोकर वर्ग यांवर<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;होणारा खर्च<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;क) &nbsp;&nbsp;&nbsp;&nbsp; धार्मिक हेतुप्रीत्यर्थ होणारा खर्च<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ड) &nbsp;&nbsp;&nbsp;&nbsp; किरकोळ हेतुप्रीत्यर्थ होणारा खर्च
+                    </td>
+                    <td style="text-align: center; padding: 4px 0;">
+                        :-<br>
+                        :-<br><br>
+                        :-<br><br>
+                        :-<br>
+                        :-
+                    </td>
+                    <td style="padding: 4px 0;">
+                        -||-<br>
+                        -||-<br><br>
+                        -||-<br><br>
+                        -||-<br>
+                        -||-
+                    </td>
+                </tr>
+                <!-- Row 12 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(१२)</td>
+                    <td style="font-weight: bold; padding: 4px 10px 4px 0;">
+                        विश्वस्त व्यवस्थेच्या मालमत्तेवरील भाराचा<br>
+                        कोणतेही असल्यास त्यांचा तपशील
+                    </td>
+                    <td style="text-align: center; padding: 4px 0;">:-</td>
+                    <td style="padding: 4px 0;"><br>-||-</td>
+                </tr>
+                <!-- Row 13 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(१३)</td>
+                    <td style="font-weight: bold; padding: 4px 10px 4px 0;">
+                        विश्वस्त व्यवस्थेच्या मालमत्ते संबंधातील<br>
+                        मालकी हक्काच्या दस्तऐवजाचा तपशील<br>
+                        व ते ताब्यात असणाऱ्या विश्वस्तांची नावे.
+                    </td>
+                    <td style="text-align: center; padding: 4px 0;">:-</td>
+                    <td style="padding: 4px 0;"><br>संस्थेच्या अध्यक्ष/सचिवाकडे राहील.</td>
+                </tr>
+                <!-- Row 14 -->
+                <tr style="vertical-align: top;">
+                    <td style="width: 35px; font-weight: bold; padding: 4px 0;">(१४)</td>
+                    <td style="font-weight: bold; padding: 4px 10px 4px 0;">
+                        शेरे कोणतेही असल्यास
+                    </td>
+                    <td style="text-align: center; padding: 4px 0;">:-</td>
+                    <td style="padding: 4px 0;">
+                        हिशोबाचे वर्ष 1 एप्रिल ते 31 मार्च<br>
+                        असे राहील.
+                    </td>
+                </tr>
+            </table>
+
+            <div style="line-height: 1.5; margin-bottom: 15px;">
+                <b>३.&nbsp;&nbsp;&nbsp;&nbsp; फी दाखल रु. ३/- (अक्षरी तीन रुपये फक्त) सोबत पाठवित आहोत.</b><br>
+                <b>४.&nbsp;&nbsp;&nbsp;&nbsp; सार्वजनिक विश्वस्त व्यवस्थेसंबंधी विश्वस्तांशी किंवा व्यवस्थापक यांच्याशी करावयाचा कोणताही पत्र व्यवहार पुढील पत्त्यावर करावा.</b>
             </div>
-        </div>
-        <hr style="border: 1px dashed #000; margin: 20px 0;">
-        <div class="title-sm text-center">सत्यापन (Verification)</div>
-        <div class="mb-10">
-            मी, <b>${presidentName}</b>, वय <b>${presidentAge}</b> वर्षे, राहणार <b>${address}</b>, प्रतिज्ञेवर जाहीर करतो की, वरील अर्जातील १ ते १४ क्रमांकाच्या रकान्यात दिलेली माहिती माझ्या वैयक्तिक माहितीनुसार व समजुतीनुसार सत्य व खरी आहे.
-        </div>
-        <div class="flex-between">
-            <div>स्थळ: ${place}<br>दिनांक: ${date}</div>
-            <div style="text-align: center;">
-                <b>अर्जदाराची सही</b><br><br><br>
-                <b>${presidentName}</b>
+
+            <div style="line-height: 1.4; margin-left: 25px; margin-bottom: 25px;">
+                संस्थेचे नाव &nbsp;&nbsp;&nbsp;:- &nbsp;&nbsp;&nbsp; <b>" ${trustName} "</b><br>
+                पत्ता &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:- &nbsp;&nbsp;&nbsp; <b>${address}</b>
+            </div>
+
+            <table style="width: 100%; border: none; margin-bottom: 30px;">
+                <tr>
+                    <td style="width: 50%;">
+                        <b>तारीख :- &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp; /2026</b>
+                    </td>
+                    <td style="text-align: right; font-weight: bold; padding-right: 30px;">
+                        <br>
+                        अर्जदाराची सही
+                    </td>
+                </tr>
+            </table>
+
+            <div style="border-top: 1px dashed #000; margin: 15px 0;"></div>
+
+            <div style="text-indent: 40px; text-align: justify; line-height: 1.5; margin-bottom: 15px;">
+                मी वर नामनिर्देशित <b>${presidentName}</b>, <b>${address}</b> येथील रहिवासी असून, प्रतिज्ञा करतो व सांगतो की, वरील अर्जात नमूद केलेली माहिती माझ्या पूर्ण माहिती प्रमाणे व विश्वासा प्रमाणे खरी आहे.
+            </div>
+            
+            <div style="font-weight: bold; margin-bottom: 30px; text-indent: 40px;">
+                उपरिनिर्दिष्ट जालना येथे गांभीर्यपूर्वक प्रतिज्ञा केली.
+            </div>
+
+            <table style="width: 100%; border: none; margin-bottom: 10px;">
+                <tr>
+                    <td style="width: 50%;">
+                        <b>तारीख :- &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp; /2026</b>
+                    </td>
+                    <td style="text-align: right; font-weight: bold; padding-right: 30px;">
+                        <br>
+                        अर्जदाराची सही
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align: center; font-weight: bold; margin-top: 15px;">
+                माझ्या समक्ष
             </div>
         </div>
 
         <div class="page-break"></div>
 
         <!-- PAGE 22: Consent Letter for Trust (संमतीपत्राचा नमुना) -->
-        <div class="title-lg text-center">संमतीपत्राचा नमुना</div>
-        <div class="mt-20 mb-20">
-            प्रति,<br>
-            मा. सहाय्यक धर्मादाय आयुक्त,<br>
-            जालना विभाग जालना.<br><br>
-            <b>विषय :- सार्वजनिक विश्वस्त व्यवस्था नोंदणीस संमती देणेबाबत...</b><br>
-            <b>संस्थेचे नाव :- " ${trustName} "</b>
-        </div>
-        <div class="mb-20">
-            महोदय,<br>
-            <p class="indent">
-                मी, व आम्ही खालील स्वाक्षरी करणारे विश्वस्त जाहीर करतो की, अर्जदार <b>${presidentName}</b> यांनी संस्था/सार्वजनिक विश्वस्त व्यवस्था नोंदणीसाठी मुंबई सार्वजनिक विश्वस्त व्यवस्था अधिनियम १९५० च्या कलम १८ अन्वये आपल्या कार्यालयाकडे दि. ${date} रोजी अर्ज सादर केला आहे. त्या अर्जातील व विवरणातील सर्व माहिती सत्य व खरी असून त्यास आमची पूर्ण संमती आहे.
-            </p>
-            <p class="indent">
-                सदर अर्जाची सुनावणीची स्वतंत्र नोटीस आम्हास काढण्याची आवश्यकता नाही. तसेच सदर संस्था नोंदणीचे प्रमाणपत्र मुख्य अर्जदार <b>${presidentName}</b> यांच्या नावे देण्यास आमची कोणतीही हरकत नाही.
-            </p>
-        </div>
-        ${renderCommitteeSignatures()}
-        <div class="mt-20 flex-between">
-            <div>स्थळ : ${place}<br>दिनांक : ${date}</div>
-            <div style="text-align: center;">
-                <b>अर्जदाराची सही: _________________</b>
+        <div style="font-family: 'Tiro Devanagari Marathi', serif; font-size: 14px; line-height: 1.5;">
+            <div class="title-lg text-center" style="text-decoration: underline; margin-bottom: 15px;">संमतीपत्राचा नमुना</div>
+            
+            <div class="mb-15" style="line-height: 1.3;">
+                <b>प्रति,</b><br>
+                <b>मा. सहाय्यक धर्मादाय आयुक्त,</b><br>
+                <b>जालना विभाग जालना.</b>
             </div>
+
+            <div class="mb-15">
+                <b>महोदय,</b><br>
+                <p style="text-indent: 40px; text-align: justify; line-height: 1.5; margin: 5px 0;">
+                    <b>${presidentName}</b>, यांनी विश्वस्त व्यवस्था/संस्था/मंडळ <b>" ${trustName} "</b> <b>${address}</b> नोंदविण्यासाठी मुंबई सार्वजनिक विश्वस्त व्यवस्था अधिनियम १९५० अन्वये दि. &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp; /2026 रोजी अर्ज सादर केला आहे. त्या अर्जातील सर्व माहिती खरी आहे. आम्हास त्या संबंधी जास्त सांगावयाचे नाही सदरहू अर्जाची सुनावणीची स्वतंत्र नोटीस आम्हास पाठवण्याची आवश्यकता नाही. नोंदणी प्रमाणपत्र अर्जदाराच्या नावे देण्यास आमची कोणतीही हरकत नाही.
+                </p>
+            </div>
+
+            <div class="mb-10" style="line-height: 1.3;">
+                <b>कळावे,</b>
+            </div>
+            
+            <div style="text-align: right; font-weight: bold; padding-right: 40px; margin-bottom: 5px;">
+                आपले,
+            </div>
+
+            <!-- Committee Members Table with Dashed Lines -->
+            <table style="width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; font-family: 'Tiro Devanagari Marathi', serif;">
+                <thead>
+                    <tr style="border-top: 1px dashed #000; border-bottom: 1px dashed #000;">
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 6%;">अ.क्र.</th>
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 44%;">सभासदाचे संपूर्ण नांव</th>
+                        <th style="padding: 4px 0; text-align: left; font-weight: bold; width: 35%;">पत्ता</th>
+                        <th style="padding: 4px 0; text-align: center; font-weight: bold; width: 15%;">सही</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${committeeMembers.map((m, i) => `
+                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? '1px dashed #000' : 'none'};">
+                        <td style="padding: 8px 0; vertical-align: top;">${i + 1}.</td>
+                        <td style="padding: 8px 0; vertical-align: top; font-weight: bold;">${m.name || '_____'}</td>
+                        <td style="padding: 8px 0; vertical-align: top; font-size: 12px; line-height: 1.3;">${m.address || '_____'}</td>
+                        <td style="padding: 8px 0; vertical-align: middle; text-align: center;">
+                            <span style="border-bottom: 1px solid #000; width: 90px; display: inline-block;">&nbsp;</span>
+                        </td>
+                    </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+
+            <table style="width: 100%; border: none; margin-top: 15px; font-size: 13.5px;">
+                <tr>
+                    <td style="width: 40%;"></td>
+                    <td style="text-align: right; font-weight: bold; padding-right: 30px; line-height: 1.4;">
+                        वरील सर्व सह्या मी ओळखतो<br><br>
+                        (अर्जदाराची सही.)<br><br>
+                        <b>${presidentName}</b>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="page-break"></div>
