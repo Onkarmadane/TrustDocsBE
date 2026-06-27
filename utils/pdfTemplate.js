@@ -41,7 +41,7 @@ exports.generateReportHTML = (report) => {
     const incomes = report.incomeExpenditure?.incomes || [];
     const totalExpenditure = report.incomeExpenditure?.totalExpenditure || 0;
     const totalIncome = report.incomeExpenditure?.totalIncome || 0;
-    
+
     const fundsLiabilities = report.balanceSheet?.fundsLiabilities || [];
     const propertyAssets = report.balanceSheet?.propertyAssets || [];
     const totalFunds = report.balanceSheet?.totalFundsLiabilities || 0;
@@ -89,12 +89,12 @@ exports.generateReportHTML = (report) => {
     const generateIncomeExpenditureFlatRows = (expenditures, incomes) => {
         const maxRows = Math.max(expenditures.length, incomes.length);
         if (maxRows === 0) return '<tr class="flat-data-row"><td colspan="4" class="text-center">No data available</td></tr>';
-        
+
         let html = '';
         for (let i = 0; i < maxRows; i++) {
             const exp = expenditures[i] || { label: '', amount: null, isHeader: false };
             const inc = incomes[i] || { label: '', amount: null, isHeader: false };
-            
+
             html += `
                 <tr class="flat-data-row">
                     <td class="${exp.isHeader ? 'font-bold' : ''}">
@@ -118,12 +118,12 @@ exports.generateReportHTML = (report) => {
     const generateBalanceSheetFlatRows = (leftItems, rightItems) => {
         const maxRows = Math.max(leftItems.length, rightItems.length);
         if (maxRows === 0) return '<tr class="flat-data-row"><td colspan="6" class="text-center">No data available</td></tr>';
-        
+
         let html = '';
         for (let i = 0; i < maxRows; i++) {
             const left = leftItems[i] || { label: '', amount: null, total: null, isHeader: false };
             const right = rightItems[i] || { label: '', amount: null, total: null, isHeader: false };
-            
+
             html += `
                 <tr class="flat-data-row">
                     <td class="${left.isHeader ? 'font-bold' : ''}">
@@ -217,13 +217,13 @@ exports.generateReportHTML = (report) => {
                 --font-primary: 'Times New Roman', Times, serif;
 
                 /* Centralized Typography Sizes (Configurable at one place to manage scaling and prevent page breaks) */
-                --size-title: 20px;
-                --size-heading: 14px;
-                --size-subheading: 12px;
-                --size-body: 13px;
-                --size-table-cell: 11px;
-                --size-meta: 10px;
-                --size-small: 9px;
+                --size-title: 20.5px;
+                --size-heading: 14.5px;
+                --size-subheading: 12.5px;
+                --size-body: 13.5px;
+               --size-table-cell: 13.5px;
+                --size-meta: 10.5px;
+                --size-small: 9.5px;
 
                 /* Line Heights */
                 --lh-title: 1.3;
@@ -504,7 +504,7 @@ exports.generateReportHTML = (report) => {
                 </tr>
             </table>
 
-            <table style="margin-bottom: 10px;">
+            <table>
                 <tbody>
                     ${generatePermissionRows(permissions)}
                 </tbody>
@@ -529,7 +529,7 @@ exports.generateReportHTML = (report) => {
 
             <div style="border: 1px solid #000;" class="size-meta">
                 <!-- Row: Income shown -->
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding: 6px; background-color: #f9f9f9;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding: 6px; ">
                     <p style="font-weight: bold; flex: 1;">I. Income as shown in the Income and Expenditure Account (Schedule IX)</p>
                     <span style="font-weight: bold; width: 80px; text-align: right;">${schIX_incomeShown}</span>
                 </div>
@@ -637,7 +637,7 @@ exports.generateReportHTML = (report) => {
         </div>
 
         <!-- PAGE 6: RECEIPT & PAYMENT -->
-        <div class="page">
+        <div class="page size-body" style="line-height: var(--lh-body);">
             <div class="text-center font-bold mb-4 size-subheading" style="line-height: 1.4;">
                 Name of the Trust :- ${trustName}<br>
                 AT ${address}<br>
@@ -646,7 +646,7 @@ exports.generateReportHTML = (report) => {
                 RECEIPT & PAYMENT ACCOUNT
             </div>
 
-            <table>
+            <table class="size-body">
                 <thead>
                     <tr>
                         <th style="width: 30%;">Receipts</th>
@@ -674,16 +674,16 @@ exports.generateReportHTML = (report) => {
         </div>
 
         <!-- PAGE 7: SCHEDULE 9-D -->
-        <div class="page size-meta">
+        <div class="page size-body" style="line-height: var(--lh-body);">
             <div class="text-center font-bold mb-6 pb-2" style="line-height: 1.5;">
                 <p class="size-heading uppercase" style="margin: 4px 0; font-weight: bold;">"SCHEDULE IX-D"</p>
-                <p class="size-meta font-normal" style="margin: 2px 0;">[See rule 19 (2A)]</p>
-                <p class="size-meta font-normal" style="margin: 8px 0 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
-                <p class="size-meta font-normal" style="margin: 2px 0;">sub-section (1) of section 34 of</p>
-                <p class="size-meta font-normal" style="margin: 2px 0;">the Maharashtra Public Trusts Act.</p>
+                <p class="size-body font-normal" style="margin: 2px 0;">[See rule 19 (2A)]</p>
+                <p class="size-body font-normal" style="margin: 8px 0 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
+                <p class="size-body font-normal" style="margin: 2px 0;">sub-section (1) of section 34 of</p>
+                <p class="size-body font-normal" style="margin: 2px 0;">the Maharashtra Public Trusts Act.</p>
             </div>
 
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+            <table class="size-body" style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
                 <thead>
                     <tr>
                         <th style="border: 1px solid #000; padding: 6px; width: 8%; text-align: center; font-weight: normal;">Sr.<br>No.</th>
