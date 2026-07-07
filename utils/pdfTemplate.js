@@ -217,13 +217,13 @@ exports.generateReportHTML = (report) => {
                 --font-primary: 'Times New Roman', Times, serif;
 
                 /* Centralized Typography Sizes (Configurable at one place to manage scaling and prevent page breaks) */
-                --size-title: 20.5px;
-                --size-heading: 14.5px;
-                --size-subheading: 12.5px;
-                --size-body: 13.5px;
-               --size-table-cell: 13.5px;
-                --size-meta: 10.5px;
-                --size-small: 9.5px;
+                --size-title: 22px;
+                --size-heading: 16px;
+                --size-subheading: 14px;
+                --size-body: 15px;
+                --size-table-cell: 15px;
+                --size-meta: 12px;
+                --size-small: 11px;
 
                 /* Line Heights */
                 --lh-title: 1.3;
@@ -236,7 +236,7 @@ exports.generateReportHTML = (report) => {
                 --space-sm: 8px;
                 --space-md: 16px;
                 --space-lg: 24px;
-                --space-xl: 40px;
+                --space-xl: 30px;
 
                 /* Table Cell Paddings */
                 --table-cell-padding-y: 6px;
@@ -415,6 +415,9 @@ exports.generateReportHTML = (report) => {
                 justify-content: space-between;
                 margin-top: var(--space-xl);
             }
+            .page2-signatures .signatures {
+                margin-top: var(--space-md) !important;
+            }
             .signature-block {
                 text-align: center;
                 width: 30%;
@@ -489,7 +492,7 @@ exports.generateReportHTML = (report) => {
                 of the Bombay Trust Act 1950.
             </div>
 
-            <table style="border: none; margin-bottom: 5px;" class="size-meta">
+            <table style="border: none; margin-bottom: 5px;" class="size-meta table-compact">
                 <tr>
                     <td style="border: none; width: 150px; font-weight: bold;">Name of the trust</td>
                     <td style="border: none;">${trustName}<br>AT ${address}</td>
@@ -504,13 +507,15 @@ exports.generateReportHTML = (report) => {
                 </tr>
             </table>
 
-            <table>
+            <table class="table-compact">
                 <tbody>
                     ${generatePermissionRows(permissions)}
                 </tbody>
             </table>
 
-            ${generateSignatureBlock()}
+            <div class="page2-signatures">
+                ${generateSignatureBlock()}
+            </div>
         </div>
 
         <!-- PAGE 3: SCHEDULE IX C -->
