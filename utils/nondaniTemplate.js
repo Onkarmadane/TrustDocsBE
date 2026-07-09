@@ -125,6 +125,7 @@ module.exports = (report) => {
                 padding: 22px; /* reduced from 30px to prevent overflow */
                 color: #000;
             }
+                
             .page-break { page-break-after: always; }
             .header-box {
                 border: 2px solid #000;

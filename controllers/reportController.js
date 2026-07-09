@@ -234,7 +234,14 @@ exports.generatePdf = async (req, res) => {
         const pdfBuffer = await page.pdf({
             format: 'A4',
             printBackground: true,
-            margin: { top: '15mm', right: '15mm', bottom: '15mm', left: '15mm' }
+            margin: { top: '15mm', right: '15mm', bottom: '20mm', left: '15mm' },
+            displayHeaderFooter: true,
+            headerTemplate: '<div></div>',
+            footerTemplate: `
+                <div style="font-size: 10px; font-family: 'Tiro Devanagari Marathi', 'Times New Roman', serif; width: 100%; text-align: right; padding-right: 20px; color: #000;">
+                    (<span class="pageNumber"></span>)
+                </div>
+            `
         });
 
         await browser.close();
