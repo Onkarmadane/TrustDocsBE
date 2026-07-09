@@ -3,5 +3,7 @@
 set -o errexit
 
 npm install
-# No way to install system libraries here without root, 
-# which is why Docker is preferred.
+
+# Install Puppeteer's bundled Chrome browser explicitly during build.
+# This ensures Chrome is available at runtime on Render.com.
+npx puppeteer browsers install chrome
