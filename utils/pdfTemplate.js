@@ -73,8 +73,12 @@ exports.generateReportHTML = (report) => {
   const sch9d_trustPan = report.schedule9D?.trustPan || "";
   const sch9d_incomeTaxRegistration =
     report.schedule9D?.incomeTaxRegistration || "";
-  const sch9d_previousITReturns = report.schedule9D?.previousITReturns || [];
-  const sch9d_trusteesPan = report.schedule9D?.trusteesPan || [];
+  const rawPreviousITReturns = report.schedule9D?.previousITReturns || [];
+  const sch9d_previousITReturns = Array.from({ length: Math.max(3, rawPreviousITReturns.length) })
+    .map((_, i) => rawPreviousITReturns[i] || { receiptNo: "", year: "" });
+  const rawTrusteesPan = report.schedule9D?.trusteesPan || [];
+  const sch9d_trusteesPan = Array.from({ length: Math.max(9, rawTrusteesPan.length) })
+    .map((_, i) => rawTrusteesPan[i] || { name: "", pan: "" });
 
   const formatExemptionDate = (dateVal) => {
     if (!dateVal) return "";
