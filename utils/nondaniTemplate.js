@@ -1,64 +1,88 @@
 module.exports = (report) => {
-    const details = report.nondaniDetails || {};
-    const trustName = report.trustName || "_________________";
-    const addressObj = report.trustDetails?.address || {};
-    const addressParts = [];
-    if (addressObj.buildingName) addressParts.push(addressObj.buildingName);
-    if (addressObj.streetName) addressParts.push(addressObj.streetName);
-    if (addressObj.village) addressParts.push(`मु. ${addressObj.village}`);
-    if (addressObj.taluka) addressParts.push(`ता. ${addressObj.taluka}`);
-    if (addressObj.district) addressParts.push(`जि. ${addressObj.district}`);
-    const address = addressParts.length > 0 ? addressParts.join(', ') : "_________________";
-    
-    const presidentName = report.presidentName || "_________________";
-    const vicePresidentName = report.vicePresidentName || "_________________";
-    const secretaryName = report.secretaryName || "_________________";
-    const jointSecretaryName = report.jointSecretaryName || "_________________";
-    const treasurerName = report.treasurerName || "_________________";
-    const date = report.date ? new Date(report.date).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB');
-    const place = report.place || "_________________";
-    const financialYear = report.financialYear || "2025-26";
-    const registrationNo = report.registrationNo || "_________________";
-    
-    const committeeMembers = report.committeeMembers && report.committeeMembers.length > 0 
-        ? report.committeeMembers 
-        : Array(7).fill({ name: '_________________', address: '_________________', designation: '_________________', age: '____', occupation: '_________________', nationality: 'भारतीय' });
+  const details = report.nondaniDetails || {};
+  const trustName = report.trustName || "_________________";
+  const addressObj = report.trustDetails?.address || {};
+  const addressParts = [];
+  if (addressObj.buildingName) addressParts.push(addressObj.buildingName);
+  if (addressObj.streetName) addressParts.push(addressObj.streetName);
+  if (addressObj.village) addressParts.push(`मु. ${addressObj.village}`);
+  if (addressObj.taluka) addressParts.push(`ता. ${addressObj.taluka}`);
+  if (addressObj.district) addressParts.push(`जि. ${addressObj.district}`);
+  const address =
+    addressParts.length > 0 ? addressParts.join(", ") : "_________________";
 
-    const presidentDetails = committeeMembers.find(m => m.designation?.includes('अध्यक्ष') || m.name === presidentName) || {};
-    const presidentAge = presidentDetails.age || "____";
-    const presidentOccupation = presidentDetails.occupation || "________";
+  const presidentName = report.presidentName || "_________________";
+  const vicePresidentName = report.vicePresidentName || "_________________";
+  const secretaryName = report.secretaryName || "_________________";
+  const jointSecretaryName = report.jointSecretaryName || "_________________";
+  const treasurerName = report.treasurerName || "_________________";
+  const date = report.date
+    ? new Date(report.date).toLocaleDateString("en-GB")
+    : new Date().toLocaleDateString("en-GB");
+  const place = report.place || "_________________";
+  const financialYear = report.financialYear || "2025-26";
+  const registrationNo = report.registrationNo || "_________________";
 
-    const objectives = report.objectives && report.objectives.length > 0 
-        ? report.objectives 
-        : [
-            "लोकांना वाचनाची आवड निर्माण करणे.",
-            "साहित्यिक, कलावंतास पुरस्कार देऊन कौतुक करणे.",
-            "व्याख्याने कविसंमेलन, वादविवाद, परिसंवाद, साहित्यसंमेलन इत्यादी साहित्यिक उपक्रम राबविणे.",
-            "लेखक वाचक सुसंवाद घडवून आणणे.",
-            "विविध भाषिक पुस्तके उपलब्ध करून देणे.",
-            "समाजातील विविध घटकात वाचनाची आवड निर्माण करण्यासाठी वाचनालय सुरू करणे ते चालविणे.",
-            "सार्वजनिक वाचनालयाद्वारे दैनिक, साप्ताहिक, मासिक इ. उपलब्ध करून देणे, शहरी व ग्रामीण भागात वाचनालये सुरू करणे.",
-            "प्रौढांमध्ये साक्षरतेचा प्रचार व प्रसार करणे वाचनाची आवड निर्माण करणे.",
-            "मनोरंजनातुन ज्ञानवृध्दी होईल अशा प्रकारचे साहित्य वाचनालयाला पुरविणे.",
-            "चर्चासत्रे, वाद-संवाद, मेळावे भरवुन विविध प्रकारचे साहित्य निर्मितीस हातभार लावणे.",
-            "सामाजिक, पौराणिक, विज्ञानविषयक माहिती संपन्न पुस्तके उपलब्ध करणे.",
-            "संगणकीकृत तसेच ऑनलाईन (डीजीटल) वाचनालये सुरू करणे.",
-            "लहान मुलांसाठी व प्रौढ साक्षरांसाठी आवश्यक ती पुस्तके वाचनालयात उपलब्ध करून देणे.",
-            "विविध प्रकाराचे वर्तमानपत्र, साप्ताहिके, पाक्षिके, मासिके व वार्षिक अंक तसेच विशेषांक ची माहिती इ. वाचनालयात उपलब्ध करून देणे.",
-            "दुर्मिळ ग्रंथांचे व पुस्तकाचे जतन करणे."
+  const committeeMembers =
+    report.committeeMembers && report.committeeMembers.length > 0
+      ? report.committeeMembers
+      : Array(7).fill({
+          name: "_________________",
+          address: "_________________",
+          designation: "_________________",
+          age: "____",
+          occupation: "_________________",
+          nationality: "भारतीय",
+        });
+
+  const presidentDetails =
+    committeeMembers.find(
+      (m) => m.designation?.includes("अध्यक्ष") || m.name === presidentName,
+    ) || {};
+  const presidentAge = presidentDetails.age || "____";
+  const presidentOccupation = presidentDetails.occupation || "________";
+
+  const objectives =
+    report.objectives && report.objectives.length > 0
+      ? report.objectives
+      : [
+          "लोकांना वाचनाची आवड निर्माण करणे.",
+          "साहित्यिक, कलावंतास पुरस्कार देऊन कौतुक करणे.",
+          "व्याख्याने कविसंमेलन, वादविवाद, परिसंवाद, साहित्यसंमेलन इत्यादी साहित्यिक उपक्रम राबविणे.",
+          "लेखक वाचक सुसंवाद घडवून आणणे.",
+          "विविध भाषिक पुस्तके उपलब्ध करून देणे.",
+          "समाजातील विविध घटकात वाचनाची आवड निर्माण करण्यासाठी वाचनालय सुरू करणे ते चालविणे.",
+          "सार्वजनिक वाचनालयाद्वारे दैनिक, साप्ताहिक, मासिक इ. उपलब्ध करून देणे, शहरी व ग्रामीण भागात वाचनालये सुरू करणे.",
+          "प्रौढांमध्ये साक्षरतेचा प्रचार व प्रसार करणे वाचनाची आवड निर्माण करणे.",
+          "मनोरंजनातुन ज्ञानवृध्दी होईल अशा प्रकारचे साहित्य वाचनालयाला पुरविणे.",
+          "चर्चासत्रे, वाद-संवाद, मेळावे भरवुन विविध प्रकारचे साहित्य निर्मितीस हातभार लावणे.",
+          "सामाजिक, पौराणिक, विज्ञानविषयक माहिती संपन्न पुस्तके उपलब्ध करणे.",
+          "संगणकीकृत तसेच ऑनलाईन (डीजीटल) वाचनालये सुरू करणे.",
+          "लहान मुलांसाठी व प्रौढ साक्षरांसाठी आवश्यक ती पुस्तके वाचनालयात उपलब्ध करून देणे.",
+          "विविध प्रकाराचे वर्तमानपत्र, साप्ताहिके, पाक्षिके, मासिके व वार्षिक अंक तसेच विशेषांक ची माहिती इ. वाचनालयात उपलब्ध करून देणे.",
+          "दुर्मिळ ग्रंथांचे व पुस्तकाचे जतन करणे.",
         ];
 
-    const noc = report.landlordNOC || { name: '_________________', age: '____', address: '_________________', propertyNumber: '_________________' };
+  const noc = report.landlordNOC || {
+    name: "_________________",
+    age: "____",
+    address: "_________________",
+    propertyNumber: "_________________",
+  };
 
-    const checklistHtml = (report.checklist || []).map((item, i) => `
+  const checklistHtml = (report.checklist || [])
+    .map(
+      (item, i) => `
         <tr>
             <td style="text-align: center; border: 1px solid #000; padding: 8px;">${i + 1})</td>
             <td style="border: 1px solid #000; padding: 8px;">${item.documentName}</td>
-            <td style="text-align: center; border: 1px solid #000; padding: 8px;">${item.isSubmitted ? 'Yes' : 'No'}</td>
+            <td style="text-align: center; border: 1px solid #000; padding: 8px;">${item.isSubmitted ? "Yes" : "No"}</td>
         </tr>
-    `).join('');
+    `,
+    )
+    .join("");
 
-    const renderCommitteeTable = () => `
+  const renderCommitteeTable = () => `
         <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 15px; line-height: 1.4; border-top: 1px solid #000; border-bottom: 1px solid #000; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             <thead>
                 <tr style="border-bottom: 1px solid #000;">
@@ -71,23 +95,27 @@ module.exports = (report) => {
                 </tr>
             </thead>
             <tbody>
-                ${committeeMembers.map((m, i) => `
+                ${committeeMembers
+                  .map(
+                    (m, i) => `
                 <tr>
                     <td style="padding: 8px 4px; vertical-align: top;">
-                        <span style="font-weight: bold; display: inline-block; width: 15px;">${i + 1}.</span> ${m.name || '_____'}
+                        <span style="font-weight: bold; display: inline-block; width: 15px;">${i + 1}.</span> ${m.name || "_____"}
                     </td>
-                    <td style="padding: 8px 4px; vertical-align: top;">${m.address || '_____'}</td>
-                    <td style="padding: 8px 4px; vertical-align: top;">${m.designation || '_____'}</td>
-                    <td style="padding: 8px 4px; vertical-align: top; text-align: center;">${m.age || '_____'}</td>
-                    <td style="padding: 8px 4px; vertical-align: top;">${m.occupation || '_____'}</td>
-                    <td style="padding: 8px 4px; vertical-align: top;">${m.nationality || 'भारतीय'}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.address || "_____"}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.designation || "_____"}</td>
+                    <td style="padding: 8px 4px; vertical-align: top; text-align: center;">${m.age || "_____"}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.occupation || "_____"}</td>
+                    <td style="padding: 8px 4px; vertical-align: top;">${m.nationality || "भारतीय"}</td>
                 </tr>
-                `).join('')}
+                `,
+                  )
+                  .join("")}
             </tbody>
         </table>
     `;
 
-    const renderCommitteeSignatures = () => `
+  const renderCommitteeSignatures = () => `
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px;">
             <thead>
                 <tr>
@@ -98,57 +126,126 @@ module.exports = (report) => {
                 </tr>
             </thead>
             <tbody>
-                ${committeeMembers.map((m, i) => `
+                ${committeeMembers
+                  .map(
+                    (m, i) => `
                 <tr>
                     <td style="border: 1px solid #000; padding: 8px; text-align: center;">${i + 1}</td>
-                    <td style="border: 1px solid #000; padding: 8px;">${m.name || '_____'}</td>
-                    <td style="border: 1px solid #000; padding: 8px;">${m.address || '_____'}</td>
+                    <td style="border: 1px solid #000; padding: 8px;">${m.name || "_____"}</td>
+                    <td style="border: 1px solid #000; padding: 8px;">${m.address || "_____"}</td>
                     <td style="border: 1px solid #000; padding: 8px; height: 35px;"></td>
                 </tr>
-                `).join('')}
+                `,
+                  )
+                  .join("")}
             </tbody>
         </table>
     `;
-
-    return `
+  const renderFooterSignatures = () => `
+  <div class="page-footer">
+    <div style="
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;
+    ">
+      <div style="text-align:center; width: 18%;">
+        <div style=""></div>
+        <div style="border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
+      </div>
+      <div style="text-align:center; width: 18%;">
+        <div style=""></div>
+        <div style="border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
+      </div>
+      <div style="text-align:center; width: 18%;">
+        <div style=""></div>
+        <div style="border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
+      </div>
+    </div>
+  </div>
+`;
+  return `
     <!DOCTYPE html>
     <html lang="mr">
     <head>
         <meta charset="UTF-8">
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:wght@400;700&display=swap');
-            body {
-                font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;
-                font-size: 16px;
-                line-height: 1.5;
-                margin: 0;
-                padding: 22px; /* reduced from 30px to prevent overflow */
-                color: #000;
-            }
-                
-            .page-break { page-break-after: always; }
-            .header-box {
-                border: 2px solid #000;
-                padding: 10px;
-                text-align: center;
-                font-weight: bold;
-                width: 300px;
-                margin: 0 auto 30px auto;
-                font-size: 18px;
-            }
-            .text-center { text-align: center; }
-            .font-bold { font-weight: bold; }
-            .mb-20 { margin-bottom: 20px; }
-            .mt-20 { margin-top: 20px; }
-            .flex-between { display: flex; justify-content: space-between; }
-            .indent { text-indent: 40px; }
-            .title-lg { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
-            .title-md { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 15px; }
-            .title-sm { font-size: 16px; font-weight: bold; text-decoration: underline; margin-bottom: 10px; }
-        </style>
+       <style>
+  @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:wght@400;700&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  body {
+    font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 18mm 14mm 10mm 14mm;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  .page-content {
+    flex: 1;
+  }
+
+  .page-footer {
+    margin-top: auto;
+    padding-top: 6mm;
+  }
+
+  .header-box {
+    border: 2px solid #000;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    width: 300px;
+    margin: 0 auto 30px auto;
+    font-size: 18px;
+  }
+
+  .text-center { text-align: center; }
+  .font-bold { font-weight: bold; }
+  .mb-20 { margin-bottom: 20px; }
+  .mt-20 { margin-top: 20px; }
+  .flex-between { display: flex; justify-content: space-between; }
+  .indent { text-indent: 40px; }
+  .title-lg { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+  .title-md { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+  .title-sm { font-size: 16px; font-weight: bold; text-decoration: underline; margin-bottom: 10px; }
+
+  .page-break {
+    page-break-after: always;
+  }
+</style>
     </head>
     <body>
         <!-- PAGE 1: Application -->
+        <div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 10px;">
             <div style="border: 1px solid #000; padding: 3px 15px; display: inline-block; font-weight: bold; font-size: 18px; line-height: 1;">
                 परिशिष्ट " अ "
@@ -253,16 +350,16 @@ module.exports = (report) => {
                 <span style="font-size: 15.5px;; font-weight: normal;">${address}</span>
             </div>
         </div>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 10px; padding: 0 30px; font-weight: bold; font-size: 15.5px;">
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सदस्य</div>
+        </div>
+        
+        ${renderFooterSignatures()}
         </div>
 
-        <div class="page-break"></div>
 
         <!-- PAGE 2: Memorandum -->
+
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 6px; line-height: 1.3; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             <span style="font-weight: bold; font-size: 18px;">परिशिष्ट " ब "</span><br>
             <span style="font-size: 16px; text-decoration: underline; font-weight: bold;">या संस्थेचे ज्ञापन</span><br><br>
@@ -289,23 +386,27 @@ module.exports = (report) => {
         </table>
 
         <table style="width: 100%; border: none; margin-bottom: 6px; font-size: 15.5px;; line-height: 1.35; border-collapse: collapse; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; padding-left: 20px;">
-            ${objectives.map((obj, i) => `
+            ${objectives
+              .map(
+                (obj, i) => `
             <tr>
                 <td style="width: 25px; vertical-align: top; padding: 0.5px 0; font-weight: bold;">${i + 1})</td>
-                <td style="vertical-align: top; padding: 0.5px 0; text-align: justify;">${obj || '_____'}</td>
+                <td style="vertical-align: top; padding: 0.5px 0; text-align: justify;">${obj || "_____"}</td>
             </tr>
-            `).join('')}
+            `,
+              )
+              .join("")}
         </table>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 10px; padding: 0 40px; font-weight: bold; font-size: 15.5px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
+        </div>
+        
+        ${renderFooterSignatures()}
         </div>
 
-        <div class="page-break"></div>
 
         <!-- PAGE 3: Executive Committee -->
+        
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 15px; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             (..2..)
         </div>
@@ -313,17 +414,17 @@ module.exports = (report) => {
         <div style="margin-bottom: 15px; font-size: 15.5px; line-height: 1.45; text-align: justify; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             <b>4) “ ${trustName} ”</b> ${address}. या संस्थेचे नियम व नियमावली प्रमाणे या कार्यकारी मंडळावर सदरहु संस्थेच्या कार्यकारी मंडळाचा संस्थेचा कार्यभार सोपविण्यात आला आहे. त्या पहिल्या कार्यकारी मंडळाचा संपुर्ण पत्ता, हुद्दा, वय, व्यवसाय, राष्ट्रीयत्व खालील प्रमाणे आहे.
         </div>
-        ${renderCommitteeTable()}
-        
-        <div style="display: flex; justify-content: space-between; margin-top: 30px; padding: 0 40px; font-weight: bold; font-size: 15.5px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
-        </div>
 
-        <div class="page-break"></div>
+        ${renderCommitteeTable()}
+</div>        
+${renderFooterSignatures()}
+</div>        
+
 
         <!-- PAGE 4: Signatures -->
+
+<div class="page">
+  <div class="page-content">
         <div style="margin-bottom: 12px; font-size: 15.5px; line-height: 1.4; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; text-align: justify;">
             <b>5.</b> आम्ही खालील सह्या करणार <b>" ${trustName} "</b> ${address}. चे पदाधिकारी सदस्य जाहीर करतो की, संस्था अधिनियम 1860 अन्वये अभिप्रेत केलेली संस्था अस्तित्वात आणण्याची आमची ईच्छा असून वरील उद्देशाने आम्ही एकत्र येऊन <b>" ${trustName} "</b> ${address}. ही संस्था आज दिनांक <b>${date}</b> रोजी स्थापन केली असून संस्था नोंदणी अधिनियम 1860 अन्वये नोंदणी करण्यासाठी आम्ही या विधानपत्रावर सह्या केल्या आहेत.
         </div>
@@ -341,10 +442,14 @@ module.exports = (report) => {
             व त्यांनी माझ्या समक्ष या विधानपत्रावर सह्या केल्या आहेत.<br><br><br>
             <b>विशेष कार्यकारी दंडाधिकारी / वकील / सनदी लेखापाल / नोटरी संपूर्ण नांव, पत्ता व शिक्का.</b>
         </div>
+        </div>
+        ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
 
         <!-- PAGE 5: Rules & Regulations -->
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 12px; line-height: 1.3; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             <span style="font-weight: bold; font-size: 18px;">परिशिष्ट " क "</span><br>
             <span style="font-weight: bold; font-size: 16px;">“ ${trustName} ”</span><br>
@@ -515,18 +620,17 @@ module.exports = (report) => {
                 </td>
             </tr>
         </table>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 30px; padding: 0 40px; font-weight: bold; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
-            <div style="text-align: center; width: 100px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px;">सचिव</div>
-        </div>
+</div>
+${renderFooterSignatures()}
+</div>
 
        
 
-        <div class="page-break"></div>
 
         <!-- PAGE 6: Rules Contd -->
+
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 8px;  font-size: 15.5px;; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             (..2..)
         </div>
@@ -572,16 +676,15 @@ module.exports = (report) => {
                 </p>
             </div>
         </div>
+        </div>
         
-        <div style="display: flex; justify-content: space-between; margin-top: 15px; padding: 0 40px; font-weight: bold; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
+        ${renderFooterSignatures()}
         </div>
 
-        <div class="page-break"></div>
-
         <!-- PAGE 7: Rules 11-12 -->
+
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 8px; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             (.. 3 ..)
         </div>
@@ -715,16 +818,13 @@ module.exports = (report) => {
                 </div>
             </div>
         </div>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 15px; padding: 0 40px; font-weight: bold; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px; border-top: 1px solid #000; padding-top: 3px;">सचिव</div>
+        
         </div>
-
-        <div class="page-break"></div>
-
+        ${renderFooterSignatures()}
+        </div>
         <!-- PAGE 8: Rule 13, 14, 15, 16, 17 (Part 1) -->
+<div class="page">
+  <div class="page-content">
         <div style="margin-bottom: 8px; font-size: 14.5px; line-height: 1.3;">
             <b style="font-size: 14.5px;">13) कार्यकारी मंडळाची सभा व मागणी :-</b><br>
             कार्यकारी मंडळाची सभा ही जास्तीत जास्त तीन महिन्यातून एकदा घेण्यात येईल. अशा प्रकारे एका वर्षात कमीत कमी चार सभा घेण्यात येतील. तसेच महत्त्वाच्या अथवा तातडीच्या कामासाठी कार्यकारी मंडळाची सभा बोलविण्यात येईल. त्यासाठी कमीत कमी २/३ सभासदांची अध्यक्षांकडे मागणी करणे आवश्यक आहे. तिला मागणीची सभा किंवा तातडीची सभा असे संबोधण्यात येईल. ही तातडीची सभा बोलविण्याचा अधिकार अध्यक्षांचा राहील. सदर सभा अध्यक्षांनी १५ दिवसांच्या आत न बोलविल्यास मागणी करणारे सभासद अशी सभा बोलवतील.
@@ -750,10 +850,15 @@ module.exports = (report) => {
             ड) मुंबई सार्वजनिक विश्वस्त व्यवस्था अधिनियम १९५० च्या नियमांना अधीन राहून संस्थेच्या नावाने जंगम व स्थावर मिळकत खरेदी करणे व त्यावर इमारती व वास्तू बांधणे, गहाण व भाड्याने व लीज पद्धतीने देणे व त्यांचा उपयोग करून संस्थेच्या उद्दिष्टांची पूर्ती करणे.<br>
             इ) संस्थेच्या उपक्रमाच्या व योजनांच्या अंमलबजावणीसाठी आवश्यक त्या विषय समित्या किंवा पोटसमित्या नेमणे. त्यांची सदस्य संख्या कार्यकाळ, कार्यक्षेत्र, कार्यपद्धती, अर्थव्यवस्था, वगैरे सर्व ठरविणे, तसेच त्या समित्यांमध्ये सर्व सदस्यांमधून योग्य व अनुभवी व तज्ज्ञ व्यक्तीस नेमणे.
         </div>
-
-        <div class="page-break"></div>
+        </div>
+  ${renderFooterSignatures()}
+        </div>
+       
 
         <!-- PAGE 9: Rule 17 (Part 2) + Rules 18 to 24 -->
+
+<div class="page">
+  <div class="page-content">
         <div style="margin-bottom: 8px; font-size: 14.5px; line-height: 1.3;">
             फ) आवश्यक तो नोकरवर्ग नेमणे, त्यांचे पगार ठरविणे व त्यांना सेवेतून मुक्त करणे.<br>
             ब) कार्यकारी मंडळावर मुदती आधी जागा रिकामी झाल्यास ती बहुमताने भरून काढणे.<br>
@@ -788,10 +893,15 @@ module.exports = (report) => {
             <b style="font-size: 14.5px;">24) नियम आणि नियमावलीत बदल करण्याची तरतूद :-</b><br>
             या नियमावलीत बदल करणे व नवीन नियमांचा अंतर्भाव करणे यांसाठी वार्षिक सर्वसाधारण सभेत अथवा विशेष सर्वसाधारण सभेत ३/५ मताधिक्याने मंजुरी मिळवावी लागेल संस्था नोंदणी कायदा १८६० चे कलम १२ व १२ अ नुसार कार्यवाही केली जाईल.
         </div>
+        </div>
+          ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
 
         <!-- PAGE 10: Rule 25, 26 + Certificate (दाखला) -->
+
+<div class="page">
+  <div class="page-content">
         <div style="margin-bottom: 8px; font-size: 14.5px; line-height: 1.3;">
             <b style="font-size: 14.5px;">25) संस्थेच्या नावात व उद्देशात बदल करण्याची तरतूद :-</b><br>
             संस्थेच्या नावांत किंवा उद्देशात बदल करावयाचा असल्यास संस्था नोंदणी अधिनियम १८६० मधील कलम १२ व १२ अ चा अवलंब केला जाईल. ती तशी मंजुरी सर्वसाधारण सभेत ३/५ बहुमताने घेण्यात येईल.
@@ -807,26 +917,30 @@ module.exports = (report) => {
             या संस्थेच्या नियमावलीची ही सत्यप्रत आहे.
         </div>
 
-        <div class="flex-between" style="margin-top: 40px; padding: 0 40px;">
-            <div style="text-align: center;">
-                <b>${presidentName}</b><br>अध्यक्ष
-            </div>
-            <div style="text-align: center;">
-                <b>${vicePresidentName}</b><br>उपाध्यक्ष
-            </div>
-            <div style="text-align: center;">
-                <b>${secretaryName}</b><br>सचिव
-            </div>
-        </div>
+        
 
         <div class="mt-20">
             स्थळ : ${place}<br>
             दिनांक : ${date}
         </div>
+       <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+  <div style="text-align: center; width: 260px; line-height: 1;">
+    <b>${presidentName}</b><br>
+    अध्यक्ष<br>
+    <b>" ${trustName} "</b><br>
+    ${address}
+  </div>
+</div>
+        </div>
+        ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+    
 
         <!-- PAGE 11: Consent Letter (परिशिष्ट ड) -->
+        
+<div class="page">
+  <div class="page-content">
         <div class="title-lg">परिशिष्ट " ड "</div>
         <div class="title-sm text-center">-: संमती पत्र :- (Consent letter of members)</div>
         <div class="mt-20 mb-20">
@@ -851,10 +965,16 @@ module.exports = (report) => {
             व त्यांनी माझ्या समक्ष या विधानपत्रावर सह्या केल्या आहेत.<br><br><br>
             <b>विशेष कार्यकारी दंडाधिकारी / वकील / सनदी लेखापाल / नोटरी संपूर्ण नांव, पत्ता व शिक्का.</b>
         </div>
+        </div>
+       ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+       
 
         <!-- PAGE 12: Authority Letter (परिशिष्ट इ) -->
+        
+<div class="page">
+  <div class="page-content">
         <div class="title-lg">परिशिष्ट " इ "</div>
         <div class="title-sm text-center">अधिकार पत्र (Authority Letter)</div>
         <div class="mt-20 mb-20">
@@ -879,10 +999,16 @@ module.exports = (report) => {
             " ${trustName} "<br>
             ${address}
         </div>
+        </div>
+        ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+        
 
         <!-- PAGE 13: Schedule 6 (तक्ता नियम सहा) -->
+        
+<div class="page">
+  <div class="page-content">
         <div class="title-md text-center">तक्ता नियम सहा (6) नियम 15<br><span style="text-decoration: underline;">(Schedule-6)</span><br><span style="text-decoration: underline;">संचालक मंडळाने निवडलेल्यांची यादी</span></div>
         <table style="width: 100%; border: none; margin-bottom: 20px; margin-top: 20px;">
             <tr>
@@ -911,10 +1037,16 @@ module.exports = (report) => {
                 ${address}
             </div>
         </div>
+        </div>
+      ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+      
 
         <!-- PAGE 14: Schedule 1 (तक्ता नियम सात) -->
+        
+<div class="page">
+  <div class="page-content">
         <div class="title-md text-center">तक्ता नियम सात (7) नियम 15<br><span style="text-decoration: underline;">(Schedule-1)</span><br><span style="text-decoration: underline;">संस्था नोंदणी अधिनियम 1860 चे कलम 4 नुसार</span></div>
         <table style="width: 100%; border: none; margin-bottom: 20px; margin-top: 20px;">
             <tr>
@@ -948,10 +1080,16 @@ module.exports = (report) => {
                 ${address}
             </div>
         </div>
+        </div>
+        ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+        
 
         <!-- PAGE 15: Schedule 8 (तक्ता नियम आठ) -->
+
+<div class="page">
+  <div class="page-content">
         <div class="title-md text-center">तक्ता नियम आठ (8)<br><span style="text-decoration: underline;">संस्था नोंदणी अधिनियम 1860 चे कलम 4 नुसार</span></div>
         <table style="width: 100%; border: none; margin-bottom: 20px; margin-top: 20px;">
             <tr>
@@ -985,10 +1123,16 @@ module.exports = (report) => {
                 ${address}
             </div>
         </div>
+        </div>
+        ${renderFooterSignatures()}
+        </div>
 
-        <div class="page-break"></div>
+      
 
         <!-- PAGE 16: Schedule 2 (Employees List) -->
+        
+<div class="page">
+  <div class="page-content">
         <div style="text-align: center; margin-bottom: 12px; line-height: 1.3; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif;">
             <span style="font-weight: bold; font-size: 18px; text-decoration: underline;">परिशिष्ट - दोन</span><br>
             <span style="font-weight: bold; font-size: 16px; text-decoration: underline;">(Schedule-2)</span><br>
@@ -1036,16 +1180,16 @@ module.exports = (report) => {
                 <span style="font-size: 14px; font-weight: normal;">${address}</span>
             </div>
         </div>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 35px; padding: 0 40px; font-weight: bold; font-size: 15px; font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; color: #000;">
-            <div style="text-align: center; width: 100px;">अध्यक्ष</div>
-            <div style="text-align: center; width: 100px;">उपाध्यक्ष</div>
-            <div style="text-align: center; width: 100px;">सचिव</div>
+        </div>
+        
+        ${renderFooterSignatures()}
         </div>
 
-        <div class="page-break"></div>
-
+    
         <!-- PAGE 17: Guarantee Letter 1 (रुग्णालय) -->
+
+<div class="page">
+  <div class="page-content">
         <div class="title-lg text-center" style="text-decoration: underline;">हमीपत्र</div>
         <div class="mt-20 mb-20">
             प्रति,<br>
@@ -1094,11 +1238,16 @@ module.exports = (report) => {
                 <b>${presidentName}</b>
             </div>
         </div>
+        </div>
+        </div>
 
-        <div class="page-break"></div>
+       
 
         <!-- PAGE 19: Application for Public Trust Registration (अनुसूची - २) -->
         <!-- PAGE 19: Application for Public Trust Registration (अनुसूची - २) -->
+
+<div class="page">
+  <div class="page-content">
         <div style="font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; font-size: 16px; line-height: 1.4;">
             <div class="title-lg text-center" style="margin-bottom: 2px;">सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज</div>
             <div class="title-md text-center" style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">अनुसूची - २</div>
@@ -1152,14 +1301,18 @@ module.exports = (report) => {
                     </tr>
                 </thead>
                 <tbody>
-                    ${committeeMembers.map((m, i) => `
-                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? '1px dashed #000' : 'none'};">
+                    ${committeeMembers
+                      .map(
+                        (m, i) => `
+                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? "1px dashed #000" : "none"};">
                         <td style="padding: 6px 0; vertical-align: top;">${i + 1}.</td>
-                        <td style="padding: 6px 0; vertical-align: top; font-weight: bold;">${m.name || '_____'}</td>
-                        <td style="padding: 6px 0; vertical-align: top; font-size: 14px; line-height: 1.3;">${m.address || '_____'}</td>
-                        <td style="padding: 6px 0; vertical-align: top;">${m.designation || '_____'}</td>
+                        <td style="padding: 6px 0; vertical-align: top; font-weight: bold;">${m.name || "_____"}</td>
+                        <td style="padding: 6px 0; vertical-align: top; font-size: 14px; line-height: 1.3;">${m.address || "_____"}</td>
+                        <td style="padding: 6px 0; vertical-align: top;">${m.designation || "_____"}</td>
                     </tr>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                 </tbody>
             </table>
             
@@ -1176,10 +1329,15 @@ module.exports = (report) => {
                 </tr>
             </table>
         </div>
+        </div>
+        </div>
 
-        <div class="page-break"></div>
+        
 
         <!-- PAGE 20: Application for Public Trust Registration (सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज - पान २) -->
+
+<div class="page">
+  <div class="page-content">
         <div style="font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; font-size: 15px; line-height: 1.4;">
             <table style="width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.4;">
                 <!-- Row 3 -->
@@ -1260,9 +1418,11 @@ module.exports = (report) => {
                 </tr>
             </table>
         </div>
+        </div>
+   
+        </div>
 
-        <div class="page-break"></div>
-
+   
         <!-- PAGE 21: Application for Public Trust Registration (सार्वजनिक विश्वस्त व्यवस्थेच्या नोंदणीसाठीचा अर्ज - पान ३) -->
         <div style="font-family: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', serif; font-size: 15.5px; line-height: 1.5;">
             <table style="width: 100%; border-collapse: collapse; font-size: 15.5px; line-height: 1.5; margin-bottom: 15px;">
@@ -1429,16 +1589,20 @@ module.exports = (report) => {
                     </tr>
                 </thead>
                 <tbody>
-                    ${committeeMembers.map((m, i) => `
-                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? '1px dashed #000' : 'none'};">
+                    ${committeeMembers
+                      .map(
+                        (m, i) => `
+                    <tr style="border-bottom: ${i === committeeMembers.length - 1 ? "1px dashed #000" : "none"};">
                         <td style="padding: 8px 0; vertical-align: top;">${i + 1}.</td>
-                        <td style="padding: 8px 0; vertical-align: top; font-weight: bold;">${m.name || '_____'}</td>
-                        <td style="padding: 8px 0; vertical-align: top; font-size: 14px; line-height: 1.3;">${m.address || '_____'}</td>
+                        <td style="padding: 8px 0; vertical-align: top; font-weight: bold;">${m.name || "_____"}</td>
+                        <td style="padding: 8px 0; vertical-align: top; font-size: 14px; line-height: 1.3;">${m.address || "_____"}</td>
                         <td style="padding: 8px 0; vertical-align: middle; text-align: center;">
                             <span style="border-bottom: 1px solid #000; width: 90px; display: inline-block;">&nbsp;</span>
                         </td>
                     </tr>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                 </tbody>
             </table>
 
