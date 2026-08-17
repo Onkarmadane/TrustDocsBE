@@ -15,17 +15,20 @@ const userSchema = new mongoose.Schema(
                 /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                 "Please fill a valid email address",
             ],
+            trim: true,
         },
         mobile: {
             type: String,
             unique: true,
             sparse: true,
+            trim: true,
         },
         password: {
             type: String,
             required: true,
             minlength: 4,
             select: false,
+            trim:true
         },
         role: {
             type: String,

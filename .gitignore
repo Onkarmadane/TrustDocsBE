@@ -1,2 +1,54 @@
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
-node_modules
+.env.local
+.env.*.local
+
+# Puppeteer cache, downloaded browser binaries, and temp profiles
+.puppeteer/
+.puppeteer-cache/
+.local-chromium/
+puppeteer_dev_*
+chrome-profile-*
+core
+core.*
+
+# Generated Documents, Temp files, and Mock PDFs
+*.pdf
+*.doc
+*.docx
+temp/
+tmp/
+uploads/
+downloads/
+audit_test_mock.pdf
+
+# Logs & Debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test Coverage
+coverage/
+.nyc_output/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
+
+# Archives & Backups
+*.zip
+*.tar.gz
+*.rar

@@ -1,401 +1,551 @@
 const generateNondaniReportHTML = require("./nondaniTemplate");
 
 exports.generateReportHTML = (report) => {
-  if (report.reportType === "nondani") {
-    return generateNondaniReportHTML(report);
-  }
-  const formatAddress = (address) => {
-    if (!address) return null;
-    const parts = [
-      address.buildingName,
-      address.streetName,
-      address.landmark,
-      address.village,
-      address.taluka,
-      address.district,
-    ].filter(Boolean);
-    if (parts.length === 0) return null;
-    return parts.join(", ") + (address.pin ? ` - ${address.pin}` : "");
-  };
+    if (report.reportType === "nondani") {
+        return generateNondaniReportHTML(report);
+    }
+    const formatAddress = (address) => {
+        if (!address) return null;
+        const parts = [
+            address.buildingName,
+            address.streetName,
+            address.landmark,
+            address.village,
+            address.taluka,
+            address.district,
+        ].filter(Boolean);
+        if (parts.length === 0) return null;
+        return parts.join(", ") + (address.pin ? ` - ${address.pin}` : "");
+    };
 
-  // Default values if data is missing
-  const trustName =
-    report.trustDetails?.trustName ||
-    report.trustName ||
-    "Trust Name Not Provided";
-  const registrationNo =
-    report.trustDetails?.trustNumber ||
-    report.registrationNo ||
-    "Registration No. Not Provided";
-  const yearEnding =
-    report.accountingYear || report.financialYear || "31.03.2025";
-  const address =
-    formatAddress(report.trustDetails?.address) ||
-    report.address ||
-    "Address Not Provided";
-  const date = report.date
-    ? new Date(report.date).toLocaleDateString("en-GB")
-    : "__.__.____";
-  const place = report.place || "Jalna";
+    // Default values if data is missing
+    const trustName =
+        report.trustDetails?.trustName ||
+        report.trustName ||
+        "Trust Name Not Provided";
+    const registrationNo =
+        report.trustDetails?.trustNumber ||
+        report.registrationNo ||
+        "Registration No. Not Provided";
+    const yearEnding =
+        report.accountingYear || report.financialYear || "31.03.2025";
+    const address =
+        formatAddress(report.trustDetails?.address) ||
+        report.address ||
+        "Address Not Provided";
+    const date = report.date
+        ? new Date(report.date).toLocaleDateString("en-GB")
+        : "__.__.____";
+    const place = report.place || "Jalna";
 
-  const auditorFirm = report.auditorDetails?.nameOfFirm || "";
-  const auditorStatus = report.auditorDetails?.status || "";
-  const auditorName = report.auditorDetails?.auditorName || "";
-  const auditorMembershipNo = report.auditorDetails?.membershipNumber || "";
-  const auditorRegistrationNo = report.auditorDetails?.registrationNumber || "";
-  const auditorAddressLine =
-    formatAddress(report.auditorAddress?.address) || "";
-  const auditorEmail = report.auditorAddress?.emailId || "";
-  const auditorMobile = report.auditorAddress?.mobileNumber || "";
+    const auditorFirm = report.auditorDetails?.nameOfFirm || "";
+    const auditorStatus = report.auditorDetails?.status || "";
+    const auditorName = report.auditorDetails?.auditorName || "";
+    const auditorMembershipNo = report.auditorDetails?.membershipNumber || "";
+    const auditorRegistrationNo = report.auditorDetails?.registrationNumber || "";
+    const auditorAddressLine =
+        formatAddress(report.auditorAddress?.address) || "";
+    const auditorEmail = report.auditorAddress?.emailId || "";
+    const auditorMobile = report.auditorAddress?.mobileNumber || "";
 
-  // Extract dynamic arrays from the model (with fallbacks to empty arrays)
-  const permissions = report.permissions || [];
-  const expenditures = report.incomeExpenditure?.expenditures || [];
-  const incomes = report.incomeExpenditure?.incomes || [];
-  const totalExpenditure = report.incomeExpenditure?.totalExpenditure || 0;
-  const totalIncome = report.incomeExpenditure?.totalIncome || 0;
+    // Extract dynamic arrays from the model (with fallbacks to empty arrays)
+    const permissions = report.permissions || [];
+    const expenditures = report.incomeExpenditure?.expenditures || [];
+    const incomes = report.incomeExpenditure?.incomes || [];
+    const totalExpenditure = report.incomeExpenditure?.totalExpenditure || 0;
+    const totalIncome = report.incomeExpenditure?.totalIncome || 0;
 
-  const fundsLiabilities = report.balanceSheet?.fundsLiabilities || [];
-  const propertyAssets = report.balanceSheet?.propertyAssets || [];
-  const totalFunds = report.balanceSheet?.totalFundsLiabilities || 0;
-  const totalAssets = report.balanceSheet?.totalPropertyAssets || 0;
+    const fundsLiabilities = report.balanceSheet?.fundsLiabilities || [];
+    const propertyAssets = report.balanceSheet?.propertyAssets || [];
+    const totalFunds = report.balanceSheet?.totalFundsLiabilities || 0;
+    const totalAssets = report.balanceSheet?.totalPropertyAssets || 0;
 
-  const receipts = report.receiptPayment?.receipts || [];
-  const payments = report.receiptPayment?.payments || [];
-  const totalReceipts = report.receiptPayment?.totalReceipts || 0;
-  const totalPayments = report.receiptPayment?.totalPayments || 0;
+    const receipts = report.receiptPayment?.receipts || [];
+    const payments = report.receiptPayment?.payments || [];
+    const totalReceipts = report.receiptPayment?.totalReceipts || 0;
+    const totalPayments = report.receiptPayment?.totalPayments || 0;
 
-  const schIX_incomeShown = report.scheduleIX?.incomeShown || 0;
-  const schIX_deductions = report.scheduleIX?.deductions || [];
-  const schIX_grossAnnualIncome = report.scheduleIX?.grossAnnualIncome || 0;
-  const schIX_contribution = report.scheduleIX?.contribution || 0;
+    const schIX_incomeShown = Number(report.scheduleIX?.incomeShown) || 0;
+    const schIX_deductions = report.scheduleIX?.deductions || [];
+    const totalDeductionsCalc = schIX_deductions.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+    const schIX_totalDeductions = totalDeductionsCalc > 0
+        ? totalDeductionsCalc
+        : ((report.scheduleIX?.totalDeductions !== undefined && report.scheduleIX?.totalDeductions !== null)
+            ? Number(report.scheduleIX.totalDeductions)
+            : ((schIX_incomeShown && report.scheduleIX?.grossAnnualIncome && (schIX_incomeShown - Number(report.scheduleIX.grossAnnualIncome) > 0)) 
+                ? (schIX_incomeShown - Number(report.scheduleIX.grossAnnualIncome)) 
+                : ""));
+    const schIX_grossAnnualIncome = (report.scheduleIX?.grossAnnualIncome !== undefined && report.scheduleIX?.grossAnnualIncome !== null && report.scheduleIX?.grossAnnualIncome !== "")
+        ? Number(report.scheduleIX.grossAnnualIncome)
+        : (schIX_incomeShown ? Math.max(0, schIX_incomeShown - (Number(schIX_totalDeductions) || 0)) : 0);
+    const schIX_contribution = report.scheduleIX?.contribution || 0;
 
-  const sch9d_trustPan = report.schedule9D?.trustPan || "";
-  const sch9d_incomeTaxRegistration =
-    report.schedule9D?.incomeTaxRegistration || "";
-  const rawPreviousITReturns = report.schedule9D?.previousITReturns || [];
-  const sch9d_previousITReturns = Array.from({ length: Math.max(3, rawPreviousITReturns.length) })
-    .map((_, i) => rawPreviousITReturns[i] || { receiptNo: "", year: "" });
-  const rawTrusteesPan = report.schedule9D?.trusteesPan || [];
-  const sch9d_trusteesPan = Array.from({ length: Math.max(9, rawTrusteesPan.length) })
-    .map((_, i) => rawTrusteesPan[i] || { name: "", pan: "" });
+    const sch9d_trustPan = report.schedule9D?.trustPan || "";
+    const sch9d_incomeTaxRegistration =
+        report.schedule9D?.incomeTaxRegistration || "";
+    const rawPreviousITReturns = report.schedule9D?.previousITReturns || [];
+    const sch9d_previousITReturns = Array.from({ length: Math.max(3, rawPreviousITReturns.length) })
+        .map((_, i) => rawPreviousITReturns[i] || { receiptNo: "", year: "" });
+    const rawTrusteesPan = report.schedule9D?.trusteesPan || [];
+    const sch9d_trusteesPan = Array.from({ length: Math.max(9, rawTrusteesPan.length) })
+        .map((_, i) => rawTrusteesPan[i] || { name: "", pan: "" });
 
-  const formatExemptionDate = (dateVal) => {
-    if (!dateVal) return "";
-    const d = new Date(dateVal);
-    if (isNaN(d.getTime())) return dateVal;
-    return d.toLocaleDateString("en-GB");
-  };
+    const formatExemptionDate = (dateVal) => {
+        if (!dateVal) return "";
+        const d = new Date(dateVal);
+        if (isNaN(d.getTime())) return dateVal;
+        return d.toLocaleDateString("en-GB");
+    };
 
-  const delay_applicantName =
-    report.delayExemption?.applicantName ||
-    sch9d_trusteesPan?.[0]?.name ||
-    "__________________";
-  const delay_applicantAge = report.delayExemption?.applicantAge || "४०";
-  const delay_applicantAddress =
-    report.delayExemption?.applicantAddress || address;
-  const delay_designation =
-    report.delayExemption?.designation || "विश्वस्त / सचिव / अध्यक्ष";
-  const delay_trustRegistrationDate =
-    report.delayExemption?.trustRegistrationDate || "-  /  /20  ";
-  const delay_financialYearMarathi =
-    report.delayExemption?.financialYearMarathi || "2023-24";
-  const delay_place = report.delayExemption?.place || "जालना";
-  const delay_date = report.delayExemption?.date
-    ? formatExemptionDate(report.delayExemption.date)
-    : report.date
-      ? formatExemptionDate(report.date)
-      : "__.__.____";
+    const delay_applicantName =
+        report.delayExemption?.applicantName ||
+        sch9d_trusteesPan?.[0]?.name ||
+        "__________________";
+    const delay_applicantAge = report.delayExemption?.applicantAge || "४०";
+    const delay_applicantAddress =
+        report.delayExemption?.applicantAddress || address;
+    const delay_designation =
+        report.delayExemption?.designation || "विश्वस्त / सचिव / अध्यक्ष";
+    const delay_trustRegistrationDate =
+        report.delayExemption?.trustRegistrationDate || "-  /  /20  ";
+    const delay_financialYearMarathi =
+        report.delayExemption?.financialYearMarathi || "2023-24";
+    const delay_place = report.delayExemption?.place || "जालना";
+    const delay_date = report.delayExemption?.date
+        ? formatExemptionDate(report.delayExemption.date)
+        : report.date
+            ? formatExemptionDate(report.date)
+            : "__.__.____";
 
-  const generateTrusteePage9Rows = (trustees) => {
-    const minRows = 9;
-    const rows = [];
-    const totalRows = Math.max(minRows, trustees.length);
+    const generateTrusteePage9Rows = (trustees) => {
+        const minRows = 9;
+        const rows = [];
+        const totalRows = Math.max(minRows, trustees.length);
 
-    for (let i = 0; i < totalRows; i++) {
-      const trustee = trustees[i] || { name: "", pan: "" };
-      rows.push(`
+        for (let i = 0; i < totalRows; i++) {
+            const trustee = trustees[i] || { name: "", pan: "" };
+            rows.push(`
                 <tr>
                     <td style="text-align: center; font-weight: bold;">${i + 1}</td>
                     <td style="text-align: left;">${trustee.name || ""}</td>
                     <td style="text-align: center;">${trustee.pan || ""}</td>
                 </tr>
             `);
-    }
-    return rows.join("");
-  };
+        }
+        return rows.join("");
+    };
 
-  // Helper to fix image URLs for Puppeteer
-  const fixImageUrl = (url) => {
-    if (!url) return "";
-    if (url.startsWith("http")) return url;
-    const baseUrl = process.env.SERVER_URL || "http://localhost:5000";
-    return `${baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
-  };
+    // Helper to fix image URLs for Puppeteer
+    const fixImageUrl = (url) => {
+        if (!url) return "";
+        if (url.startsWith("http")) return url;
+        const baseUrl = process.env.SERVER_URL || "http://localhost:5000";
+        return `${baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
+    };
 
-  const sig1 = fixImageUrl(report.signatures?.[0]?.file);
-  const sig2 = fixImageUrl(report.signatures?.[1]?.file);
-  const sig3 = fixImageUrl(report.signatures?.[2]?.file);
-  const sig4 = fixImageUrl(report.signatures?.[3]?.file);
-  const stamp1 = fixImageUrl(report.stamps?.[0]?.file);
-  const stamp2 = fixImageUrl(report.stamps?.[1]?.file);
-  const stamp3 = fixImageUrl(report.stamps?.[2]?.file);
-  const stamp4 = fixImageUrl(report.stamps?.[3]?.file);
-  // Helper functions to generate rows
-  const generateIncomeExpenditureFlatRows = (expenditures, incomes) => {
-    const maxRows = Math.max(expenditures.length, incomes.length);
-    if (maxRows === 0)
-      return '<tr class="flat-data-row"><td colspan="4" class="text-center">No data available</td></tr>';
+    const sig1 = fixImageUrl(report.signatures?.[0]?.file);
+    const sig2 = fixImageUrl(report.signatures?.[1]?.file);
+    const sig3 = fixImageUrl(report.signatures?.[2]?.file);
+    const sig4 = fixImageUrl(report.signatures?.[3]?.file);
+    const stamp1 = fixImageUrl(report.stamps?.[0]?.file);
+    const stamp2 = fixImageUrl(report.stamps?.[1]?.file);
+    const stamp3 = fixImageUrl(report.stamps?.[2]?.file);
+    const stamp4 = fixImageUrl(report.stamps?.[3]?.file);
+    // Helper functions to detect headings and subitems for Excel-styled tables
+    const isHeading = (item) => {
+        if (!item || !item.label) return false;
+        if (item.isHeader === true) return true;
+        if (item.isSubItem === true) return false;
 
-    let html = "";
-    for (let i = 0; i < maxRows; i++) {
-      const exp = expenditures[i] || {
-        label: "",
-        amount: null,
-        isHeader: false,
-      };
-      const inc = incomes[i] || { label: "", amount: null, isHeader: false };
+        const l = String(item.label).trim().toLowerCase();
+        const k = String(item.key || "").toLowerCase();
 
-      html += `
-                <tr class="flat-data-row">
-                    <td class="${exp.isHeader ? "font-bold" : ""}">
+        if (k.endsWith('_header') || k.endsWith('_head') || k === 'rec_open' || k === 'pay_close' || k === 'fl_corpus' || k === 'fl_earmarked' || k === 'fl_loans' || k === 'fl_liabilities' || k === 'pa_immovable' || k === 'pa_investments' || k === 'pa_furniture' || k === 'pa_loans' || k === 'pa_advances' || k === 'pa_income_outstanding' || k === 'pa_cash') {
+            return true;
+        }
+
+        const headingLabels = [
+            "to expenditure in respect of properties",
+            "to amount written off",
+            "to expenditure on objects of the trust",
+            "by rent",
+            "by interest",
+            "by dividend",
+            "by donations in cash or kind",
+            "by grants",
+            "by income from other sources",
+            "by transfer from reserve",
+            "trust funds or corpus",
+            "other earmarked funds",
+            "loans (secured or unsecured)",
+            "liabilities",
+            "immovable properties",
+            "investments",
+            "furniture and fixtures",
+            "advances",
+            "income outstanding",
+            "cash and bank balances",
+            "to opening balance",
+            "by closing balances",
+            "to surplus carried over",
+            "by deficit carried over"
+        ];
+
+        return headingLabels.some(h => l.startsWith(h));
+    };
+
+    const isSubItem = (item) => {
+        if (!item || !item.label) return false;
+        if (item.isSubItem === true) return true;
+        if (item.isHeader === true) return false;
+
+        const l = String(item.label).trim().toLowerCase();
+        const k = String(item.key || "").toLowerCase();
+
+        if (k.includes('_inner') || k.startsWith('exp_rates') || k.startsWith('exp_repairs') || k.startsWith('exp_salaries') || k.startsWith('exp_insurance') || k.startsWith('exp_depreciation_prop') || k.startsWith('exp_other_exp') || k.startsWith('exp_bad_debts') || k.startsWith('exp_loan_scholarships') || k.startsWith('exp_irrecoverable') || k.startsWith('exp_other_items') || k.startsWith('exp_obj_') || k.startsWith('inc_rent_') || k.startsWith('inc_interest_') || k.startsWith('fl_co_') || k.startsWith('fl_ef_') || k.startsWith('fl_lo_') || k.startsWith('fl_li_') || k.startsWith('pa_ip_') || k.startsWith('pa_in_') || k.startsWith('pa_ff_') || k.startsWith('pa_lo_') || k.startsWith('pa_ad_') || k.startsWith('pa_io_') || k.startsWith('pa_cb_') || k.startsWith('rec_op_') || k.startsWith('pay_cl_')) {
+            return true;
+        }
+
+        const subLabels = [
+            "rates, taxes", "repairs and maintenance", "salaries", "insurance", "depreciation",
+            "other expenses", "bad debts", "loan scholarships", "irrecoverable rents", "other items",
+            "religious", "educational", "medical relief", "relief of poverty", "other charitable objects",
+            "accrued", "realised", "on securities", "on loan", "on bank account",
+            "balance as per", "adjustment during", "sinking fund", "depreciation fund", "specific funds", "reserve fund", "other funds",
+            "from trustees", "from others", "for expenses", "for advances", "for rent and other deposits", "sundry credit balance",
+            "additions during", "less: sales", "depreciation up to date", "in securities", "in shares", "in fixed deposit", "other investments",
+            "to trustees", "to employees", "to contractor", "to lawyers", "to others", "rent", "interest", "other income",
+            "in savings account", "in current account", "in fixed deposit account", "with the trustee", "with the manager",
+            "cash", "bank", "cash in hand"
+        ];
+
+        return subLabels.some(s => l.startsWith(s));
+    };
+
+    const getItemStyle = (item) => {
+        if (isSubItem(item)) {
+            return "padding-left: 10px; font-weight: normal; word-break: break-word;";
+        }
+        if (isHeading(item)) {
+            return "font-weight: bold; padding-left: 3px; word-break: break-word;";
+        }
+        return "padding-left: 3px; word-break: break-word;";
+    };
+
+    const formatCellAmount = (val) => {
+        if (val === null || val === undefined || val === "") return "";
+        const n = typeof val === "number" ? val : parseFloat(String(val).replace(/,/g, ""));
+        if (isNaN(n) || n === 0) return "";
+        return n.toLocaleString("en-IN");
+    };
+
+    // Helper functions to generate Excel-styled rows
+    const generateIncomeExpenditureFlatRows = (rawExpenditures, rawIncomes) => {
+        const cleanExpenditures = [];
+        let seenSurplus = false;
+        (rawExpenditures || []).forEach(item => {
+            const isSurplus = (item.key && String(item.key).includes('surplus')) || (item.label && String(item.label).toLowerCase().includes('surplus'));
+            if (isSurplus) {
+                if (!seenSurplus) {
+                    seenSurplus = true;
+                    cleanExpenditures.push(item);
+                }
+            } else {
+                cleanExpenditures.push(item);
+            }
+        });
+
+        const cleanIncomes = [];
+        let seenDeficit = false;
+        (rawIncomes || []).forEach(item => {
+            const isDeficit = (item.key && String(item.key).includes('deficit')) || (item.label && String(item.label).toLowerCase().includes('deficit'));
+            if (isDeficit) {
+                if (!seenDeficit) {
+                    seenDeficit = true;
+                    cleanIncomes.push(item);
+                }
+            } else {
+                cleanIncomes.push(item);
+            }
+        });
+
+        const maxRows = Math.max(cleanExpenditures.length, cleanIncomes.length);
+        if (maxRows === 0)
+            return '<tr class="excel-row"><td colspan="4" class="text-center">No data available</td></tr>';
+
+        let html = "";
+        for (let i = 0; i < maxRows; i++) {
+            const exp = cleanExpenditures[i] || {
+                label: "",
+                amount: null,
+                isHeader: false,
+            };
+            const inc = cleanIncomes[i] || { label: "", amount: null, isHeader: false };
+
+            const expStyle = getItemStyle(exp);
+            const incStyle = getItemStyle(inc);
+
+            html += `
+                <tr class="excel-row">
+                    <td style="${expStyle}">
                         ${exp.label || ""}
                     </td>
-                    <td class="col-amount">
-                        ${exp.amount !== null && exp.amount !== undefined ? exp.amount : ""}
+                    <td class="col-amount ${isHeading(exp) ? "font-bold" : ""}">
+                        ${formatCellAmount(exp.amount)}
                     </td>
-                    <td class="${inc.isHeader ? "font-bold" : ""}">
+                    <td style="${incStyle}">
                         ${inc.label || ""}
                     </td>
-                    <td class="col-amount">
-                        ${inc.amount !== null && inc.amount !== undefined ? inc.amount : ""}
+                    <td class="col-amount ${isHeading(inc) ? "font-bold" : ""}">
+                        ${formatCellAmount(inc.amount)}
                     </td>
                 </tr>
             `;
-    }
-    return html;
-  };
+        }
+        return html;
+    };
 
-  const generateBalanceSheetFlatRows = (leftItems, rightItems) => {
-    const maxRows = Math.max(leftItems.length, rightItems.length);
-    if (maxRows === 0)
-      return '<tr class="flat-data-row"><td colspan="6" class="text-center">No data available</td></tr>';
+    const cleanLabel = (label) => {
+        if (!label) return "";
+        return String(label)
+            .replace(/\s*\(Total\)/gi, "")
+            .replace(/\s*\(Detail\)/gi, "")
+            .trim();
+    };
 
-    let html = "";
-    for (let i = 0; i < maxRows; i++) {
-      const left = leftItems[i] || {
-        label: "",
-        amount: null,
-        total: null,
-        isHeader: false,
-      };
-      const right = rightItems[i] || {
-        label: "",
-        amount: null,
-        total: null,
-        isHeader: false,
-      };
+    const cleanBalanceSheetList = (items) => {
+        if (!Array.isArray(items)) return [];
+        const result = [];
+        for (const item of items) {
+            if (!item) continue;
+            const rawLabel = String(item.label || "");
+            const isTotalRow = rawLabel.toLowerCase().includes("(total)");
+            const isDetailRow = rawLabel.toLowerCase().includes("(detail)");
+            const baseLabel = cleanLabel(rawLabel);
 
-      html += `
-                <tr class="flat-data-row">
-                    <td class="${left.isHeader ? "font-bold" : ""}">
+            if (isTotalRow && result.length > 0) {
+                const prev = result[result.length - 1];
+                if (cleanLabel(prev.label) === baseLabel) {
+                    prev.total = (item.amount !== null && item.amount !== undefined && item.amount !== "" && Number(item.amount) !== 0) ? item.amount : (item.total || prev.total);
+                    continue;
+                }
+            }
+
+            if (isDetailRow && result.length > 0) {
+                const prev = result[result.length - 1];
+                if (cleanLabel(prev.label) === baseLabel) {
+                    prev.amount = (item.amount !== null && item.amount !== undefined && item.amount !== "" && Number(item.amount) !== 0) ? item.amount : prev.amount;
+                    continue;
+                }
+            }
+
+            result.push({
+                ...item,
+                label: baseLabel
+            });
+        }
+        return result;
+    };
+
+    const generateBalanceSheetFlatRows = (rawLeftItems, rawRightItems) => {
+        const leftItems = cleanBalanceSheetList(rawLeftItems);
+        const rightItems = cleanBalanceSheetList(rawRightItems);
+        const maxRows = Math.max(leftItems.length, rightItems.length);
+        if (maxRows === 0)
+            return '<tr class="excel-row"><td colspan="6" class="text-center">No data available</td></tr>';
+
+        let html = "";
+        for (let i = 0; i < maxRows; i++) {
+            const left = leftItems[i] || {
+                label: "",
+                amount: null,
+                total: null,
+                isHeader: false,
+            };
+            const right = rightItems[i] || {
+                label: "",
+                amount: null,
+                total: null,
+                isHeader: false,
+            };
+
+            const leftStyle = getItemStyle(left);
+            const rightStyle = getItemStyle(right);
+
+            html += `
+                <tr class="excel-row">
+                    <td style="${leftStyle}">
                         ${left.label || ""}
                     </td>
                     <td class="col-amount">
-                        ${left.amount !== null && left.amount !== undefined ? left.amount : ""}
+                        ${formatCellAmount(left.amount)}
                     </td>
-                    <td class="col-amount">
-                        ${left.total !== null && left.total !== undefined ? left.total : ""}
+                    <td class="col-amount font-bold">
+                        ${formatCellAmount(left.total)}
                     </td>
-                    <td class="${right.isHeader ? "font-bold" : ""}">
+                    <td style="${rightStyle}">
                         ${right.label || ""}
                     </td>
                     <td class="col-amount">
-                        ${right.amount !== null && right.amount !== undefined ? right.amount : ""}
+                        ${formatCellAmount(right.amount)}
                     </td>
-                    <td class="col-amount">
-                        ${right.total !== null && right.total !== undefined ? right.total : ""}
+                    <td class="col-amount font-bold">
+                        ${formatCellAmount(right.total)}
                     </td>
                 </tr>
             `;
-    }
-    return html;
-  };
+        }
+        return html;
+    };
 
-  const getAlphabetIndex = (index) => {
-    let code = "";
-    let temp = index;
-    while (temp >= 0) {
-      code = String.fromCharCode((temp % 26) + 97) + code;
-      temp = Math.floor(temp / 26) - 1;
-    }
-    return code;
-  };
+    const renderDeductionRow = (label, key, indent = 0) => {
+        let amount = "";
+        let rawVal = null;
 
-  const generatePermissionRows = (perms) => {
-    if (!perms || perms.length === 0)
-      return '<tr><td colspan="3" class="text-center">No checklist data</td></tr>';
-    return perms
-      .map((p, index) => {
-        const letterIndex = getAlphabetIndex(index);
+        if (Array.isArray(schIX_deductions)) {
+            const found = schIX_deductions.find(d => {
+                if (!d) return false;
+                if (d.key && d.key === key) return true;
+                if (d.label) {
+                    const dl = d.label.toLowerCase();
+                    if (key === 'sch_donations' && dl.includes('donations')) return true;
+                    if (key === 'sch_grants' && dl.includes('grants')) return true;
+                    if (key === 'sch_sinking' && dl.includes('sinking')) return true;
+                    if (key === 'sch_education' && dl.includes('education')) return true;
+                    if (key === 'sch_medical' && dl.includes('medical')) return true;
+                    if (key === 'sch_veterinary' && dl.includes('veterinary')) return true;
+                    if (key === 'sch_calamity' && (dl.includes('calamity') || dl.includes('distress'))) return true;
+                    if (key === 'sch_agri_a' && (dl.includes('land revenue') || dl.includes('local fund'))) return true;
+                    if (key === 'sch_agri_b' && dl.includes('superior landlord')) return true;
+                    if (key === 'sch_agri_c' && dl.includes('cost of production')) return true;
+                    if (key === 'sch_non_agri_a' && (dl.includes('assessment') || dl.includes('municipal'))) return true;
+                    if (key === 'sch_non_agri_b' && dl.includes('ground rent')) return true;
+                    if (key === 'sch_non_agri_c' && dl.includes('insurance')) return true;
+                    if (key === 'sch_non_agri_d' && dl.includes('repairs at 10')) return true;
+                    if (key === 'sch_non_agri_e' && dl.includes('cost of collection at 4')) return true;
+                    if (key === 'sch_securities_1' && dl.includes('securities')) return true;
+                    if (key === 'sch_repairs' && dl.includes('building not rented')) return true;
+                }
+                return false;
+            });
+            if (found && found.amount !== null && found.amount !== undefined && found.amount !== "") {
+                rawVal = found.amount;
+            }
+        }
+
+        if ((rawVal === null || rawVal === undefined || rawVal === "") && report.scheduleIX && report.scheduleIX[key] !== undefined) {
+            rawVal = report.scheduleIX[key];
+        }
+        if ((rawVal === null || rawVal === undefined || rawVal === "") && report[key] !== undefined) {
+            rawVal = report[key];
+        }
+
+        if (rawVal !== null && rawVal !== undefined && rawVal !== "" && !isNaN(Number(rawVal)) && Number(rawVal) > 0) {
+            amount = Number(rawVal).toLocaleString("en-IN");
+        } else if (rawVal !== null && rawVal !== undefined && rawVal !== "" && typeof rawVal === 'string' && rawVal.trim() !== '') {
+            amount = rawVal;
+        }
+
         return `
+            <div style="display: flex; justify-content: space-between; align-items: baseline; line-height: 1.45; margin-bottom: 3px; ${indent ? `padding-left: ${indent}px;` : ''}">
+                <span style="flex: 1; padding-right: 15px; font-size: 12px;">${label}</span>
+                <span style="font-weight: bold; width: 100px; min-width: 100px; text-align: right; padding-right: 15px; flex-shrink: 0; white-space: nowrap; font-size: 12px;">${amount}</span>
+            </div>
+        `;
+    };
+
+    const renderScheduleIXDeductionsList = () => {
+        return `
+            <div style="font-weight: bold; margin-bottom: 2px;">Items not chargeable to contribution under Section 58 and Rules 32</div>
+            ${renderDeductionRow("i) Donations received from other Public Trust and Dharmadas:", "sch_donations")}
+            ${renderDeductionRow("ii) Grants received from Government and local authorities:", "sch_grants")}
+            ${renderDeductionRow("iii) Interest or Sinking or Depreciation Fund:", "sch_sinking")}
+            ${renderDeductionRow("iv) Amount spent for the purpose of secular education:", "sch_education")}
+            ${renderDeductionRow("v) Amount spent for the purpose of medical relief:", "sch_medical")}
+            ${renderDeductionRow("vi) Amount spent for the purpose of veterinary treatment of animals:", "sch_veterinary")}
+            ${renderDeductionRow("vii) Expenditure incurred from donations for relief of distress caused by scarcity, drought, flood, fire or other natural calamity:", "sch_calamity")}
+            <div>viii) Deductions out of income from lands used for agricultural purpose:</div>
+            ${renderDeductionRow("a] Land Revenue and local Fund cess:", "sch_agri_a", 10)}
+            ${renderDeductionRow("b] Rent payable to superior landlord:", "sch_agri_b", 10)}
+            ${renderDeductionRow("c] Cost of production, if lands are cultivated by trust:", "sch_agri_c", 10)}
+            <div>ix) Deductions out of income from lands used for non agricultural purpose:</div>
+            ${renderDeductionRow("a] Assessment, cesses and other Government or Municipal taxes:", "sch_non_agri_a", 10)}
+            ${renderDeductionRow("b] Ground rent payable to the superior landlord:", "sch_non_agri_b", 10)}
+            ${renderDeductionRow("c] Insurance premia:", "sch_non_agri_c", 10)}
+            ${renderDeductionRow("d] Repairs at 10% of gross rent of Building let out:", "sch_non_agri_d", 10)}
+            ${renderDeductionRow("e] Cost of Collection at 4 percent of gross rent of buildings let out:", "sch_non_agri_e", 10)}
+            ${renderDeductionRow("x) Cost of collection of income or receipts from securities, stocks etc at 1% of such income:", "sch_securities_1")}
+            ${renderDeductionRow("xi) Deduction on account of repairs in respect of building not rented and yielding no income at 10% of the estimated gross annual rent:", "sch_repairs")}
+        `;
+    };
+
+    const getAlphabetIndex = (index) => {
+        let code = "";
+        let temp = index;
+        while (temp >= 0) {
+            code = String.fromCharCode((temp % 26) + 97) + code;
+            temp = Math.floor(temp / 26) - 1;
+        }
+        return code;
+    };
+
+    const generatePermissionRows = (perms) => {
+        if (!perms || perms.length === 0)
+            return '<tr><td colspan="3" class="text-center" style="padding: 4px;">No checklist data</td></tr>';
+        return perms
+            .map((p, index) => {
+                const letterIndex = getAlphabetIndex(index);
+                return `
                 <tr>
-                    <td style="width: 20px;" class="size-meta text-center">${letterIndex}]</td>
-                    <td class="size-meta">${p.question}</td>
-                    <td class="col-yesno size-meta">${p.answer === "yes" ? "Yes" : p.answer === "no" ? "No" : p.answer === "NA" ? "N/A" : p.answer || "N/A"}</td>
+                    <td class="col-checklist-num">${letterIndex}]</td>
+                    <td class="col-checklist-question">${p.question}</td>
+                    <td class="col-checklist-answer">${p.answer === "yes" ? "Yes" : p.answer === "no" ? "No" : p.answer === "NA" ? "N/A" : p.answer || "N/A"}</td>
                 </tr>
             `;
-      })
-      .join("");
-  };
-  const generateSignatureBlock = () => {
-    const trustee1 = sch9d_trusteesPan?.[0]?.name || "";
-    const trustee2 = sch9d_trusteesPan?.[1]?.name || "";
-    const trustee3 = sch9d_trusteesPan?.[2]?.name || "";
+            })
+            .join("");
+    };
+    const generateSignatureBlock = (isCompact = false) => {
+        const boxHeight = isCompact ? "40px" : "65px";
+        const stampMaxH = isCompact ? "38px" : "60px";
+        const stampMaxW = isCompact ? "75px" : "90px";
+        const sigMaxH = isCompact ? "26px" : "42px";
+        const sigMaxW = isCompact ? "65px" : "80px";
+        const metaFont = isCompact ? "10px" : "11.5px";
+        const titleFont = isCompact ? "10.5px" : "12px";
 
-    return `
-    <div class="signatures size-subheading" style="display:flex; flex-direction:column; gap:6px; margin:0; padding:0; width:100%; padding-top:5px;">
+        return `
+    <div class="signatures flex flex-col" style="width:100%; margin:0; padding-top:${isCompact ? '1px' : '4px'};">
       
-      <!-- Row 1: Date + Trustees -->
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%; margin:0; padding:0;">
-        
-        <!-- Date / Place -->
-        <div class="signature-meta" style="width:25%; text-align:left; font-size:11px; line-height:1.35; margin:0; padding:0;">
-          <div>Date :- ${date}</div>
-          <div>Place :- ${place}</div>
-        </div>
-
-        <!-- Trustees -->
-        <div class="signature-right" style="width:72%; display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin:0; padding:0;">
-          
-          <div class="trustee-box" style="width:32%; display:flex; flex-direction:column; align-items:center; text-align:center; margin:0; padding:0;">
-            <div class="font-bold" style="font-size:10px; line-height:1.1; white-space:nowrap; margin:0; padding:0;">TRUSTEE</div>
-            <div style="height:22px; margin:0; padding:0;"></div>
-            <div style="font-size:9px; border-top:1px dashed #000; width:100%; padding-top:3px; line-height:1.15; word-break:break-word; margin:0;">
-              
-            </div>
-          </div>
-
-          <div class="trustee-box" style="width:32%; display:flex; flex-direction:column; align-items:center; text-align:center; margin:0; padding:0;">
-            <div class="font-bold" style="font-size:10px; line-height:1.1; white-space:nowrap; margin:0; padding:0;">TRUSTEE</div>
-            <div style="height:22px; margin:0; padding:0;"></div>
-            <div style="font-size:9px; border-top:1px dashed #000; width:100%; padding-top:3px; line-height:1.15; word-break:break-word; margin:0;">
-             
-            </div>
-          </div>
-
-          <div class="trustee-box" style="width:32%; display:flex; flex-direction:column; align-items:center; text-align:center; margin:0; padding:0;">
-            <div class="font-bold" style="font-size:10px; line-height:1.1; white-space:nowrap; margin:0; padding:0;">TRUSTEE</div>
-            <div style="height:22px; margin:0; padding:0;"></div>
-            <div style="font-size:9px; border-top:1px dashed #000; width:100%; padding-top:3px; line-height:1.15; word-break:break-word; margin:0;">
-              
-            </div>
-          </div>
-
-        </div>
+      <!-- Date / Place (Top-Left) -->
+      <div class="signature-meta" style="text-align:left; font-size:${metaFont}; line-height:1.25; font-weight:normal; margin-bottom:${isCompact ? '1px' : '4px'};">
+        <div>Date: ${date}</div>
+        <div>Place: ${place}</div>
       </div>
+     
 
-      <!-- Row 2: President -->
-      <div style="display:flex; justify-content:flex-start; width:100%; margin:0; padding:0;">
-        <div class="president-box" style="width:25%; display:flex; flex-direction:column; align-items:flex-start; text-align:left; margin:0; padding:0;">
-          <div class="font-bold" style="font-size:11px; line-height:1.1; margin:0; padding:0;">PRESIDENT</div>
-          <div style="font-size:10px; line-height:1.15; margin:0; padding:0;">${trustName}</div>
-          <div class="signature-media-container" style="position:relative; margin-top:2px; width:75px; height:28px;">
-            ${stamp1 ? `<img src="${stamp1}" class="sig-img-stamp" style="position:absolute; top:0; left:0; max-height:28px; max-width:65px;" />` : ""}
-            ${sig1 ? `<img src="${sig1}" class="sig-img-signature" style="position:absolute; top:3px; left:4px; max-height:20px; max-width:58px;" />` : ""}
-          </div>
+      <!-- Signatures (Aligned to the Right) -->
+      <div class="signature-right flex" style="margin-left:auto; width:62%; display:flex; flex-direction:column;">
+        <div style="display:flex; justify-content:space-around; font-weight:bold; font-size:${titleFont}; text-align:center;">
+          <div style="flex:1; text-align:center;">President</div>
+          <div style="flex:1; text-align:center;">Vice President</div>
+          <div style="flex:1; text-align:center;">Trustee</div>
         </div>
+        <div class="sig-box" style="height:${boxHeight}; position:relative;">
+          ${stamp1 ? `` : ""}
+          ${sig1 ? `` : ""}
+          ${stamp2 ? `` : ""}
+          ${sig2 ? `` : ""}
+        </div>
+        <div style="border-top:1px dashed #000; width:100%;"></div>
       </div>
 
     </div>
   `;
-  };
-  //   const generateSignatureBlock = () => {
-  //     const trustee1 = sch9d_trusteesPan?.[0]?.name || "";
-  //     const trustee2 = sch9d_trusteesPan?.[1]?.name || "";
-  //     const trustee3 = sch9d_trusteesPan?.[2]?.name || "";
+    };
 
-  //     return `
-  //     <div class="signatures size-subheading" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; width: 100%;">
-  //       <!-- Row 1: Date/Place & Trustees on the same line -->
-  //       <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
-  //         <!-- Date & Place on Left -->
-  //         <div class="signature-meta" style="font-size: 11px; text-align: left; width: 25%; margin: 0; padding-bottom: 5px;">
-  //           <div>Date :- ${date}</div>
-  //           <div>Place :- ${place}</div>
-  //         </div>
-
-  //         <!-- Trustees inline on Right -->
-  //         <div class="signature-right" style="width: 68%; display: flex; justify-content: space-between; align-items: flex-end; gap: 10px;">
-  //           <div class="signature-block signature-box trustee-box" style="width: 32%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-  //             <div class="font-bold" style="font-size: 10px; white-space: nowrap;">TRUSTEE</div>
-  //             <div style="height: 35px;"></div>
-  //             <div style="font-size: 9px; border-top: 1px dashed #000; width: 100%; padding-top: 4px; line-height: 1.2; word-break: break-word;"></div>
-  //           </div>
-
-  //           <div class="signature-block signature-box trustee-box" style="width: 32%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-  //             <div class="font-bold" style="font-size: 10px; white-space: nowrap;">TRUSTEE</div>
-  //             <div style="height: 35px;"></div>
-  //             <div style="font-size: 9px; border-top: 1px dashed #000; width: 100%; padding-top: 4px; line-height: 1.2; word-break: break-word;"></div>
-  //           </div>
-
-  //           <div class="signature-block signature-box trustee-box" style="width: 32%; display: flex; flex-direction: column; align-items: center; text-align: center;">
-  //             <div class="font-bold" style="font-size: 10px; white-space: nowrap;">TRUSTEE</div>
-  //             <div style="height: 35px;"></div>
-  //             <div style="font-size: 9px; border-top: 1px dashed #000; width: 100%; padding-top: 4px; line-height: 1.2; word-break: break-word;"></div>
-  //           </div>
-  //         </div>
-  //       </div>
-
-  //       <!-- Row 2: President on next line -->
-  //       <div style="display: flex; justify-content: flex-start; width: 100%;">
-  //         <div class="signature-block signature-box president-box" style="width: 30%; display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-  //           <div class="font-bold" style="font-size: 11px;">PRESIDENT</div>
-  //           <div style="font-size: 10px;">${trustName}</div>
-  //           <div class="signature-media-container" style="margin-top: 5px; height: 35px; width: 80px;">
-  //             ${stamp1 ? `<img src="${stamp1}" class="sig-img-stamp" style="max-height: 35px; max-width: 80px;" />` : ""}
-  //             ${sig1 ? `<img src="${sig1}" class="sig-img-signature" style="max-height: 25px; max-width: 70px; top: 5px; left: 5px;" />` : ""}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `;
-  //   };
-  //   const generateSignatureBlock = () => {
-  //     return `
-  //             <div class="signatures size-subheading">
-  //                 <div class="signature-block signature-meta">
-  //                     Date :- ${date}<br>
-  //                     Place :- ${place}
-  //                 </div>
-  //                 <div class="signature-block signature-box">
-  //                     <div class="font-bold">PRESIDENT</div>
-  //                     <div>${trustName}</div>
-  //                     <div class="signature-media-container">
-  //                         ${stamp1 ? `<img src="${stamp1}" class="sig-img-stamp" />` : ""}
-  //                         ${sig1 ? `<img src="${sig1}" class="sig-img-signature" />` : ""}
-  //                     </div>
-  //                 </div>
-  //                 ${
-  //                   sig2 || stamp2
-  //                     ? `
-  //                 <div class="signature-block signature-box">
-  //                     <div class="font-bold">SECRETARY / TRUSTEE</div>
-  //                     <div>${trustName}</div>
-  //                     <div class="signature-media-container">
-  //                         ${stamp2 ? `<img src="${stamp2}" class="sig-img-stamp" />` : ""}
-  //                         ${sig2 ? `<img src="${sig2}" class="sig-img-signature" />` : ""}
-  //                     </div>
-  //                 </div>
-  //                 `
-  //                     : ""
-  //                 }
-  //             </div>
-  //         `;
-  //   };
-
-  // Build the HTML structure
-  return `
+    // Build the HTML structure
+    return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -408,7 +558,7 @@ exports.generateReportHTML = (report) => {
                 /* Centralized Font Styles */
                 --font-primary: 'Sakal Marathi', 'SakalBharati', 'Tiro Devanagari Marathi', 'Times New Roman', Times, serif;
 
-                /* Centralized Typography Sizes (Configurable at one place to manage scaling and prevent page breaks) */
+                /* Centralized Typography Sizes */
                 --size-title: 22px;
                 --size-heading: 16px;
                 --size-subheading: 14px;
@@ -418,10 +568,10 @@ exports.generateReportHTML = (report) => {
                 --size-small: 11px;
 
                 /* Line Heights */
-                --lh-title: 1;
-                --lh-heading: 1;
-                --lh-body: 1;
-                --lh-table: 1;
+                --lh-title: 1.15;
+                --lh-heading: 1.15;
+                --lh-body: 1.2;
+                --lh-table: 1.15;
 
                 /* Spacing Values */
                 --space-xs: 4px;
@@ -431,8 +581,8 @@ exports.generateReportHTML = (report) => {
                 --space-xl: 30px;
 
                 /* Table Cell Paddings */
-                --table-cell-padding-y: 3px;
-                --table-cell-padding-x: 3px;
+                --table-cell-padding-y: 4px;
+                --table-cell-padding-x: 4px;
                 --table-compact-padding-y: 3px;
                 --table-compact-padding-x: 3px;
             }
@@ -454,31 +604,30 @@ exports.generateReportHTML = (report) => {
             }
             
             /* A4 Print Setup */
-            .page-border {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border: 1px solid #000;
-                pointer-events: none;
-                z-index: -1;
-            }
-          .page {
-    width: 100%;
-    min-height: 100vh; /* or fixed A4 content height if you prefer */
-    padding: 5px;
-    position: relative;
-    page-break-after: always;
+            .page {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px 8px;
+                position: relative;
+                page-break-after: always;
+                page-break-inside: avoid;
 
-    display: flex;
-    flex-direction: column;
-}
+                display: flex;
+                flex-direction: column;
+            }
 
 @page {
     size: A4;
     margin: 8mm;
 }
+
+            /* Tables inside pages should not flex-grow to avoid pushing signatures off-page */
+            .page .excel-table {
+                flex: 0 0 auto;
+            }
+            .page .excel-table tbody {
+                vertical-align: top;
+            }
             
             /* Typography Classes referencing centralized variables */
             .text-center { text-align: center; }
@@ -539,24 +688,96 @@ exports.generateReportHTML = (report) => {
                 padding: var(--table-compact-padding-y) var(--table-compact-padding-x);
             }
 
-            /* Flat Data Table Row Styling (Perfect alignment & continuous vertical lines, closed outer frame) */
-            .flat-data-row td {
-                border-top: none;
-                border-bottom: none;
-                border-left: none;
-                border-right: 1px solid #000;
+            /* Auditor Checklist Table (Page 2) - Optimized cell padding and vertical alignment */
+            .checklist-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 8px;
+                font-size: 11.5px;
+                line-height: 1.35;
+                flex: 1 1 auto;
+            }
+            .checklist-table td {
+                border: 1px solid #000;
+                padding: 4px 5px;
+                vertical-align: middle;
+            }
+            .checklist-table .col-checklist-num {
+                width: 28px;
+                text-align: center;
+                font-weight: bold;
+                white-space: nowrap;
+                padding: 4px 3px;
+                vertical-align: middle;
+            }
+            .checklist-table .col-checklist-question {
+                text-align: left;
+                padding: 4px 6px;
+                vertical-align: middle;
+            }
+            .checklist-table .col-checklist-answer {
+                width: 55px;
+                text-align: center;
+                font-weight: bold;
+                white-space: nowrap;
+                padding: 2px 3px;
+                vertical-align: middle;
+            }
+
+            /* Meta Info Table (Page 2 header info) */
+            .meta-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: none;
+                margin-bottom: 8px;
+                font-size: 12px;
+                line-height: 1.4;
+            }
+            .meta-table td {
+                border: none;
+                padding: 3px 4px;
+                vertical-align: top;
+            }
+
+            /* Excel-Style Table Styling (Complete Excel Spreadsheet Grid Lines & Headers) */
+            .excel-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #000;
+                margin-bottom: var(--space-md);
+                font-size: var(--size-table-cell);
+                line-height: var(--lh-table);
+            }
+            .excel-table th {
+                border: 1px solid #000;
+                background-color: #f2f2f2;
+                font-weight: bold;
+                text-align: center;
+                padding: 6px 5px;
+                vertical-align: middle;
+            }
+            .excel-table td {
+                border: 1px solid #000;
+                padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+                vertical-align: top;
+            }
+            .excel-table .excel-row td,
+            .excel-table .flat-data-row td {
+                border: 1px solid #000;
                 padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
             }
-            /* Outer frame: left border on first cell, right border on last cell */
-            .flat-data-row td:first-child {
-                border-left: 1px solid #000;
-            }
-            .flat-data-row td:last-child {
-                border-right: 1px solid #000;
-            }
-            /* Close the bottom of the flat-data section before the TOTAL row */
-            .flat-data-row:last-of-type td {
+            .excel-table .excel-total-row td {
+                border-top: 1px solid #000;
                 border-bottom: 1px solid #000;
+                border-left: 1px solid #000;
+                border-right: 1px solid #000;
+                font-weight: bold;
+                background-color: #f8f9fa;
+                padding: 6px var(--table-cell-padding-x);
+            }
+            .flat-data-row td {
+                border: 1px solid #000;
+                padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
             }
 
             /* Schedule IX C row styles */
@@ -612,7 +833,7 @@ exports.generateReportHTML = (report) => {
 
             /* Grid for signatures */
             .signatures {
-                display: flex;
+                
                 justify-content: space-between;
                 margin-top: var(--space-xl);
             }
@@ -657,62 +878,188 @@ exports.generateReportHTML = (report) => {
                 .page-signature-footer {
     margin-top: auto;
     width: 100%;
+    padding-top: 8px;
+    flex-shrink: 0;
 }
+
+            /* Compact page layout for dense tables (Balance Sheet, Receipt & Payment, Income & Expenditure) */
+            .page-compact {
+                padding: 6px 8px !important;
+                height: 258mm !important;
+                max-height: 258mm !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+            }
+            .account-header {
+                text-align: center;
+                margin-bottom: 6px !important;
+                padding-top: 0px;
+                flex-shrink: 0;
+                line-height: 1.25;
+            }
+            .account-header .act-title {
+                font-size: 13px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 1.5px;
+            }
+            .account-header .sch-title {
+                font-size: 12px;
+                font-weight: bold;
+                letter-spacing: 0.3px;
+                margin-bottom: 2px;
+            }
+            .account-header .trust-meta {
+                font-size: 11.5px;
+                font-weight: normal;
+                line-height: 1.35;
+                margin-top: 1px;
+            }
+            .account-header .account-title {
+                font-size: 13.5px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                padding: 2px 0;
+            }
+            .page-compact .table-container {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 4px;
+                min-height: 0;
+            }
+            .page-compact .excel-table {
+                width: 100%;
+                height: 100%;
+                margin-bottom: 0px !important;
+                font-size: 11px !important;
+                line-height: 1.2 !important;
+                border-collapse: collapse;
+            }
+            .page-compact .excel-table th {
+                padding: 4px 4px !important;
+                font-size: 11.5px !important;
+                line-height: 1.2 !important;
+                background-color: #f2f2f2;
+                font-weight: bold;
+                text-align: center;
+                vertical-align: middle;
+            }
+            .page-compact .excel-table td {
+                padding: 2.5px 4px !important;
+                font-size: 11px !important;
+                line-height: 1.18 !important;
+                vertical-align: middle;
+            }
+            .page-compact .excel-table .excel-total-row td {
+                padding: 4px 4px !important;
+                font-size: 11.5px !important;
+                font-weight: bold;
+                background-color: #f8f9fa;
+            }
+            .page-compact .page-signature-footer {
+                margin-top: auto !important;
+                padding-top: 4px !important;
+                flex-shrink: 0 !important;
+            }
+            .page-compact .signatures {
+                padding-top: 0px !important;
+                margin-top: 0px !important;
+            }
+            .page-compact .signature-meta {
+                margin-bottom: 2px !important;
+                line-height: 1.3 !important;
+                font-size: 11px !important;
+            }
+            .page-compact .signature-right > div:first-child {
+                font-size: 11px !important;
+            }
         </style>
     </head>
     <body>
-        <div class="page-border"></div>
-
         <!-- PAGE 1: TITLE PAGE -->
-        <div class="page">
-            <div class="main-title uppercase">AUDIT REPORT</div>
-            
-            <div class="text-center mb-8 mt-8">
-                <div class="font-bold mb-2 size-heading">FOR THE YEAR ENDED ${yearEnding}</div>
-                <div class="font-bold mb-2 size-heading">${trustName}</div>
-                <div class="mb-4 size-body">AT ${address}</div>
-                <div class="font-bold mb-2 size-heading">Registration No :- ${registrationNo}</div>
-                <div class="font-bold mb-8 size-heading">Date :- ${date}</div>
-            </div>
-
-            <div class="text-center mt-8 pt-8">
-                <div class="font-bold mb-1 size-heading">${auditorFirm.toUpperCase()}</div>
-                <div class="font-bold mb-1 size-heading">${auditorStatus.toUpperCase()}</div>
-                <div class="size-subheading" style="line-height: 1.5;">
-                    ${auditorName ? `<span class="font-bold">${auditorName}</span><br>` : ""}
-                    ${auditorMembershipNo ? `M.No: ${auditorMembershipNo}` : ""}
-                    ${auditorRegistrationNo ? ` | F.R.No: ${auditorRegistrationNo}` : ""}
-                    ${auditorMembershipNo || auditorRegistrationNo ? "<br>" : ""}
-                    Address :- ${auditorAddressLine}<br>
-                    Email. Id- ${auditorEmail}<br>
-                    Mob.No- ${auditorMobile}
+        <div class="page" style="padding: 10px; display: flex; flex-direction: column; justify-content: stretch;">
+            <div style="border: 2px solid #000; height: 100%; min-height: calc(100vh - 40px); box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; padding: 45px 30px; text-align: center; font-family: 'Times New Roman', Times, serif;">
+                
+                <!-- TOP: Title -->
+                <div style="font-size: 26px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #000; margin-top: 30px;">
+                    AUDIT REPORT
                 </div>
+                
+                <!-- MIDDLE: Trust & Year Details -->
+                <div style="margin: auto 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="font-size: 15px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 14px; letter-spacing: 0.5px;">
+                        FOR THE YEAR ENDED ${yearEnding}
+                    </div>
+                    <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: #ff0000; margin-bottom: 10px; line-height: 1.3;">
+                        ${trustName}
+                    </div>
+                    <div style="font-size: 14px; font-weight: bold; color: #ff0000; margin-bottom: 45px; line-height: 1.3;">
+                        ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""}
+                    </div>
+                    
+                    <div style="display: inline-block; text-align: left;">
+                        <div style="font-size: 17px; font-weight: bold; margin-bottom: 8px; white-space: nowrap;">
+                            <span style="color: #000;">Registration No :- </span>
+                            <span style="color: #ff0000;">${registrationNo}</span>
+                        </div>
+                        <div style="font-size: 17px; font-weight: bold; color: #000; white-space: nowrap;">
+                            <span>Date : &nbsp; &nbsp; ${date}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM: Auditor Details -->
+                <div style="margin-bottom: 20px; text-align: center; line-height: 1.4;">
+                    <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 3px;">
+                        ${auditorFirm.toUpperCase()}
+                    </div>
+                    <div style="font-size: 14px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 6px;">
+                        ${auditorStatus.toUpperCase() || "CERTIFIED AUDITORS"}
+                    </div>
+                    <div style="font-size: 13px; font-weight: bold; color: #000; line-height: 1.4;">
+                        ${auditorName ? `<div>${auditorName}</div>` : ""}
+                        ${auditorMembershipNo || auditorRegistrationNo ? `<div>${auditorMembershipNo ? `M.No: ${auditorMembershipNo}` : ""}${auditorRegistrationNo ? ` | F.R.No: ${auditorRegistrationNo}` : ""}</div>` : ""}
+                        ${auditorAddressLine ? `<div>Address : - ${auditorAddressLine}</div>` : ""}
+                        ${auditorEmail ? `<div>Email. Id- ${auditorEmail}</div>` : ""}
+                        ${auditorMobile ? `<div>Mob.No- ${auditorMobile}</div>` : ""}
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <!-- PAGE 2: AUDITOR REPORT (Checklist) -->
         <div class="page">
-            <div class="text-center font-bold mb-2 size-subheading">
+            <div class="text-center font-bold mb-2 size-subheading" style="line-height: 1.35;">
                 Report of an auditor relating to accounts audited under sub section (2) of Section 33 & 34 and the rule 19<br>
                 of the Bombay Trust Act 1950.
             </div>
 
-            <table style="border: none; margin-bottom: 5px;" class="size-meta table-compact">
+            <table class="meta-table">
                 <tr>
-                    <td style="border: none; width: 150px; font-weight: bold;">Name of the trust</td>
-                    <td style="border: none;">${trustName}<br>AT ${address}</td>
+                    <td style="width: 150px; font-weight: bold;">Name of the trust</td>
+                    <td>${trustName}<br>AT ${address}</td>
                 </tr>
                 <tr>
-                    <td style="border: none; font-weight: bold;">Registration No</td>
-                    <td style="border: none;">${registrationNo}</td>
+                    <td style="font-weight: bold;">Registration No</td>
+                    <td>${registrationNo}</td>
                 </tr>
                 <tr>
-                    <td style="border: none; font-weight: bold;">For The Year Ending</td>
-                    <td style="border: none;">${yearEnding}</td>
+                    <td style="font-weight: bold;">For The Year Ending</td>
+                    <td>${yearEnding}</td>
                 </tr>
             </table>
 
-            <table class="table-compact">
+            <table class="checklist-table">
                 <tbody>
                     ${generatePermissionRows(permissions)}
                 </tbody>
@@ -724,274 +1071,311 @@ exports.generateReportHTML = (report) => {
         </div>
 
         <!-- PAGE 3: SCHEDULE IX C -->
-        <div class="page">
-            <div class="text-center font-bold mb-3" style="line-height: 1.4;">
-                <p class="size-subheading" style="margin: 2px 0;">The Bombay Public Trusts Act 1950</p>
-                <p class="size-subheading" style="margin: 2px 0;">SCHEDULE - IX C</p>
-                <p class="size-small" style="color: #555; margin: 2px 0;">( VIDE RULE 32 )</p>
-                <p class="size-subheading" style="margin-top: 5px; margin-bottom: 2px;">
-                    STATEMENT OF INCOME TO CONTRIBUTION FOR THE YEAR ENDING :- ${yearEnding}
+        <div class="page" style="font-family: 'Times New Roman', Times, serif; padding: 14px 12px;">
+            <div class="text-center font-bold" style="line-height: 1.5; margin-bottom: 14px;">
+                <p style="font-size: 18px; margin: 4px 0;">The Bombay Public Trusts Act 1950</p>
+                <p style="font-size: 17px; margin: 4px 0; letter-spacing: 1.5px;">SCHEDULE - IX C</p>
+                <p style="font-size: 14px; margin: 4px 0;">( VIDE RULE 32 )</p>
+                <p style="font-size: 13px; margin-top: 8px; margin-bottom: 4px; text-transform: uppercase;">
+                    STATEMENT IN INCOME TO CONTRIBUTION FOR THE YEAR ENDING : ${yearEnding}
                 </p>
-                <p class="size-meta" style="color: #333; margin: 2px 0;">
-                    Name of the Trust — ${trustName} | Reg. No:- ${registrationNo}
+                <p style="font-size: 15px; margin: 5px 0; text-transform: uppercase;">
+                    Name of the Trust :- ${trustName}
+                </p>
+                <p style="font-size: 14px; margin: 3px 0;">
+                    ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""}
+                </p>
+                <p style="font-size: 14px; margin: 3px 0;">
+                    Registration No-${registrationNo}
                 </p>
             </div>
 
-            <div style="border: 1px solid #000; font-size: var(--size-table-cell); line-height: var(--lh-table);" class="size-meta">
-                <!-- Row: Income shown -->
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #000; padding: var(--table-cell-padding-y) var(--table-cell-padding-x); ">
-                    <p style="font-weight: bold; flex: 1;">I. Income as shown in the Income and Expenditure Account (Schedule IX)</p>
-                    <span style="font-weight: bold; width: 80px; text-align: right;">${schIX_incomeShown}</span>
-                </div>
-
-                <!-- Row: Section header -->
-                <div style="padding: var(--table-cell-padding-y) var(--table-cell-padding-x); border-bottom: 1px solid #000; background-color: #fff;">
-                    <p style="font-weight: bold;">II. Items not chargeable to contribution under Section 58 and Rules 32</p>
-                </div>
-
-                <!-- Sub-items -->
-                ${schIX_deductions
-                  .map(
-                    (item) => `
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; padding: var(--table-compact-padding-y) var(--table-compact-padding-x);">
-                        <p style="flex: 1; color: #333;">${item.label}</p>
-                        <span style="width: 80px; text-align: right; color: #000;">${item.amount !== null && item.amount !== undefined ? item.amount : ""}</span>
-                    </div>
-                `,
-                  )
-                  .join("")}
-
-                <!-- Gross Annual Income -->
-                <div style="display: flex; justify-content: space-between; padding: var(--table-cell-padding-y) var(--table-cell-padding-x); background-color: #f0f0f0; border-top: 1px solid #000;">
-                    <p style="font-weight: bold; flex: 1;">Gross Annual Income Chargeable to Contribution</p>
-                    <span style="font-weight: bold; width: 80px; text-align: right;">${schIX_grossAnnualIncome}</span>
-                </div>
-
-                <!-- Amount of Contribution -->
-                <div style="display: flex; justify-content: space-between; padding: var(--table-cell-padding-y) var(--table-cell-padding-x); border-top: 1px solid #000;">
-                    <p style="flex: 1;">Amount Of Contribution Computed At The Rate Fixed Under Sub-Section (1) Of Section 58 And Payable</p>
-                    <span style="font-weight: bold; width: 80px; text-align: right;">${schIX_contribution}</span>
-                </div>
-            </div>
-
-            <div class="page-signature-footer page2-signatures">
-    ${generateSignatureBlock()}
-</div>
-        </div>
-
-        <!-- PAGE 4: INCOME & EXPENDITURE -->
-        <div class="page">
-            <div class="text-center font-bold mb-4 size-subheading" style="line-height: 1.4;">
-                The Bombay Public Trusts Act 1950<br>
-                SCHEDULE IX (VIDE RULE 17(I)<br>
-                Name of the Trust :- ${trustName}<br>
-                AT ${address}<br>
-                Registration No-${registrationNo}<br>
-                INCOME AND EXPENDITURE A/C FOR THE YEAR ${yearEnding}
-            </div>
-
-            <table>
+            <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; margin-bottom: 12px; font-size: 13px; line-height: 1.4;">
                 <thead>
                     <tr>
-                        <th style="width: 40%;">EXPENDITURE</th>
-                        <th style="width: 10%;" class="col-amount">AMOUNT</th>
-                        <th style="width: 40%;">INCOME</th>
-                        <th style="width: 10%;" class="col-amount">AMOUNT</th>
+                        <th colspan="2" style="border: 1px solid #000; height: 24px;"></th>
+                        <th style="border: 1px solid #000; width: 120px; text-align: center; font-weight: bold; font-size: 14px; padding: 4px 6px;">Rs.</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${generateIncomeExpenditureFlatRows(expenditures, incomes)}
+                    <!-- Row I -->
                     <tr>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td class="font-bold col-amount">${totalExpenditure}</td>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td class="font-bold col-amount">${totalIncome}</td>
+                        <td style="width: 36px; text-align: center; font-weight: bold; border: 1px solid #000; vertical-align: top; padding: 6px 4px; font-size: 13px;">I.</td>
+                        <td style="font-weight: bold; border: 1px solid #000; vertical-align: top; padding: 6px 8px; font-size: 13px;">
+                            Income as showan in the income and Expenditure Account (Schedule IX)
+                        </td>
+                        <td style="width: 120px; text-align: center; font-weight: bold; border: 1px solid #000; vertical-align: middle; padding: 6px; font-size: 13px;">
+                            ${schIX_incomeShown !== null && schIX_incomeShown !== undefined ? schIX_incomeShown : ""}
+                        </td>
+                    </tr>
+
+                    <!-- Row II -->
+                    <tr>
+                        <td style="width: 36px; text-align: center; font-weight: bold; border: 1px solid #000; vertical-align: top; padding: 6px 4px; font-size: 13px;">II.</td>
+                        <td style="border: 1px solid #000; vertical-align: top; padding: 6px 8px; font-size: 12px; line-height: 1.4;">
+                            ${renderScheduleIXDeductionsList()}
+                        </td>
+                        <td style="width: 120px; text-align: center; font-weight: bold; border: 1px solid #000; vertical-align: middle; padding: 6px; font-size: 13px;">
+                            ${schIX_totalDeductions !== null && schIX_totalDeductions !== undefined && schIX_totalDeductions !== "" ? (typeof schIX_totalDeductions === 'number' ? schIX_totalDeductions.toLocaleString('en-IN') : schIX_totalDeductions) : ""}
+                        </td>
+                    </tr>
+
+                    <!-- Row 3 -->
+                    <tr>
+                        <td colspan="2" style="font-weight: bold; border: 1px solid #000; padding: 6px 8px; font-size: 13px;">
+                            Gross Annual Income chargeable to contribution Rs.
+                        </td>
+                        <td style="width: 120px; text-align: center; font-weight: bold; border: 1px solid #000; padding: 6px; font-size: 13px;">
+                            ${schIX_grossAnnualIncome !== null && schIX_grossAnnualIncome !== undefined ? schIX_grossAnnualIncome : ""}
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            
-            <div class="page-signature-footer">
+
+            <!-- Certificate Text -->
+            <div style="text-align: justify; font-size: 13px; line-height: 1.55; margin-top: 14px; padding: 0 6px;">
+                Certified that while claiming deductions admissible under the above Sehedule,the Trust has not claimedany amount twice either wholly or partly, against any of the items mentioned in the Sehedule while have the effect of double-deductions.
+            </div>
+
+
+            <div class="page-signature-footer page2-signatures" style="margin-top: auto;">
                 ${generateSignatureBlock()}
             </div>
         </div>
 
-        <!-- PAGE 5: BALANCE SHEET -->
-        <div class="page">
-            <div class="text-center font-bold mb-4 size-subheading" style="line-height: 1.4;">
-                The Bombay Public Trust Act 1950.<br>
-                SCHEDULE VII (VIDE RULE 17(1))<br>
-                Registration No-${registrationNo}<br>
-                Name of the Trust :- ${trustName}<br>
-                AT ${address}<br>
-                <br>
-                BALANCE SHEET AS ON ${yearEnding}
+        <!-- PAGE 4: INCOME & EXPENDITURE -->
+        <div class="page page-compact">
+            <div class="account-header">
+                <div class="act-title">The Bombay Public Trusts Act 1950</div>
+                <div class="sch-title">SCHEDULE IX (VIDE RULE 17(1))</div>
+                <div class="trust-meta">
+                    <span style="font-weight: bold;">Name of the Trust :-</span> ${trustName}
+                </div>
+                <div class="trust-meta">
+                    ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""} &nbsp;|&nbsp; <span style="font-weight: bold;">Registration No :-</span> ${registrationNo}
+                </div>
+                <div class="account-title">
+                    INCOME AND EXPENDITURE A/C FOR THE YEAR ENDED ${yearEnding}
+                </div>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Funds & Liabilities</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 30%;">Property & Assets</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 10%;">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${generateBalanceSheetFlatRows(fundsLiabilities, propertyAssets)}
-                    <tr>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td style="border-right: none;"></td>
-                        <td class="font-bold col-amount">${totalFunds}</td>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td style="border-right: none;"></td>
-                        <td class="font-bold col-amount">${totalAssets}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 38%;">EXPENDITURE</th>
+                            <th style="width: 12%;" class="col-amount">AMOUNT</th>
+                            <th style="width: 38%;">INCOME</th>
+                            <th style="width: 12%;" class="col-amount">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generateIncomeExpenditureFlatRows(expenditures, incomes)}
+                        <tr class="excel-total-row">
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalExpenditure) || (totalExpenditure === 0 ? "0" : "")}</td>
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalIncome) || (totalIncome === 0 ? "0" : "")}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="page-signature-footer">
+                ${generateSignatureBlock(true)}
+            </div>
+        </div>
 
-            <div class="page-signature-footer page2-signatures">
-    ${generateSignatureBlock()}
-</div>
+        <!-- PAGE 5: BALANCE SHEET -->
+        <div class="page page-compact">
+            <div class="account-header">
+                <div class="act-title">The Bombay Public Trusts Act 1950</div>
+                <div class="sch-title">SCHEDULE VII (VIDE RULE 17(1))</div>
+                <div class="trust-meta">
+                    <span style="font-weight: bold;">Name of the Trust :-</span> ${trustName}
+                </div>
+                <div class="trust-meta">
+                    ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""} &nbsp;|&nbsp; <span style="font-weight: bold;">Registration No :-</span> ${registrationNo}
+                </div>
+                <div class="account-title">
+                    BALANCE SHEET AS ON ${yearEnding}
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 29%;">Funds & Liabilities</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 29%;">Property & Assets</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 10.5%;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generateBalanceSheetFlatRows(fundsLiabilities, propertyAssets)}
+                        <tr class="excel-total-row">
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td></td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalFunds) || (totalFunds === 0 ? "0" : "")}</td>
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td></td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalAssets) || (totalAssets === 0 ? "0" : "")}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="page-signature-footer">
+                ${generateSignatureBlock(true)}
+            </div>
         </div>
 
         <!-- PAGE 6: RECEIPT & PAYMENT -->
-        <div class="page size-body" style="line-height: var(--lh-body);">
-            <div class="text-center font-bold mb-4 size-subheading" style="line-height: 1.4;">
-                Name of the Trust :- ${trustName}<br>
-                AT ${address}<br>
-                Registration No-${registrationNo}<br>
-                <br>
-                RECEIPT & PAYMENT ACCOUNT
+        <div class="page page-compact">
+            <div class="account-header">
+                <div class="act-title">The Bombay Public Trusts Act 1950</div>
+                <div class="sch-title">(VIDE RULE 17(1))</div>
+                <div class="trust-meta">
+                    <span style="font-weight: bold;">Name of the Trust :-</span> ${trustName}
+                </div>
+                <div class="trust-meta">
+                    ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""} &nbsp;|&nbsp; <span style="font-weight: bold;">Registration No :-</span> ${registrationNo}
+                </div>
+                <div class="account-title">
+                    RECEIPT & PAYMENT ACCOUNT FOR THE YEAR ENDED ${yearEnding}
+                </div>
             </div>
 
-            <table class="size-body">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Receipts</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 30%;">Payments</th>
-                        <th style="width: 10%;">Amount</th>
-                        <th style="width: 10%;">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${generateBalanceSheetFlatRows(receipts, payments)}
-                    <tr>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td style="border-right: none;"></td>
-                        <td class="font-bold col-amount">${totalReceipts}</td>
-                        <td class="font-bold text-center">TOTAL</td>
-                        <td style="border-right: none;"></td>
-                        <td class="font-bold col-amount">${totalPayments}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 29%;">Receipts</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 29%;">Payments</th>
+                            <th style="width: 10.5%;">Amount</th>
+                            <th style="width: 10.5%;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generateBalanceSheetFlatRows(receipts, payments)}
+                        <tr class="excel-total-row">
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td></td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalReceipts) || (totalReceipts === 0 ? "0" : "")}</td>
+                            <td class="font-bold text-center">TOTAL</td>
+                            <td></td>
+                            <td class="font-bold col-amount">${formatCellAmount(totalPayments) || (totalPayments === 0 ? "0" : "")}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-           <div class="page-signature-footer page2-signatures">
-    ${generateSignatureBlock()}
-</div>
+            <div class="page-signature-footer">
+                ${generateSignatureBlock(true)}
+            </div>
         </div>
 
         <!-- PAGE 7: SCHEDULE 9-D -->
-        <div class="page size-body" style="line-height: var(--lh-body);">
-            <div class="text-center font-bold mb-6 pb-2" style="line-height: 1.5;">
-                <p class="size-heading uppercase" style="margin: 4px 0; font-weight: bold;">"SCHEDULE IX-D"</p>
-                <p class="size-body font-normal" style="margin: 2px 0;">[See rule 19 (2A)]</p>
-                <p class="size-body font-normal" style="margin: 8px 0 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
-                <p class="size-body font-normal" style="margin: 2px 0;">sub-section (1) of section 34 of</p>
-                <p class="size-body font-normal" style="margin: 2px 0;">the Maharashtra Public Trusts Act.</p>
+        <div class="page" style="line-height: 1.45; padding: 14px 12px;">
+            <div class="text-center font-bold mb-4" style="line-height: 1.45; padding-top: 2px;">
+                <p style="font-size: 19px; font-weight: bold; letter-spacing: 1.2px; margin-bottom: 3px;">"SCHEDULE IX-D"</p>
+                <p style="font-size: 13px; font-weight: normal; margin-bottom: 8px;">[See rule 19 (2A)]</p>
+                <p style="font-size: 13.5px; font-weight: normal; margin: 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
+                <p style="font-size: 13.5px; font-weight: normal; margin: 2px 0;">sub-section (1) of section 34 of the Maharashtra Public Trusts Act.</p>
             </div>
 
-            <table>
+            <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 13px; line-height: 1.4; margin-top: 6px;">
                 <thead>
-                    <tr>
-                        <th style="width: 8%; text-align: center; font-weight: normal;">Sr.<br>No.</th>
-                        <th style="width: 45%; text-align: center; font-weight: normal;">Particulars</th>
-                        <th style="text-align: center; font-weight: normal;">Details</th>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="width: 7%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 5px; font-size: 13.5px;">Sr.<br>No.</th>
+                        <th style="width: 45%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 8px; font-size: 13.5px;">Particulars</th>
+                        <th style="text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 8px; font-size: 13.5px;">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: top;">1.</td>
-                        <td style="vertical-align: top;">PAN No. of Trust.</td>
-                        <td style="vertical-align: top;">${sch9d_trustPan}</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">1.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">PAN No. of Trust.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: bold; font-family: monospace; font-size: 13.5px;">${sch9d_trustPan}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: top;">2.</td>
-                        <td style="vertical-align: top;">Registration No. with date of registration under section 12AA of Income Tax Act, 1961 (43 of 1961).</td>
-                        <td style="vertical-align: top;">${sch9d_incomeTaxRegistration}</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">2.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">Registration No. with date of registration under section 12AA of Income Tax Act, 1961 (43 of 1961).</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px;">${sch9d_incomeTaxRegistration}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: top;">3.</td>
-                        <td style="vertical-align: top;">Acknowledgement No. with date of filing of the Return of Income for earlier three years.</td>
-                        <td style="padding: 0; vertical-align: top;">
-                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none;">
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">3.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">Acknowledgement No. with date of filing of the Return of Income for earlier three years.</td>
+                        <td style="padding: 0; vertical-align: top; border: 1px solid #000;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 12.5px;">
                                 <thead>
-                                    <tr>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: normal; width: 15%; text-align: center;">Sr.<br>No.</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: normal; text-align: center;">Acknowledgement No.</th>
-                                        <th style="border-bottom: 1px solid #000; font-weight: normal; width: 25%; text-align: center;">Year</th>
+                                    <tr style="background-color: #fafafa;">
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 15%; text-align: center; padding: 6px 4px;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 6px 6px;">Acknowledgement No.</th>
+                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 28%; text-align: center; padding: 6px 6px;">Year</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     ${(sch9d_previousITReturns &&
-                                    sch9d_previousITReturns.length > 0
-                                      ? sch9d_previousITReturns
-                                      : [
-                                          { receiptNo: "", year: "" },
-                                          { receiptNo: "", year: "" },
-                                          { receiptNo: "", year: "" },
-                                        ]
-                                    )
-                                      .map(
-                                        (item, index, arr) => `
+            sch9d_previousITReturns.length > 0
+            ? sch9d_previousITReturns
+            : [
+                { receiptNo: "", year: "" },
+                { receiptNo: "", year: "" },
+                { receiptNo: "", year: "" },
+            ]
+        )
+            .map(
+                (item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${["(i)", "(ii)", "(iii)", "(iv)", "(v)"][index] || `(${index + 1})`}</td>
-                                            <td style="border-right: 1px solid #000; text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.receiptNo || ""}</td>
-                                            <td style="text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.year || ""}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 6px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${["(i)", "(ii)", "(iii)", "(iv)", "(v)"][index] || `(${index + 1})`}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 6px 6px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.receiptNo || ""}</td>
+                                            <td style="text-align: center; padding: 6px 6px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.year || ""}</td>
                                         </tr>
                                     `,
-                                      )
-                                      .join("")}
+            )
+            .join("")}
                                 </tbody>
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: top;">4.</td>
-                        <td style="vertical-align: top;">PAN No. of all Trustees.</td>
-                        <td style="padding: 0; vertical-align: top;">
-                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none;">
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">4.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">PAN No. of all Trustees.</td>
+                        <td style="padding: 0; vertical-align: top; border: 1px solid #000;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 12.5px;">
                                 <thead>
-                                    <tr>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: normal; width: 15%; text-align: center;">Sr.<br>No.</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: normal; text-align: center;">Name of Trustee</th>
-                                        <th style="border-bottom: 1px solid #000; font-weight: normal; width: 30%; text-align: center;">PAN No.</th>
+                                    <tr style="background-color: #fafafa;">
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 15%; text-align: center; padding: 6px 4px;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 6px 6px;">Name of Trustee</th>
+                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 32%; text-align: center; padding: 6px 6px;">PAN No.</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     ${(sch9d_trusteesPan &&
-                                    sch9d_trusteesPan.length > 0
-                                      ? sch9d_trusteesPan
-                                      : [
-                                          { name: "", pan: "" },
-                                          { name: "", pan: "" },
-                                          { name: "", pan: "" },
-                                        ]
-                                    )
-                                      .map(
-                                        (item, index, arr) => `
+            sch9d_trusteesPan.length > 0
+            ? sch9d_trusteesPan
+            : [
+                { name: "", pan: "" },
+                { name: "", pan: "" },
+                { name: "", pan: "" },
+            ]
+        )
+            .map(
+                (item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">(${index + 1})</td>
-                                            <td style="border-right: 1px solid #000; text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.name || ""}</td>
-                                            <td style="text-align: center; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.pan || ""}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 5.5px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">(${index + 1})</td>
+                                            <td style="border-right: 1px solid #000; text-align: left; padding: 5.5px 8px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.name || ""}</td>
+                                            <td style="text-align: center; padding: 5.5px 6px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.pan || ""}</td>
                                         </tr>
                                     `,
-                                      )
-                                      .join("")}
+            )
+            .join("")}
                                 </tbody>
                             </table>
                         </td>
