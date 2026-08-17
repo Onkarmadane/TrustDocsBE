@@ -160,14 +160,25 @@ exports.generateReportHTML = (report) => {
         const l = String(item.label).trim().toLowerCase();
         const k = String(item.key || "").toLowerCase();
 
-        if (k.endsWith('_header') || k.endsWith('_head') || k === 'rec_open' || k === 'pay_close' || k === 'fl_corpus' || k === 'fl_earmarked' || k === 'fl_loans' || k === 'fl_liabilities' || k === 'pa_immovable' || k === 'pa_investments' || k === 'pa_furniture' || k === 'pa_loans' || k === 'pa_advances' || k === 'pa_income_outstanding' || k === 'pa_cash') {
+        if (k.endsWith('_header') || k.endsWith('_head') || k === 'rec_open' || k === 'pay_close' || k === 'fl_corpus' || k === 'fl_earmarked' || k === 'fl_loans' || k === 'fl_liabilities' || k === 'pa_immovable' || k === 'pa_investments' || k === 'pa_furniture' || k === 'pa_loans' || k === 'pa_advances' || k === 'pa_income_outstanding' || k === 'pa_cash' || k.includes('income_expenditure') || k.includes('inc_exp')) {
             return true;
         }
 
         const headingLabels = [
             "to expenditure in respect of properties",
+            "to establishment expenses",
+            "to remuneration to trustees",
+            "to remuneration to head",
+            "to legal fees",
+            "to audit fees",
+            "to contribution and fees",
             "to amount written off",
+            "to miscellaneous expenses",
+            "to depreciation",
+            "to amount transferred to reserve or specific funds",
+            "to amount transferred to reserve",
             "to expenditure on objects of the trust",
+            "to surplus carried over",
             "by rent",
             "by interest",
             "by dividend",
@@ -175,9 +186,14 @@ exports.generateReportHTML = (report) => {
             "by grants",
             "by income from other sources",
             "by transfer from reserve",
+            "by deficit carried over",
             "trust funds or corpus",
             "other earmarked funds",
             "loans (secured or unsecured)",
+            "loans (secured / unsecured)",
+            "loans (secured or unsecured) advances",
+            "loans scholarship",
+            "loans",
             "liabilities",
             "immovable properties",
             "investments",
@@ -185,17 +201,34 @@ exports.generateReportHTML = (report) => {
             "advances",
             "income outstanding",
             "cash and bank balances",
+            "income & expenditure a/c",
+            "income and expenditure a/c",
+            "income & expenditure account",
+            "income and expenditure account",
             "to opening balance",
+            "to opening balances",
+            "to receipts",
+            "to receipt",
+            "to other receipts",
+            "to income",
+            "by expenses",
+            "by expense",
+            "by expenditure",
+            "by payments",
+            "by payment",
+            "by objects of the trust",
             "by closing balances",
-            "to surplus carried over",
-            "by deficit carried over"
+            "by closing balance",
+            "opening balance",
+            "closing balance"
         ];
 
-        return headingLabels.some(h => l.startsWith(h));
+        return headingLabels.some(h => l.startsWith(h) || l === h);
     };
 
     const isSubItem = (item) => {
         if (!item || !item.label) return false;
+        if (isHeading(item)) return false;
         if (item.isSubItem === true) return true;
         if (item.isHeader === true) return false;
 
@@ -207,27 +240,27 @@ exports.generateReportHTML = (report) => {
         }
 
         const subLabels = [
-            "rates, taxes", "repairs and maintenance", "salaries", "insurance", "depreciation",
-            "other expenses", "bad debts", "loan scholarships", "irrecoverable rents", "other items",
+            "rates, taxes", "repairs and maintenance", "salaries", "insurance",
+            "other expenses", "bad debts", "loan scholarships", "loan scholarship", "other loans", "irrecoverable rents", "other items",
             "religious", "educational", "medical relief", "relief of poverty", "other charitable objects",
             "accrued", "realised", "on securities", "on loan", "on bank account",
             "balance as per", "adjustment during", "sinking fund", "depreciation fund", "specific funds", "reserve fund", "other funds",
-            "from trustees", "from others", "for expenses", "for advances", "for rent and other deposits", "sundry credit balance",
+            "from trustees", "from others", "for expenses", "for advances", "for rent and other deposits", "sundry credit balance", "sundry credit balances",
             "additions during", "less: sales", "depreciation up to date", "in securities", "in shares", "in fixed deposit", "other investments",
-            "to trustees", "to employees", "to contractor", "to lawyers", "to others", "rent", "interest", "other income",
+            "to trustees", "to employees", "to contractor", "to contractors", "to lawyers", "to others",
             "in savings account", "in current account", "in fixed deposit account", "with the trustee", "with the manager",
-            "cash", "bank", "cash in hand"
+            "cash in hand"
         ];
 
         return subLabels.some(s => l.startsWith(s));
     };
 
     const getItemStyle = (item) => {
-        if (isSubItem(item)) {
-            return "padding-left: 10px; font-weight: normal; word-break: break-word;";
-        }
         if (isHeading(item)) {
             return "font-weight: bold; padding-left: 3px; word-break: break-word;";
+        }
+        if (isSubItem(item)) {
+            return "padding-left: 10px; font-weight: normal; word-break: break-word;";
         }
         return "padding-left: 3px; word-break: break-word;";
     };
@@ -377,7 +410,7 @@ exports.generateReportHTML = (report) => {
                     <td style="${leftStyle}">
                         ${left.label || ""}
                     </td>
-                    <td class="col-amount">
+                    <td class="col-amount ${isHeading(left) ? "font-bold" : ""}">
                         ${formatCellAmount(left.amount)}
                     </td>
                     <td class="col-amount font-bold">
@@ -386,7 +419,7 @@ exports.generateReportHTML = (report) => {
                     <td style="${rightStyle}">
                         ${right.label || ""}
                     </td>
-                    <td class="col-amount">
+                    <td class="col-amount ${isHeading(right) ? "font-bold" : ""}">
                         ${formatCellAmount(right.amount)}
                     </td>
                     <td class="col-amount font-bold">
@@ -506,38 +539,43 @@ exports.generateReportHTML = (report) => {
             .join("");
     };
     const generateSignatureBlock = (isCompact = false) => {
-        const boxHeight = isCompact ? "40px" : "65px";
-        const stampMaxH = isCompact ? "38px" : "60px";
-        const stampMaxW = isCompact ? "75px" : "90px";
-        const sigMaxH = isCompact ? "26px" : "42px";
-        const sigMaxW = isCompact ? "65px" : "80px";
-        const metaFont = isCompact ? "10px" : "11.5px";
-        const titleFont = isCompact ? "10.5px" : "12px";
+        const boxHeight = isCompact ? "18px" : "24px";
+        const stampMaxH = isCompact ? "20px" : "26px";
+        const stampMaxW = isCompact ? "70px" : "85px";
+        const sigMaxH = isCompact ? "16px" : "22px";
+        const sigMaxW = isCompact ? "60px" : "75px";
+        const metaFont = isCompact ? "10.5px" : "11.5px";
+        const titleFont = isCompact ? "11px" : "12px";
 
         return `
-    <div class="signatures flex flex-col" style="width:100%; margin:0; padding-top:${isCompact ? '1px' : '4px'};">
+    <div class="signatures" style="width:100%; margin:0; padding-top:${isCompact ? '2px' : '4px'}; text-align:left;">
       
-      <!-- Date / Place (Top-Left) -->
-      <div class="signature-meta" style="text-align:left; font-size:${metaFont}; line-height:1.25; font-weight:normal; margin-bottom:${isCompact ? '1px' : '4px'};">
+      <!-- Bottom Left: Line 1 Date, Line 2 Place, Line 3 Signatures spanning half page horizontally -->
+      <div style="text-align:left; font-size:${metaFont}; line-height:1.3; width:52%;">
         <div>Date: ${date}</div>
         <div>Place: ${place}</div>
-      </div>
-     
-
-      <!-- Signatures (Aligned to the Right) -->
-      <div class="signature-right flex" style="margin-left:auto; width:62%; display:flex; flex-direction:column;">
-        <div style="display:flex; justify-content:space-around; font-weight:bold; font-size:${titleFont}; text-align:center;">
-          <div style="flex:1; text-align:center;">President</div>
-          <div style="flex:1; text-align:center;">Vice President</div>
-          <div style="flex:1; text-align:center;">Trustee</div>
+        <div style="margin-top:${isCompact ? '12px' : '16px'}; width:100%;">
+          <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:${titleFont}; text-align:center; width:100%;">
+            <div style="flex:1; text-align:left;">President</div>
+            <div style="flex:1; text-align:center;">Vice President</div>
+            <div style="flex:1; text-align:right;">Trustee</div>
+          </div>
+          <div class="sig-box" style="height:${boxHeight}; display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:1px;">
+            <div style="flex:1; display:flex; justify-content:flex-start;">
+              ${stamp1 ? `<img src="${stamp1}" style="max-height:${stampMaxH}; max-width:${stampMaxW}; object-fit:contain;" />` : ''}
+              ${sig1 ? `<img src="${sig1}" style="max-height:${sigMaxH}; max-width:${sigMaxW}; object-fit:contain;" />` : ''}
+            </div>
+            <div style="flex:1; display:flex; justify-content:center;">
+              ${stamp2 ? `<img src="${stamp2}" style="max-height:${stampMaxH}; max-width:${stampMaxW}; object-fit:contain;" />` : ''}
+              ${sig2 ? `<img src="${sig2}" style="max-height:${sigMaxH}; max-width:${sigMaxW}; object-fit:contain;" />` : ''}
+            </div>
+            <div style="flex:1; display:flex; justify-content:flex-end;">
+              ${stamp3 ? `<img src="${stamp3}" style="max-height:${stampMaxH}; max-width:${stampMaxW}; object-fit:contain;" />` : ''}
+              ${sig3 ? `<img src="${sig3}" style="max-height:${sigMaxH}; max-width:${sigMaxW}; object-fit:contain;" />` : ''}
+            </div>
+          </div>
+          <div style="border-top:1px dashed #000; width:100%;"></div>
         </div>
-        <div class="sig-box" style="height:${boxHeight}; position:relative;">
-          ${stamp1 ? `` : ""}
-          ${sig1 ? `` : ""}
-          ${stamp2 ? `` : ""}
-          ${sig2 ? `` : ""}
-        </div>
-        <div style="border-top:1px dashed #000; width:100%;"></div>
       </div>
 
     </div>
