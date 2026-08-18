@@ -1024,51 +1024,51 @@ exports.generateReportHTML = (report) => {
     </head>
     <body>
         <!-- PAGE 1: TITLE PAGE -->
-        <div class="page" style="padding: 10px; display: flex; flex-direction: column; justify-content: stretch;">
-            <div style="border: 2px solid #000; height: 100%; min-height: calc(100vh - 40px); box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; padding: 45px 30px; text-align: center; font-family: 'Times New Roman', Times, serif;">
+        <div class="page" style="padding: 10px 8px; height: 278mm; max-height: 278mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: stretch; page-break-inside: avoid; page-break-after: always;">
+            <div style="border: 2px solid #000; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; padding: 45px 25px 30px 25px; text-align: center; font-family: 'Times New Roman', Times, serif;">
                 
                 <!-- TOP: Title -->
-                <div style="font-size: 26px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #000; margin-top: 30px;">
+                <div style="font-size: 34px; font-weight: bold; letter-spacing: 4px; word-spacing: 5px; text-transform: uppercase; color: #000; margin-top: 20px;">
                     AUDIT REPORT
                 </div>
                 
                 <!-- MIDDLE: Trust & Year Details -->
-                <div style="margin: auto 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div style="font-size: 15px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 14px; letter-spacing: 0.5px;">
+                <div style="margin: auto 0; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                    <div style="font-size: 20px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 20px; letter-spacing: 1.2px;">
                         FOR THE YEAR ENDED ${yearEnding}
                     </div>
-                    <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: #ff0000; margin-bottom: 10px; line-height: 1.3;">
+                    <div style="font-size: 25px; font-weight: bold; text-transform: uppercase; color: #ff0000; margin-bottom: 14px; line-height: 1.35; letter-spacing: 0.8px; max-width: 95%;">
                         ${trustName}
                     </div>
-                    <div style="font-size: 14px; font-weight: bold; color: #ff0000; margin-bottom: 45px; line-height: 1.3;">
+                    <div style="font-size: 18px; font-weight: bold; color: #ff0000; margin-bottom: 45px; line-height: 1.4; max-width: 90%;">
                         ${address ? (address.toLowerCase().startsWith("at") ? address : `At. ${address}`) : ""}
                     </div>
                     
                     <div style="display: inline-block; text-align: left;">
-                        <div style="font-size: 17px; font-weight: bold; margin-bottom: 8px; white-space: nowrap;">
+                        <div style="font-size: 21px; font-weight: bold; margin-bottom: 12px; white-space: nowrap;">
                             <span style="color: #000;">Registration No :- </span>
                             <span style="color: #ff0000;">${registrationNo}</span>
                         </div>
-                        <div style="font-size: 17px; font-weight: bold; color: #000; white-space: nowrap;">
+                        <div style="font-size: 21px; font-weight: bold; color: #000; white-space: nowrap;">
                             <span>Date : &nbsp; &nbsp; ${date}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- BOTTOM: Auditor Details -->
-                <div style="margin-bottom: 20px; text-align: center; line-height: 1.4;">
-                    <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 3px;">
+                <div style="margin-bottom: 15px; text-align: center; line-height: 1.5; width: 100%;">
+                    <div style="font-size: 23px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 6px; letter-spacing: 1.5px;">
                         ${auditorFirm.toUpperCase()}
                     </div>
-                    <div style="font-size: 14px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 6px;">
+                    <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: #000; margin-bottom: 10px; letter-spacing: 1px;">
                         ${auditorStatus.toUpperCase() || "CERTIFIED AUDITORS"}
                     </div>
-                    <div style="font-size: 13px; font-weight: bold; color: #000; line-height: 1.4;">
-                        ${auditorName ? `<div>${auditorName}</div>` : ""}
-                        ${auditorMembershipNo || auditorRegistrationNo ? `<div>${auditorMembershipNo ? `M.No: ${auditorMembershipNo}` : ""}${auditorRegistrationNo ? ` | F.R.No: ${auditorRegistrationNo}` : ""}</div>` : ""}
-                        ${auditorAddressLine ? `<div>Address : - ${auditorAddressLine}</div>` : ""}
-                        ${auditorEmail ? `<div>Email. Id- ${auditorEmail}</div>` : ""}
-                        ${auditorMobile ? `<div>Mob.No- ${auditorMobile}</div>` : ""}
+                    <div style="font-size: 16.5px; font-weight: bold; color: #000; line-height: 1.5;">
+                        ${auditorName ? `<div style="margin-bottom: 2px;">${auditorName}</div>` : ""}
+                        ${auditorMembershipNo || auditorRegistrationNo ? `<div style="margin-bottom: 2px;">${auditorMembershipNo ? `M.No: ${auditorMembershipNo}` : ""}${auditorRegistrationNo ? ` | F.R.No: ${auditorRegistrationNo}` : ""}</div>` : ""}
+                        ${auditorAddressLine ? `<div style="margin-bottom: 2px; max-width: 95%; margin-left: auto; margin-right: auto;">Address : - ${auditorAddressLine}</div>` : ""}
+                        ${auditorEmail ? `<div style="margin-bottom: 2px;">Email. Id- ${auditorEmail}</div>` : ""}
+                        ${auditorMobile ? `<div style="margin-bottom: 2px;">Mob.No- ${auditorMobile}</div>` : ""}
                     </div>
                 </div>
 
@@ -1319,101 +1319,79 @@ exports.generateReportHTML = (report) => {
         </div>
 
         <!-- PAGE 7: SCHEDULE 9-D -->
-        <div class="page" style="line-height: 1.45; padding: 14px 12px;">
-            <div class="text-center font-bold mb-4" style="line-height: 1.45; padding-top: 2px;">
-                <p style="font-size: 19px; font-weight: bold; letter-spacing: 1.2px; margin-bottom: 3px;">"SCHEDULE IX-D"</p>
-                <p style="font-size: 13px; font-weight: normal; margin-bottom: 8px;">[See rule 19 (2A)]</p>
-                <p style="font-size: 13.5px; font-weight: normal; margin: 2px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
-                <p style="font-size: 13.5px; font-weight: normal; margin: 2px 0;">sub-section (1) of section 34 of the Maharashtra Public Trusts Act.</p>
+        <div class="page" style="padding: 20px 12px; line-height: 1.5; page-break-inside: avoid; page-break-after: always;">
+            <div class="text-center font-bold mb-4" style="line-height: 1.45; padding-top: 6px;">
+                <p style="font-size: 22px; font-weight: bold; letter-spacing: 2px; margin-bottom: 4px;">"SCHEDULE IX-D"</p>
+                <p style="font-size: 15px; font-weight: bold; margin-bottom: 10px;">[See rule 19 (2A)]</p>
+                <p style="font-size: 15px; font-weight: 500; margin: 3px 0;">Information to be submitted by the Auditor along with Audit Report under</p>
+                <p style="font-size: 15px; font-weight: 500; margin: 3px 0;">sub-section (1) of section 34 of the Maharashtra Public Trusts Act.</p>
             </div>
 
-            <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 13px; line-height: 1.4; margin-top: 6px;">
+            <table style="width: 100%; border-collapse: collapse; border: 2px solid #000; font-size: 14.5px; line-height: 1.45; margin-top: 12px;">
                 <thead>
                     <tr style="background-color: #f2f2f2;">
-                        <th style="width: 7%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 5px; font-size: 13.5px;">Sr.<br>No.</th>
-                        <th style="width: 45%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 8px; font-size: 13.5px;">Particulars</th>
-                        <th style="text-align: center; font-weight: bold; border: 1px solid #000; padding: 7px 8px; font-size: 13.5px;">Details</th>
+                        <th style="width: 8%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 12px 6px; font-size: 15px;">Sr.<br>No.</th>
+                        <th style="width: 44%; text-align: center; font-weight: bold; border: 1px solid #000; padding: 12px 10px; font-size: 15px;">Particulars</th>
+                        <th style="text-align: center; font-weight: bold; border: 1px solid #000; padding: 12px 10px; font-size: 15px;">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">1.</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">PAN No. of Trust.</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: bold; font-family: monospace; font-size: 13.5px;">${sch9d_trustPan}</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 14px 8px;">1.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-weight: 500;">PAN No. of Trust.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-weight: bold; font-family: monospace; font-size: 15px;">${sch9d_trustPan}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">2.</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">Registration No. with date of registration under section 12AA of Income Tax Act, 1961 (43 of 1961).</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px;">${sch9d_incomeTaxRegistration}</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 14px 8px;">2.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-weight: 500;">Registration No. with date of registration under section 12AA of Income Tax Act, 1961 (43 of 1961).</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-size: 14.5px;">${sch9d_incomeTaxRegistration}</td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">3.</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">Acknowledgement No. with date of filing of the Return of Income for earlier three years.</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 14px 8px;">3.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-weight: 500;">Acknowledgement No. with date of filing of the Return of Income for earlier three years.</td>
                         <td style="padding: 0; vertical-align: top; border: 1px solid #000;">
-                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 12.5px;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 14px;">
                                 <thead>
                                     <tr style="background-color: #fafafa;">
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 15%; text-align: center; padding: 6px 4px;">Sr.<br>No.</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 6px 6px;">Acknowledgement No.</th>
-                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 28%; text-align: center; padding: 6px 6px;">Year</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 16%; text-align: center; padding: 9px 4px;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 9px 8px;">Acknowledgement No.</th>
+                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 28%; text-align: center; padding: 9px 8px;">Year</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${(sch9d_previousITReturns &&
-            sch9d_previousITReturns.length > 0
-            ? sch9d_previousITReturns
-            : [
-                { receiptNo: "", year: "" },
-                { receiptNo: "", year: "" },
-                { receiptNo: "", year: "" },
-            ]
-        )
-            .map(
-                (item, index, arr) => `
+                                    ${(sch9d_previousITReturns && sch9d_previousITReturns.length > 0 ? sch9d_previousITReturns : [{ receiptNo: "", year: "" }, { receiptNo: "", year: "" }, { receiptNo: "", year: "" }])
+                                        .map((item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; text-align: center; padding: 6px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${["(i)", "(ii)", "(iii)", "(iv)", "(v)"][index] || `(${index + 1})`}</td>
-                                            <td style="border-right: 1px solid #000; text-align: center; padding: 6px 6px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.receiptNo || ""}</td>
-                                            <td style="text-align: center; padding: 6px 6px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.year || ""}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 10px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${["(i)", "(ii)", "(iii)", "(iv)", "(v)"][index] || `(${index + 1})`}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 10px 8px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.receiptNo || ""}</td>
+                                            <td style="text-align: center; padding: 10px 8px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.year || ""}</td>
                                         </tr>
-                                    `,
-            )
-            .join("")}
+                                    `).join("")}
                                 </tbody>
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 8px 6px;">4.</td>
-                        <td style="vertical-align: middle; border: 1px solid #000; padding: 8px 10px; font-weight: 500;">PAN No. of all Trustees.</td>
+                        <td style="text-align: center; font-weight: bold; vertical-align: middle; border: 1px solid #000; padding: 14px 8px;">4.</td>
+                        <td style="vertical-align: middle; border: 1px solid #000; padding: 14px 12px; font-weight: 500;">PAN No. of all Trustees.</td>
                         <td style="padding: 0; vertical-align: top; border: 1px solid #000;">
-                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 12.5px;">
+                            <table style="width: 100%; height: 100%; border-collapse: collapse; margin: 0; border: none; font-size: 14px;">
                                 <thead>
                                     <tr style="background-color: #fafafa;">
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 15%; text-align: center; padding: 6px 4px;">Sr.<br>No.</th>
-                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 6px 6px;">Name of Trustee</th>
-                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 32%; text-align: center; padding: 6px 6px;">PAN No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; width: 16%; text-align: center; padding: 9px 4px;">Sr.<br>No.</th>
+                                        <th style="border-bottom: 1px solid #000; border-right: 1px solid #000; font-weight: bold; text-align: center; padding: 9px 8px;">Name of Trustee</th>
+                                        <th style="border-bottom: 1px solid #000; font-weight: bold; width: 32%; text-align: center; padding: 9px 8px;">PAN No.</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${(sch9d_trusteesPan &&
-            sch9d_trusteesPan.length > 0
-            ? sch9d_trusteesPan
-            : [
-                { name: "", pan: "" },
-                { name: "", pan: "" },
-                { name: "", pan: "" },
-            ]
-        )
-            .map(
-                (item, index, arr) => `
+                                    ${(sch9d_trusteesPan && sch9d_trusteesPan.length > 0 ? sch9d_trusteesPan : [{ name: "", pan: "" }, { name: "", pan: "" }, { name: "", pan: "" }])
+                                        .map((item, index, arr) => `
                                         <tr>
-                                            <td style="border-right: 1px solid #000; text-align: center; padding: 5.5px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">(${index + 1})</td>
-                                            <td style="border-right: 1px solid #000; text-align: left; padding: 5.5px 8px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.name || ""}</td>
-                                            <td style="text-align: center; padding: 5.5px 6px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.pan || ""}</td>
+                                            <td style="border-right: 1px solid #000; text-align: center; padding: 9px 4px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">(${index + 1})</td>
+                                            <td style="border-right: 1px solid #000; text-align: left; padding: 9px 10px; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.name || ""}</td>
+                                            <td style="text-align: center; padding: 9px 8px; font-family: monospace; ${index !== arr.length - 1 ? "border-bottom: 1px solid #000;" : ""}">${item.pan || ""}</td>
                                         </tr>
-                                    `,
-            )
-            .join("")}
+                                    `).join("")}
                                 </tbody>
                             </table>
                         </td>
