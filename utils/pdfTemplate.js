@@ -539,25 +539,25 @@ exports.generateReportHTML = (report) => {
             .join("");
     };
     const generateSignatureBlock = (isCompact = false) => {
-        const boxHeight = isCompact ? "18px" : "24px";
-        const stampMaxH = isCompact ? "20px" : "26px";
-        const stampMaxW = isCompact ? "70px" : "85px";
-        const sigMaxH = isCompact ? "16px" : "22px";
-        const sigMaxW = isCompact ? "60px" : "75px";
+        const boxHeight = isCompact ? "14px" : "18px";
+        const stampMaxH = isCompact ? "18px" : "22px";
+        const stampMaxW = isCompact ? "60px" : "75px";
+        const sigMaxH = isCompact ? "14px" : "18px";
+        const sigMaxW = isCompact ? "48px" : "58px";
         const metaFont = isCompact ? "10.5px" : "11.5px";
         const titleFont = isCompact ? "11px" : "12px";
 
         return `
-    <div class="signatures" style="width:100%; margin:0; padding-top:${isCompact ? '2px' : '4px'}; text-align:left;">
+    <div class="signatures" style="width:100%; margin:0; padding-top:${isCompact ? '1px' : '2px'}; text-align:left;">
       
       <!-- Bottom Left: Line 1 Date, Line 2 Place, Line 3 Signatures spanning half page horizontally -->
-      <div style="text-align:left; font-size:${metaFont}; line-height:1.3; width:52%;">
+      <div style="text-align:left; font-size:${metaFont}; line-height:1.25; width:${isCompact ? '240px' : '260px'}; max-width:35%;">
         <div>Date: ${date}</div>
         <div>Place: ${place}</div>
-        <div style="margin-top:${isCompact ? '12px' : '16px'}; width:100%;">
+        <div style="margin-top:${isCompact ? '6px' : '8px'}; width:100%;">
           <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:${titleFont}; text-align:center; width:100%;">
             <div style="flex:1; text-align:left;">President</div>
-            <div style="flex:1; text-align:center;">Vice President</div>
+            <div style="flex:1.2; text-align:center;">Vice President</div>
             <div style="flex:1; text-align:right;">Trustee</div>
           </div>
           <div class="sig-box" style="height:${boxHeight}; display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:1px;">
@@ -565,7 +565,7 @@ exports.generateReportHTML = (report) => {
               ${stamp1 ? `<img src="${stamp1}" style="max-height:${stampMaxH}; max-width:${stampMaxW}; object-fit:contain;" />` : ''}
               ${sig1 ? `<img src="${sig1}" style="max-height:${sigMaxH}; max-width:${sigMaxW}; object-fit:contain;" />` : ''}
             </div>
-            <div style="flex:1; display:flex; justify-content:center;">
+            <div style="flex:1.2; display:flex; justify-content:center;">
               ${stamp2 ? `<img src="${stamp2}" style="max-height:${stampMaxH}; max-width:${stampMaxW}; object-fit:contain;" />` : ''}
               ${sig2 ? `<img src="${sig2}" style="max-height:${sigMaxH}; max-width:${sigMaxW}; object-fit:contain;" />` : ''}
             </div>
@@ -869,14 +869,12 @@ exports.generateReportHTML = (report) => {
                 border-bottom: 1px solid #000 !important;
             }
 
-            /* Grid for signatures */
             .signatures {
-                
                 justify-content: space-between;
-                margin-top: var(--space-xl);
+                margin-top: var(--space-md);
             }
-            .page-signature-footer page2-signatures .signatures {
-                margin-top: var(--space-md) !important;
+            .page2-signatures .signatures {
+                margin-top: 4px !important;
             }
             .signature-block {
                 text-align: center;
@@ -884,7 +882,7 @@ exports.generateReportHTML = (report) => {
             }
             .signature-meta {
                 text-align: left;
-                margin-bottom: var(--space-md);
+                margin-bottom: var(--space-sm);
             }
             .signature-box {
                 display: flex;
@@ -893,32 +891,32 @@ exports.generateReportHTML = (report) => {
             }
             .signature-media-container {
                 position: relative;
-                margin-top: var(--space-sm);
-                height: 60px;
-                width: 100px;
+                margin-top: var(--space-xs);
+                height: 50px;
+                width: 90px;
             }
             .sig-img-stamp {
                 position: absolute;
                 top: 0;
                 left: 0;
-                max-height: 60px;
-                max-width: 100px;
+                max-height: 50px;
+                max-width: 90px;
                 z-index: 1;
             }
             .sig-img-signature {
                 position: absolute;
-                top: 15px;
-                left: 10px;
-                max-height: 30px;
-                max-width: 80px;
+                top: 10px;
+                left: 8px;
+                max-height: 28px;
+                max-width: 65px;
                 z-index: 2;
             }
-                .page-signature-footer {
-    margin-top: auto;
-    width: 100%;
-    padding-top: 8px;
-    flex-shrink: 0;
-}
+            .page-signature-footer {
+                margin-top: auto;
+                width: 100%;
+                padding-top: 4px;
+                flex-shrink: 0;
+            }
 
             /* Compact page layout for dense tables (Balance Sheet, Receipt & Payment, Income & Expenditure) */
             .page-compact {
