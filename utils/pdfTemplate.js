@@ -52,18 +52,37 @@ exports.generateReportHTML = (report) => {
     const permissions = report.permissions || [];
     const expenditures = report.incomeExpenditure?.expenditures || [];
     const incomes = report.incomeExpenditure?.incomes || [];
-    const totalExpenditure = report.incomeExpenditure?.totalExpenditure || 0;
-    const totalIncome = report.incomeExpenditure?.totalIncome || 0;
+    
+    const calcExpTotal = expenditures.reduce((sum, item) => sum + (Number(item?.amount || item?.total) || 0), 0);
+    const calcIncTotal = incomes.reduce((sum, item) => sum + (Number(item?.amount || item?.total) || 0), 0);
+    const totalExpenditure = (report.incomeExpenditure?.totalExpenditure !== undefined && report.incomeExpenditure?.totalExpenditure !== null && Number(report.incomeExpenditure?.totalExpenditure) > 0)
+        ? Number(report.incomeExpenditure.totalExpenditure)
+        : calcExpTotal;
+    const totalIncome = (report.incomeExpenditure?.totalIncome !== undefined && report.incomeExpenditure?.totalIncome !== null && Number(report.incomeExpenditure?.totalIncome) > 0)
+        ? Number(report.incomeExpenditure.totalIncome)
+        : (calcIncTotal > 0 ? calcIncTotal : totalExpenditure);
 
     const fundsLiabilities = report.balanceSheet?.fundsLiabilities || [];
     const propertyAssets = report.balanceSheet?.propertyAssets || [];
-    const totalFunds = report.balanceSheet?.totalFundsLiabilities || 0;
-    const totalAssets = report.balanceSheet?.totalPropertyAssets || 0;
+    const calcFundsTotal = fundsLiabilities.reduce((sum, item) => sum + (Number(item?.total || item?.amount) || 0), 0);
+    const calcAssetsTotal = propertyAssets.reduce((sum, item) => sum + (Number(item?.total || item?.amount) || 0), 0);
+    const totalFunds = (report.balanceSheet?.totalFundsLiabilities !== undefined && report.balanceSheet?.totalFundsLiabilities !== null && Number(report.balanceSheet?.totalFundsLiabilities) > 0)
+        ? Number(report.balanceSheet.totalFundsLiabilities)
+        : calcFundsTotal;
+    const totalAssets = (report.balanceSheet?.totalPropertyAssets !== undefined && report.balanceSheet?.totalPropertyAssets !== null && Number(report.balanceSheet?.totalPropertyAssets) > 0)
+        ? Number(report.balanceSheet.totalPropertyAssets)
+        : (calcAssetsTotal > 0 ? calcAssetsTotal : totalFunds);
 
     const receipts = report.receiptPayment?.receipts || [];
     const payments = report.receiptPayment?.payments || [];
-    const totalReceipts = report.receiptPayment?.totalReceipts || 0;
-    const totalPayments = report.receiptPayment?.totalPayments || 0;
+    const calcRecTotal = receipts.reduce((sum, item) => sum + (Number(item?.total || item?.amount) || 0), 0);
+    const calcPayTotal = payments.reduce((sum, item) => sum + (Number(item?.total || item?.amount) || 0), 0);
+    const totalReceipts = (report.receiptPayment?.totalReceipts !== undefined && report.receiptPayment?.totalReceipts !== null && Number(report.receiptPayment?.totalReceipts) > 0)
+        ? Number(report.receiptPayment.totalReceipts)
+        : calcRecTotal;
+    const totalPayments = (report.receiptPayment?.totalPayments !== undefined && report.receiptPayment?.totalPayments !== null && Number(report.receiptPayment?.totalPayments) > 0)
+        ? Number(report.receiptPayment.totalPayments)
+        : (calcPayTotal > 0 ? calcPayTotal : totalReceipts);
 
     const schIX_incomeShown = Number(report.scheduleIX?.incomeShown) || 0;
     const schIX_deductions = report.scheduleIX?.deductions || [];
@@ -265,10 +284,17 @@ exports.generateReportHTML = (report) => {
         return "padding-left: 3px; word-break: break-word;";
     };
 
-    const formatCellAmount = (val) => {
+    const formatCellAmount = (val, isBankRow = false) => {
         if (val === null || val === undefined || val === "") return "";
-        const n = typeof val === "number" ? val : parseFloat(String(val).replace(/,/g, ""));
+        const strVal = String(val).trim();
+        if (strVal === "-" || strVal === "—" || strVal === "- ") return "-";
+        if (strVal === "0.00") return "0.00";
+        if (isBankRow && (strVal === "0" || val === 0)) return "0.00";
+        const n = typeof val === "number" ? val : parseFloat(strVal.replace(/,/g, ""));
         if (isNaN(n) || n === 0) return "";
+        if (strVal.includes(".") && strVal.split(".")[1].length === 2) {
+            return n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
         return n.toLocaleString("en-IN");
     };
 
@@ -281,7 +307,12 @@ exports.generateReportHTML = (report) => {
             if (isSurplus) {
                 if (!seenSurplus) {
                     seenSurplus = true;
-                    cleanExpenditures.push(item);
+                    const amt = Number(item.amount || item.total) || 0;
+                    if (amt > 0) {
+                        cleanExpenditures.push(item);
+                    } else {
+                        cleanExpenditures.push({ ...item, amount: null, total: null });
+                    }
                 }
             } else {
                 cleanExpenditures.push(item);
@@ -295,7 +326,12 @@ exports.generateReportHTML = (report) => {
             if (isDeficit) {
                 if (!seenDeficit) {
                     seenDeficit = true;
-                    cleanIncomes.push(item);
+                    const amt = Number(item.amount || item.total) || 0;
+                    if (amt > 0) {
+                        cleanIncomes.push(item);
+                    } else {
+                        cleanIncomes.push({ ...item, amount: null, total: null });
+                    }
                 }
             } else {
                 cleanIncomes.push(item);
@@ -311,12 +347,20 @@ exports.generateReportHTML = (report) => {
             const exp = cleanExpenditures[i] || {
                 label: "",
                 amount: null,
+                total: null,
                 isHeader: false,
             };
-            const inc = cleanIncomes[i] || { label: "", amount: null, isHeader: false };
+            const inc = cleanIncomes[i] || { label: "", amount: null, total: null, isHeader: false };
 
             const expStyle = getItemStyle(exp);
             const incStyle = getItemStyle(inc);
+
+            const expAmt = (exp.amount !== null && exp.amount !== undefined && exp.amount !== "")
+                ? exp.amount
+                : ((exp.total !== null && exp.total !== undefined && exp.total !== "") ? exp.total : null);
+            const incAmt = (inc.amount !== null && inc.amount !== undefined && inc.amount !== "")
+                ? inc.amount
+                : ((inc.total !== null && inc.total !== undefined && inc.total !== "") ? inc.total : null);
 
             html += `
                 <tr class="excel-row">
@@ -324,13 +368,13 @@ exports.generateReportHTML = (report) => {
                         ${exp.label || ""}
                     </td>
                     <td class="col-amount ${isHeading(exp) ? "font-bold" : ""}">
-                        ${formatCellAmount(exp.amount)}
+                        ${formatCellAmount(expAmt)}
                     </td>
                     <td style="${incStyle}">
                         ${inc.label || ""}
                     </td>
                     <td class="col-amount ${isHeading(inc) ? "font-bold" : ""}">
-                        ${formatCellAmount(inc.amount)}
+                        ${formatCellAmount(incAmt)}
                     </td>
                 </tr>
             `;
@@ -359,7 +403,7 @@ exports.generateReportHTML = (report) => {
             if (isTotalRow && result.length > 0) {
                 const prev = result[result.length - 1];
                 if (cleanLabel(prev.label) === baseLabel) {
-                    prev.total = (item.amount !== null && item.amount !== undefined && item.amount !== "" && Number(item.amount) !== 0) ? item.amount : (item.total || prev.total);
+                    prev.total = (item.amount !== null && item.amount !== undefined && item.amount !== "") ? item.amount : (item.total || prev.total);
                     continue;
                 }
             }
@@ -367,14 +411,19 @@ exports.generateReportHTML = (report) => {
             if (isDetailRow && result.length > 0) {
                 const prev = result[result.length - 1];
                 if (cleanLabel(prev.label) === baseLabel) {
-                    prev.amount = (item.amount !== null && item.amount !== undefined && item.amount !== "" && Number(item.amount) !== 0) ? item.amount : prev.amount;
+                    prev.amount = (item.amount !== null && item.amount !== undefined && item.amount !== "") ? item.amount : prev.amount;
                     continue;
                 }
             }
 
+            const finalAmount = item.amount !== undefined && item.amount !== null && item.amount !== "" ? item.amount : null;
+            const finalTotal = item.total !== undefined && item.total !== null && item.total !== "" ? item.total : null;
+
             result.push({
                 ...item,
-                label: baseLabel
+                label: baseLabel,
+                amount: finalAmount,
+                total: finalTotal
             });
         }
         return result;
@@ -404,6 +453,8 @@ exports.generateReportHTML = (report) => {
 
             const leftStyle = getItemStyle(left);
             const rightStyle = getItemStyle(right);
+            const isLeftBank = String(left.label || "").toLowerCase().includes("bank");
+            const isRightBank = String(right.label || "").toLowerCase().includes("bank");
 
             html += `
                 <tr class="excel-row">
@@ -411,7 +462,7 @@ exports.generateReportHTML = (report) => {
                         ${left.label || ""}
                     </td>
                     <td class="col-amount ${isHeading(left) ? "font-bold" : ""}">
-                        ${formatCellAmount(left.amount)}
+                        ${formatCellAmount(left.amount, isLeftBank)}
                     </td>
                     <td class="col-amount font-bold">
                         ${formatCellAmount(left.total)}
@@ -420,7 +471,7 @@ exports.generateReportHTML = (report) => {
                         ${right.label || ""}
                     </td>
                     <td class="col-amount ${isHeading(right) ? "font-bold" : ""}">
-                        ${formatCellAmount(right.amount)}
+                        ${formatCellAmount(right.amount, isRightBank)}
                     </td>
                     <td class="col-amount font-bold">
                         ${formatCellAmount(right.total)}
@@ -432,57 +483,9 @@ exports.generateReportHTML = (report) => {
     };
 
     const renderDeductionRow = (label, key, indent = 0) => {
-        let amount = "";
-        let rawVal = null;
-
-        if (Array.isArray(schIX_deductions)) {
-            const found = schIX_deductions.find(d => {
-                if (!d) return false;
-                if (d.key && d.key === key) return true;
-                if (d.label) {
-                    const dl = d.label.toLowerCase();
-                    if (key === 'sch_donations' && dl.includes('donations')) return true;
-                    if (key === 'sch_grants' && dl.includes('grants')) return true;
-                    if (key === 'sch_sinking' && dl.includes('sinking')) return true;
-                    if (key === 'sch_education' && dl.includes('education')) return true;
-                    if (key === 'sch_medical' && dl.includes('medical')) return true;
-                    if (key === 'sch_veterinary' && dl.includes('veterinary')) return true;
-                    if (key === 'sch_calamity' && (dl.includes('calamity') || dl.includes('distress'))) return true;
-                    if (key === 'sch_agri_a' && (dl.includes('land revenue') || dl.includes('local fund'))) return true;
-                    if (key === 'sch_agri_b' && dl.includes('superior landlord')) return true;
-                    if (key === 'sch_agri_c' && dl.includes('cost of production')) return true;
-                    if (key === 'sch_non_agri_a' && (dl.includes('assessment') || dl.includes('municipal'))) return true;
-                    if (key === 'sch_non_agri_b' && dl.includes('ground rent')) return true;
-                    if (key === 'sch_non_agri_c' && dl.includes('insurance')) return true;
-                    if (key === 'sch_non_agri_d' && dl.includes('repairs at 10')) return true;
-                    if (key === 'sch_non_agri_e' && dl.includes('cost of collection at 4')) return true;
-                    if (key === 'sch_securities_1' && dl.includes('securities')) return true;
-                    if (key === 'sch_repairs' && dl.includes('building not rented')) return true;
-                }
-                return false;
-            });
-            if (found && found.amount !== null && found.amount !== undefined && found.amount !== "") {
-                rawVal = found.amount;
-            }
-        }
-
-        if ((rawVal === null || rawVal === undefined || rawVal === "") && report.scheduleIX && report.scheduleIX[key] !== undefined) {
-            rawVal = report.scheduleIX[key];
-        }
-        if ((rawVal === null || rawVal === undefined || rawVal === "") && report[key] !== undefined) {
-            rawVal = report[key];
-        }
-
-        if (rawVal !== null && rawVal !== undefined && rawVal !== "" && !isNaN(Number(rawVal)) && Number(rawVal) > 0) {
-            amount = Number(rawVal).toLocaleString("en-IN");
-        } else if (rawVal !== null && rawVal !== undefined && rawVal !== "" && typeof rawVal === 'string' && rawVal.trim() !== '') {
-            amount = rawVal;
-        }
-
         return `
-            <div style="display: flex; justify-content: space-between; align-items: baseline; line-height: 1.45; margin-bottom: 3px; ${indent ? `padding-left: ${indent}px;` : ''}">
-                <span style="flex: 1; padding-right: 15px; font-size: 12px;">${label}</span>
-                <span style="font-weight: bold; width: 100px; min-width: 100px; text-align: right; padding-right: 15px; flex-shrink: 0; white-space: nowrap; font-size: 12px;">${amount}</span>
+            <div style="line-height: 1.45; margin-bottom: 3px; ${indent ? `padding-left: ${indent}px;` : ''}">
+                <span style="font-size: 12px;">${label}</span>
             </div>
         `;
     };
@@ -1141,7 +1144,7 @@ exports.generateReportHTML = (report) => {
                             Income as showan in the income and Expenditure Account (Schedule IX)
                         </td>
                         <td style="width: 120px; text-align: center; font-weight: bold; border: 1px solid #000; vertical-align: middle; padding: 6px; font-size: 13px;">
-                            ${schIX_incomeShown !== null && schIX_incomeShown !== undefined ? schIX_incomeShown : ""}
+                            ${schIX_incomeShown ? Number(schIX_incomeShown).toLocaleString("en-IN") : ""}
                         </td>
                     </tr>
 
@@ -1162,7 +1165,7 @@ exports.generateReportHTML = (report) => {
                             Gross Annual Income chargeable to contribution Rs.
                         </td>
                         <td style="width: 120px; text-align: center; font-weight: bold; border: 1px solid #000; padding: 6px; font-size: 13px;">
-                            ${schIX_grossAnnualIncome !== null && schIX_grossAnnualIncome !== undefined ? schIX_grossAnnualIncome : ""}
+                            ${schIX_grossAnnualIncome !== null && schIX_grossAnnualIncome !== undefined && schIX_grossAnnualIncome !== "" ? (typeof schIX_grossAnnualIncome === 'number' ? schIX_grossAnnualIncome.toLocaleString('en-IN') : schIX_grossAnnualIncome) : ""}
                         </td>
                     </tr>
                 </tbody>
@@ -1311,8 +1314,15 @@ exports.generateReportHTML = (report) => {
                 </table>
             </div>
 
-            <div class="page-signature-footer">
-                ${generateSignatureBlock(true)}
+            <div class="page-signature-footer" style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; line-height: 1.35;">
+                <div style="text-align: left;">
+                    <div style="font-size: 11px; margin-bottom: 20px;">Examined As Per Books.</div>
+                    <div>Registration No-${registrationNo}</div>
+                    <div>Date :- ${date}</div>
+                </div>
+                <div style="text-align: right; font-weight: bold; font-size: 12px; padding-bottom: 5px;">
+                    Trustee
+                </div>
             </div>
         </div>
 
